@@ -1,0 +1,50 @@
+{% extends 'tournament/base.html' %}
+
+{% block title %}Results - NSL Badminton Tournament{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px; color: #333;">Match Results</h2>
+
+{% if matches %}
+    {% for match in matches %}
+    <div class="match-card">
+        <div class="match-teams">
+            <span {% if match.home_score > match.away_score %}style="color: #4caf50;"{% endif %}>
+                {{ match.home_team.name }}
+            </span>
+            <span class="match-score">
+                {{ match.home_score }} - {{ match.away_score }}
+            </span>
+            <span {% if match.away_score > match.home_score %}style="color: #4caf50;"{% endif %}>
+                {{ match.away_team.name }}
+            </span>
+        </div>
+        <div class="match-info">
+            <span class="status-badge status-completed">✓ Completed</span>
+            <span style="margin-left: 15px;">📅 {{ match.scheduled_time|date:"F d, Y - g:i A" }}</span>
+            {% if match.venue %}
+            <span style="margin-left: 15px;">📍 {{ match.venue }}</span>
+            {% endif %}
+        </div>
+        {% if match.home_score > match.away_score %}
+        <div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 5px; color: #2e7d32; font-weight: bold;">
+            🏆 Winner: {{ match.home_team.name }}
+        </div>
+        {% elif match.away_score > match.home_score %}
+        <div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 5px; color: #2e7d32; font-weight: bold;">
+            🏆 Winner: {{ match.away_team.name }}
+        </div>
+        {% else %}
+        <div style="margin-top: 10px; padding: 10px; background: #fff3e0; border-radius: 5px; color: #e65100; font-weight: bold;">
+            🤝 Match Drawn
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="no-data">
+        <p>No completed matches yet.</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">Results will appear here once matches are completed.</p>
+    </div>
+{% endif %}
+{% endblock %}

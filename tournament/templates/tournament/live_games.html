@@ -1,0 +1,72 @@
+{% extends 'tournament/base.html' %}
+
+{% block title %}Live Games - NSL Badminton Tournament{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px; color: #333;">🔴 Live Games</h2>
+
+<div id="live-matches-container">
+    {% if matches %}
+        {% for match in matches %}
+        <div class="match-card live" data-match-id="{{ match.id }}">
+            <div class="match-teams">
+                <span class="team-home">{{ match.home_team.name }}</span>
+                <span class="match-score">
+                    <span class="score-home">{{ match.home_score }}</span>
+                    -
+                    <span class="score-away">{{ match.away_score }}</span>
+                </span>
+                <span class="team-away">{{ match.away_team.name }}</span>
+            </div>
+            <div class="match-info">
+                <span class="status-badge status-live">🔴 LIVE</span>
+                {% if match.venue %}
+                <span style="margin-left: 15px;">📍 {{ match.venue }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-data">
+            <p>No live matches at the moment.</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Check the schedule for upcoming games!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-refresh live game scores every 5 seconds
+function refreshLiveScores() {
+    fetch('{% url "tournament:live_games_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.matches.length === 0) {
+                document.getElementById('live-matches-container').innerHTML = `
+                    <div class="no-data">
+                        <p>No live matches at the moment.</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Check the schedule for upcoming games!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            data.matches.forEach(match => {
+                // Use attribute selector with proper escaping
+                const matchCard = document.querySelector('[data-match-id="' + match.id + '"]');
+                if (matchCard) {
+                    const homeScore = matchCard.querySelector('.score-home');
+                    const awayScore = matchCard.querySelector('.score-away');
+                    if (homeScore) homeScore.textContent = match.home_score;
+                    if (awayScore) awayScore.textContent = match.away_score;
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching live scores:', error));
+}
+
+// Refresh every 5 seconds
+setInterval(refreshLiveScores, 5000);
+</script>
+{% endblock %}

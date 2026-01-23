@@ -1,0 +1,41 @@
+{% extends 'tournament/base.html' %}
+
+{% block title %}Home - NSL Badminton Tournament{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px; color: #333;">Tournament Overview</h2>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ total_teams }}</h3>
+        <p>Total Teams</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ total_groups }}</h3>
+        <p>Groups</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ upcoming_matches }}</h3>
+        <p>Upcoming Matches</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ live_matches }}</h3>
+        <p>Live Matches</p>
+    </div>
+</div>
+
+<div style="background: #f9f9f9; padding: 30px; border-radius: 10px; text-align: center;">
+    <h2 style="color: #667eea; margin-bottom: 15px;">Welcome to NSL Badminton Tournament</h2>
+    <p style="font-size: 1.1em; color: #666; margin-bottom: 20px;">
+        Track live scores, view schedules, check point tables, and follow all the action from the tournament!
+    </p>
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <a href="{% url 'tournament:live_games' %}" style="background: #ff4444; color: white; padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+            🔴 Watch Live Games
+        </a>
+        <a href="{% url 'tournament:schedule' %}" style="background: #667eea; color: white; padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+            📅 View Schedule
+        </a>
+    </div>
+</div>
+{% endblock %}
