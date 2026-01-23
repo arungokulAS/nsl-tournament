@@ -53,10 +53,13 @@ function refreshLiveScores() {
             }
             
             data.matches.forEach(match => {
-                const matchCard = document.querySelector(`[data-match-id="${match.id}"]`);
+                // Use attribute selector with proper escaping
+                const matchCard = document.querySelector('[data-match-id="' + match.id + '"]');
                 if (matchCard) {
-                    matchCard.querySelector('.score-home').textContent = match.home_score;
-                    matchCard.querySelector('.score-away').textContent = match.away_score;
+                    const homeScore = matchCard.querySelector('.score-home');
+                    const awayScore = matchCard.querySelector('.score-away');
+                    if (homeScore) homeScore.textContent = match.home_score;
+                    if (awayScore) awayScore.textContent = match.away_score;
                 }
             });
         })

@@ -58,12 +58,18 @@ function refreshPointTable() {
         .then(data => {
             data.groups.forEach(group => {
                 group.teams.forEach(team => {
-                    const teamRow = document.querySelector(`[data-team-name="${team.name}"]`);
+                    // Use attribute selector with exact match to prevent injection
+                    const teamRow = document.querySelector('[data-team-name="' + team.name.replace(/"/g, '\\"') + '"]');
                     if (teamRow) {
-                        teamRow.querySelector('.team-played').textContent = team.played;
-                        teamRow.querySelector('.team-won').textContent = team.won;
-                        teamRow.querySelector('.team-lost').textContent = team.lost;
-                        teamRow.querySelector('.team-points').textContent = team.points;
+                        const playedCell = teamRow.querySelector('.team-played');
+                        const wonCell = teamRow.querySelector('.team-won');
+                        const lostCell = teamRow.querySelector('.team-lost');
+                        const pointsCell = teamRow.querySelector('.team-points');
+                        
+                        if (playedCell) playedCell.textContent = team.played;
+                        if (wonCell) wonCell.textContent = team.won;
+                        if (lostCell) lostCell.textContent = team.lost;
+                        if (pointsCell) pointsCell.textContent = team.points;
                     }
                 });
             });
