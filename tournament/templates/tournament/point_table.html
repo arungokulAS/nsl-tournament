@@ -1,0 +1,77 @@
+{% extends 'tournament/base.html' %}
+
+{% block title %}Point Table - NSL Badminton Tournament{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px; color: #333;">Point Table</h2>
+
+<div id="point-table-container">
+    {% if groups %}
+        {% for group in groups %}
+        <div class="group-section" data-group-id="{{ group.id }}">
+            <div class="group-title">{{ group.name }}</div>
+            {% if group.teams.all %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Played</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody class="group-teams">
+                        {% for team in group.teams.all %}
+                        <tr data-team-name="{{ team.name }}">
+                            <td><strong>{{ forloop.counter }}</strong></td>
+                            <td><strong>{{ team.name }}</strong></td>
+                            <td class="team-played">{{ team.matches_played }}</td>
+                            <td class="team-won">{{ team.matches_won }}</td>
+                            <td class="team-lost">{{ team.matches_lost }}</td>
+                            <td class="team-points"><strong>{{ team.points }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p style="padding: 20px; text-align: center; color: #999;">No teams in this group yet.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-data">
+            <p>No groups created yet.</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Please add groups and teams from the admin panel.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-refresh point table every 10 seconds
+function refreshPointTable() {
+    fetch('{% url "tournament:point_table_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            data.groups.forEach(group => {
+                group.teams.forEach(team => {
+                    const teamRow = document.querySelector(`[data-team-name="${team.name}"]`);
+                    if (teamRow) {
+                        teamRow.querySelector('.team-played').textContent = team.played;
+                        teamRow.querySelector('.team-won').textContent = team.won;
+                        teamRow.querySelector('.team-lost').textContent = team.lost;
+                        teamRow.querySelector('.team-points').textContent = team.points;
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching point table:', error));
+}
+
+// Refresh every 10 seconds
+setInterval(refreshPointTable, 10000);
+</script>
+{% endblock %}
