@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-r^e@y008f+w1d&v@zbbuhzzb9#xcz0p05eh6=q990j5jq2m5kn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nsl-tournament.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
