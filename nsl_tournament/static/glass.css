@@ -1,0 +1,93 @@
+/* Glassmorphism styles for tables, forms, and buttons */
+.glass-container {
+    background: rgba(34,44,74,0.45);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 #4e7fff44, 0 1.5px 8px 0 #0008;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    padding: 32px 24px;
+    margin: 40px auto;
+    max-width: 900px;
+}
+.glass-title {
+    color: #eaf0fa;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 24px;
+    text-shadow: 0 0 18px #4e7fff, 0 0 2px #fff;
+}
+.glass-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.glass-input {
+    background: rgba(34,44,74,0.85);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    color: #eaf0fa;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px 0 #4e7fff22;
+    margin-bottom: 8px;
+}
+.glass-input:focus {
+    outline: none;
+    box-shadow: 0 0 12px 2px #4e7fff99;
+}
+.glass-btn {
+    background: linear-gradient(90deg, #4e7fff 0%, #a259ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 #4e7fff44;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+.glass-btn:hover {
+    box-shadow: 0 0 18px 4px #4e7fff99;
+    background: linear-gradient(90deg, #a259ff 0%, #4e7fff 100%);
+}
+.glass-btn-danger {
+    background: linear-gradient(90deg, #ff4e7f 0%, #a259ff 100%);
+}
+.glass-btn-lock {
+    background: linear-gradient(90deg, #ffb259 0%, #4e7fff 100%);
+}
+.glass-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(34,44,74,0.65);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px 0 #4e7fff44, 0 1.5px 8px 0 #0008;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+.glass-table th, .glass-table td {
+    padding: 12px 16px;
+    color: #eaf0fa;
+    text-align: center;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.glass-table th {
+    background: rgba(34,44,74,0.85);
+    font-weight: 700;
+}
+.glass-table tr:last-child td {
+    border-bottom: none;
+}
+.glass-locked {
+    color: #ff4e7f;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 18px;
+    font-weight: 600;
+}

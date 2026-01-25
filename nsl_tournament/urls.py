@@ -23,6 +23,11 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('admin/teams/', views.teams_list, name='teams'),
+    path('admin/teams/add/', views.add_team, name='add_team'),
+    path('admin/teams/edit/<int:team_id>/', views.edit_team, name='edit_team'),
+    path('admin/teams/delete/<int:team_id>/', views.delete_team, name='delete_team'),
+    path('admin/teams/lock/', views.lock_teams, name='lock_teams'),
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico', permanent=True)),
 ]

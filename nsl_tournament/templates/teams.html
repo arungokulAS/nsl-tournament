@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Management</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'glass.css' %}">
+</head>
+<body class="dark-bg">
+    <div class="glass-container">
+        <h2 class="glass-title">Teams Management</h2>
+        {% if not is_locked %}
+        <form method="post" action="{% url 'add_team' %}" class="glass-form">{% csrf_token %}
+            <input type="text" name="team_name" placeholder="Team Name" class="glass-input" required>
+            <input type="text" name="player1_name" placeholder="Player 1 Name" class="glass-input" required>
+            <input type="text" name="player2_name" placeholder="Player 2 Name" class="glass-input" required>
+            <button type="submit" class="glass-btn">Add Team</button>
+        </form>
+        {% endif %}
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Team Name</th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    {% if not is_locked %}<th>Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr>
+                    <td>{{ team.team_id }}</td>
+                    <td>{{ team.team_name }}</td>
+                    <td>{{ team.player1_name }}</td>
+                    <td>{{ team.player2_name }}</td>
+                    <td>{{ team.created_at|date:'Y-m-d H:i' }}</td>
+                    <td>{{ team.updated_at|date:'Y-m-d H:i' }}</td>
+                    {% if not is_locked %}
+                    <td>
+                        <form method="post" action="{% url 'edit_team' team.team_id %}" style="display:inline">{% csrf_token %}
+                            <input type="text" name="team_name" value="{{ team.team_name }}" class="glass-input" required>
+                            <input type="text" name="player1_name" value="{{ team.player1_name }}" class="glass-input" required>
+                            <input type="text" name="player2_name" value="{{ team.player2_name }}" class="glass-input" required>
+                            <button type="submit" class="glass-btn">Edit</button>
+                        </form>
+                        <form method="post" action="{% url 'delete_team' team.team_id %}" style="display:inline">{% csrf_token %}
+                            <button type="submit" class="glass-btn glass-btn-danger" onclick="return confirm('Delete this team?')">Delete</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not is_locked and teams %}
+        <form method="post" action="{% url 'lock_teams' %}" class="glass-form">{% csrf_token %}
+            <button type="submit" class="glass-btn glass-btn-lock">Lock Teams</button>
+        </form>
+        {% elif is_locked %}
+        <div class="glass-locked">Teams are locked. No changes allowed.</div>
+        {% endif %}
+    </div>
+</body>
+</html>
