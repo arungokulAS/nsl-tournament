@@ -1,0 +1,54 @@
+/* Liquid glass navigation bar styles */
+.liquid-nav {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 540px;
+    height: 80px;
+    background: rgba(255,255,255,0.13);
+    border-radius: 40px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    z-index: 10;
+}
+.liquid-nav .nav-btn {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+    font-size: 1.1rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 10px;
+}
+.liquid-nav .nav-btn:hover {
+    color: #a3c9ff;
+}
+.liquid-nav .nav-icon {
+    font-size: 1.7rem;
+    margin-bottom: 4px;
+}
+@media (max-width: 700px) {
+    .liquid-nav {
+        width: 98vw;
+        min-width: 0;
+        height: 60px;
+        border-radius: 30px;
+    }
+    .liquid-nav .nav-btn {
+        font-size: 0.9rem;
+    }
+    .liquid-nav .nav-icon {
+        font-size: 1.2rem;
+    }
+}
