@@ -1,10 +1,10 @@
 
 from django.contrib import admin
 from django.urls import path
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home(request):
-    return HttpResponse("NSL TEST PLAIN RESPONSE")
+    return render(request, 'nsl_home.html')
 
 urlpatterns = [
     path('', home, name='home'),
