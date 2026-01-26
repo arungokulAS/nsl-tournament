@@ -28,6 +28,8 @@ urlpatterns = [
     path('admin/teams/edit/<int:team_id>/', views.edit_team, name='edit_team'),
     path('admin/teams/delete/<int:team_id>/', views.delete_team, name='delete_team'),
     path('admin/teams/lock/', views.lock_teams, name='lock_teams'),
+    path('admin/groups/', views.groups_page, name='groups_page'),
+    path('admin/schedule/<str:round_name>/', views.schedule_page, name='schedule_page'),
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico', permanent=True)),
 ]

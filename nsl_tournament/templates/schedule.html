@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - {{ round_name|title }}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'glass.css' %}">
+</head>
+<body class="dark-bg">
+    <div class="glass-container">
+        <h2 class="glass-title">{{ round_name|title }} Schedule</h2>
+        {% if not is_locked %}
+        <form method="post" class="glass-form">{% csrf_token %}
+            {{ form.round_name }}
+            {{ form.num_courts }}
+            {{ form.start_time }}
+            <button type="submit" class="glass-btn">Generate Schedule</button>
+        </form>
+        {% endif %}
+        <div class="glass-table-wrapper">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Team 1</th>
+                        <th>Team 2</th>
+                        <th>Court</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in matches %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ match.team1.team_name }}</td>
+                        <td>{{ match.team2.team_name }}</td>
+                        <td>{{ match.court }}</td>
+                        <td>{{ match.scheduled_time|date:'Y-m-d H:i' }}</td>
+                        <td>
+                            {% if match.is_completed %}
+                                <span class="glass-badge">Completed</span>
+                            {% elif match.is_locked %}
+                                <span class="glass-badge glass-badge-lock">Locked</span>
+                            {% else %}
+                                <span class="glass-badge glass-badge-active">Scheduled</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6">No matches scheduled.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if not is_locked and matches %}
+        <form method="post" class="glass-form">{% csrf_token %}
+            <button type="submit" name="lock_schedule" class="glass-btn glass-btn-lock">Lock Schedule</button>
+        </form>
+        {% elif is_locked %}
+        <div class="glass-locked">Schedule is locked. No changes allowed.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

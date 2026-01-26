@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groups Assignment</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'glass.css' %}">
+</head>
+<body class="dark-bg">
+    <div class="glass-container">
+        <h2 class="glass-title">Groups Assignment</h2>
+        {% if not is_locked %}
+        <form method="post" class="glass-form">{% csrf_token %}
+            {{ form.team }}
+            {{ form.group }}
+            <button type="submit" name="assign_manual" class="glass-btn">Assign Team</button>
+            <button type="submit" name="assign_auto" class="glass-btn">Auto Assign</button>
+        </form>
+        {% endif %}
+        <div class="glass-table-wrapper">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Group</th>
+                        <th>Teams</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td>{{ group.get_name_display }}</td>
+                        <td>
+                            {% for team in group_assignments|get_item:group.name %}
+                                <span class="glass-badge">{{ team.team_name }}</span>
+                            {% empty %}
+                                <span class="glass-badge glass-badge-empty">No teams assigned</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if not is_locked and groups %}
+        <form method="post" class="glass-form">{% csrf_token %}
+            <button type="submit" name="lock_groups" class="glass-btn glass-btn-lock">Lock Groups</button>
+        </form>
+        {% elif is_locked %}
+        <div class="glass-locked">Groups are locked. No changes allowed.</div>
+        {% endif %}
+    </div>
+</body>
+</html>
