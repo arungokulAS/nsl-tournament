@@ -7,9 +7,9 @@ body {
     min-height: 100vh;
     color: #fff;
     overflow-x: hidden;
+    /* v3 cache busting: add border for test */
+    border: 8px solid #ff00cc;
 }
-}
-/* Glassmorphism Navigation Bar */
 /* Glassmorphism Navigation Bar */
 .glass-navbar {
     width: 100vw;
@@ -55,7 +55,6 @@ body {
 }
 
 /* Centered Content */
-
 .center-content {
     display: flex;
     flex-direction: column;
