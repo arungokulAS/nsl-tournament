@@ -130,7 +130,7 @@ body {
     100% { transform: translateY(0); opacity: 1; }
 }
 .tagline-pop {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #fff;
     margin-top: 4px;
@@ -141,9 +141,9 @@ body {
     width: 220px;
     max-width: 80vw;
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
 }
 @keyframes tagline-fade {
     0% { opacity: 0; transform: translateY(30px); }
