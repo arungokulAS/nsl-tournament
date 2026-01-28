@@ -1,34 +1,39 @@
 body {
-    background: radial-gradient(ellipse at 60% 40%, #232946 0%, #1a1a2e 100%);
+    background: radial-gradient(ellipse at 60% 40%, #2d3a90 0%, #232946 60%, #181c2f 100%),
+                linear-gradient(120deg, rgba(0, 255, 255, 0.08) 0%, rgba(255, 0, 255, 0.08) 100%);
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
     color: #fff;
+    overflow-x: hidden;
 }
 }
+/* Glassmorphism Navigation Bar */
 /* Glassmorphism Navigation Bar */
 .glass-navbar {
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 32px;
+    align-items: flex-start;
+    position: fixed;
+    top: 24px;
     left: 0;
-    z-index: 10;
+    z-index: 20;
+    pointer-events: none;
 }
 .nav-center {
-    background: rgba(255,255,255,0.15);
-    box-shadow: 0 4px 32px 0 rgba(31,38,135,0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(255,255,255,0.13);
+    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.25);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-radius: 32px;
     border: 1.5px solid rgba(255,255,255,0.18);
-    padding: 10px 32px;
+    padding: 8px 40px;
     display: flex;
     gap: 32px;
     align-items: center;
+    pointer-events: auto;
 }
 .nav-icon {
     display: flex;
@@ -38,37 +43,41 @@ body {
     height: 48px;
     border-radius: 50%;
     transition: background 0.2s;
+    pointer-events: auto;
 }
 .nav-icon:hover {
-    background: rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.18);
 }
 .home-icon svg {
     display: block;
+    width: 32px;
+    height: 32px;
 }
 
 /* Centered Content */
+
 .center-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 80vh;
-    margin-top: 80px;
+    min-height: 90vh;
+    margin-top: 60px;
 }
 .nsl-logo-anim {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     animation: logo-pop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
 }
 .nsl-logo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
-    background: rgba(255,255,255,0.10);
+    width: 260px;
+    height: auto;
+    max-width: 80vw;
     object-fit: contain;
+    filter: drop-shadow(0 8px 32px rgba(31,38,135,0.37));
+    background: none;
     animation: logo-spin 2.5s cubic-bezier(.68,-0.55,.27,1.55);
 }
 @keyframes logo-pop {
@@ -82,12 +91,12 @@ body {
     100% { transform: rotate(0deg) scale(1); }
 }
 .tagline-pop {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    font-weight: 700;
     color: #fff;
-    margin-top: 16px;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 16px rgba(31,38,135,0.25);
+    margin-top: 24px;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 32px rgba(31,38,135,0.25), 0 1px 0 #000;
     opacity: 0;
     animation: tagline-fade 1.2s 0.8s forwards cubic-bezier(.68,-0.55,.27,1.55);
 }
