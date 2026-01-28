@@ -36,7 +36,10 @@
     text-align: left;
 }
 .dropdown-content a:hover {
-    background: rgba(255,255,255,0.10);
+        margin-top: 8px;
+        width: 220px;
+        max-width: 80vw;
+        text-align: center;
     color: #00eaff;
 }
 body {
@@ -107,7 +110,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 32px;
+        margin-bottom: 8px;
     animation: logo-slide-down 1s cubic-bezier(.68,-0.55,.27,1.55);
 }
 .nsl-logo {
