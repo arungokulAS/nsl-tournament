@@ -108,26 +108,22 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 32px;
-    animation: logo-pop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+    animation: logo-slide-down 1s cubic-bezier(.68,-0.55,.27,1.55);
 }
 .nsl-logo {
-    width: 260px;
+    width: 220px;
     height: auto;
     max-width: 80vw;
     object-fit: contain;
     filter: drop-shadow(0 8px 32px rgba(31,38,135,0.37));
-    background: none;
-    animation: logo-spin 2.5s cubic-bezier(.68,-0.55,.27,1.55);
+    background: #fff;
+    border-radius: 16px;
+    padding: 8px;
+    box-sizing: border-box;
 }
-@keyframes logo-pop {
-    0% { transform: scale(0.2); opacity: 0; }
-    80% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); }
-}
-@keyframes logo-spin {
-    0% { transform: rotate(-180deg) scale(0.2); opacity: 0; }
-    80% { transform: rotate(10deg) scale(1.1); opacity: 1; }
-    100% { transform: rotate(0deg) scale(1); }
+@keyframes logo-slide-down {
+    0% { transform: translateY(-60px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 .tagline-pop {
     font-size: 2.2rem;
