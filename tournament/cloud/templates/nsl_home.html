@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSL Tournament Home</title>
-    <link rel="stylesheet" href="/static/style_v3.css">
+    <link rel="stylesheet" href="{% static 'style_v3.css' %}">
     <style>
     body {
         background: #000 url('{% static "envato-labs-image-edit-1.png" %}') no-repeat center center fixed;
@@ -74,7 +74,7 @@
     <!-- Centered Animated Logo and Tagline -->
     <div class="center-content">
         <div class="nsl-logo-anim">
-            <img src="/static/nsl_logo.png" alt="NSL Logo" class="nsl-logo" />
+            <img src="{% static 'nsl_logo.png' %}" alt="NSL Logo" class="nsl-logo" />
         </div>
         <div class="tagline-pop">Bring The Game Into Life</div>
     </div>
