@@ -41,6 +41,7 @@
 }
 body {
     background: #000;
+    overflow-y: hidden;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -119,10 +120,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 60vh;
-    margin-top: 120px;
-    margin-bottom: 40px;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
     width: 100vw;
     position: relative;
     z-index: 10;
@@ -185,4 +185,5 @@ h1 {
 /* Sponsors section white text */
 .sponsors-section, .sponsors-section * {
     color: #fff !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
