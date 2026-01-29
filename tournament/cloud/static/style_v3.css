@@ -40,8 +40,7 @@
 }
 }
 body {
-    background: #000 url('/static/envato-labs-image-edit-1.png') no-repeat center center fixed;
-    background-size: cover;
+    background: #000;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
