@@ -5,51 +5,7 @@
     min-height: 100vh;
     width: 100vw;
 }
-/* Navigation Dropdowns */
-.nav-dropdown {
-    position: relative;
-    display: inline-block;
-}
-.nav-dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 180px;
-    background: rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.25);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border-radius: 24px;
-    border: 1.5px solid rgba(255,255,255,0.28);
-    z-index: 100;
-    margin-top: 10px;
-    padding: 8px 0;
-    pointer-events: auto;
-}
-.nav-dropdown:hover .dropdown-content,
-.nav-dropdown:focus-within .dropdown-content {
-    display: block;
-}
-.nav-dropdown:hover .dropdown-content {
-    display: block;
-}
-.dropdown-content a {
-    color: #fff;
-    padding: 10px 24px;
-    text-decoration: none;
-    display: block;
-    font-size: 1rem;
-    border: none;
-    background: none;
-    transition: background 0.2s, color 0.2s;
-    border-radius: 8px;
-    text-align: left;
-}
-.dropdown-content a:hover {
-    color: #00eaff;
-}
-}
+
 body {
     background: #000;
     min-height: 100vh;
@@ -68,6 +24,62 @@ body {
 }
 /* Glassmorphism Navigation Bar */
 .glass-navbar {
+        overflow: visible;
+    }
+
+    .nav-center {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+        overflow: visible;
+    }
+
+    .nav-dropdown {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-dropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 180px;
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(31,38,135,0.25);
+        backdrop-filter: blur(32px) saturate(180%);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        border-radius: 24px;
+        border: 1.5px solid rgba(255,255,255,0.28);
+        z-index: 100;
+        margin-top: 10px;
+        padding: 8px 0;
+        pointer-events: auto;
+    }
+
+    .nav-dropdown:hover .dropdown-content,
+    .nav-dropdown:focus-within .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        padding: 10px 24px;
+        text-decoration: none;
+        display: block;
+        font-size: 1rem;
+        border: none;
+        background: none;
+        transition: background 0.2s, color 0.2s;
+        border-radius: 8px;
+        text-align: left;
+    }
+
+    .dropdown-content a:hover {
+        color: #00eaff;
     width: 100vw;
     display: flex;
     justify-content: center;
