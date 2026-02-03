@@ -1,0 +1,255 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="display: flex; flex-direction: row; gap: 32px; max-width: 900px; margin: 48px auto 0 auto;">
+    <style>
+    .neon-btn {
+        background: #18181b;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 32px;
+        font-size: 1rem;
+        font-weight: 500;
+        box-shadow: 0 0 16px 2px #a020f0, 0 0 0 2px #a020f0 inset;
+        outline: none;
+        transition: box-shadow 0.2s, background 0.2s;
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .neon-btn:active, .neon-btn:focus {
+        box-shadow: 0 0 24px 4px #a020f0, 0 0 0 2px #a020f0 inset;
+        background: #2a003f;
+    }
+    .neon-btn svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    .neon-file-input {
+        display: none;
+    }
+    .neon-file-label {
+        display: inline-block;
+        background: #18181b;
+        color: #fff;
+        border-radius: 999px;
+        padding: 10px 32px;
+        font-size: 1rem;
+        font-weight: 500;
+        box-shadow: 0 0 16px 2px #a020f0, 0 0 0 2px #a020f0 inset;
+        cursor: pointer;
+        margin-bottom: 8px;
+        margin-right: 8px;
+        transition: box-shadow 0.2s, background 0.2s;
+    }
+    .neon-file-label:active, .neon-file-label:focus {
+        box-shadow: 0 0 24px 4px #a020f0, 0 0 0 2px #a020f0 inset;
+        background: #2a003f;
+    }
+    .team-list-card {
+        background: rgba(40, 20, 60, 0.55);
+        box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
+        border-radius: 24px;
+        border: 1.5px solid rgba(255,255,255,0.18);
+        padding: 32px 24px 24px 24px;
+        max-width: 420px;
+        width: 100%;
+        color: #fff;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+    .team-list-header {
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 8px;
+        letter-spacing: 0.01em;
+    }
+    .team-list-count {
+        color: #a020f0;
+        font-size: 1rem;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+    .team-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255,255,255,0.04);
+        border-radius: 16px;
+        padding: 12px 18px;
+        margin-bottom: 8px;
+        box-shadow: 0 0 8px 0 #a020f033, 0 1.5px 8px 0 rgba(31,38,135,0.10);
+        transition: background 0.2s;
+        width: 100%;
+    }
+    .team-row:hover {
+        background: rgba(160,32,240,0.10);
+    }
+    .team-row-info {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+    .team-row-num {
+        color: #a020f0;
+        font-weight: 600;
+        font-size: 1.1em;
+        margin-right: 8px;
+    }
+    .team-row-names {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .team-row-teamname {
+        font-weight: 500;
+        font-size: 1.05em;
+        color: #fff;
+    }
+    .team-row-action {
+        margin-left: 12px;
+    }
+    .left-panel {
+        flex: 1;
+        min-width: 260px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-left: 32px;
+    }
+    .center-title {
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 18px;
+        letter-spacing: 0.01em;
+    }
+    .glow-search {
+        display: flex;
+        align-items: center;
+        background: #18181b;
+        border-radius: 999px;
+        box-shadow: 0 0 16px 2px #a020f0, 0 0 0 2px #a020f0 inset;
+        padding: 0 8px 0 24px;
+        margin-bottom: 12px;
+        width: 100%;
+        max-width: 340px;
+    }
+    .glow-search input[type="text"] {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+        padding: 14px 8px 14px 0;
+        outline: none;
+        width: 100%;
+    }
+    .glass-form label, .glass-form .neon-file-label, .glass-form input, .glass-form button, .lock-status, .glass-form div {
+        margin-left: 0;
+    }
+    .edit-form-row {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0;
+    }
+    </style>
+    <div class="left-panel">
+        <div class="center-title">Teams Management</div>
+        <div class="lock-status" style="margin-bottom: 18px;">
+            {% if is_locked %}
+                <b>Teams are locked. No changes allowed.</b>
+            {% else %}
+                <b>Teams are editable. Lock to proceed to Groups.</b>
+            {% endif %}
+        </div>
+        {% if not is_locked %}
+        <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 18px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="upload_csv">
+            <label class="neon-file-label">
+                Choose CSV File
+                <input type="file" name="csv_file" accept=".csv" class="neon-file-input" required onchange="this.form.submit()">
+            </label>
+            <div style="font-size:0.95em; color:#aaa; margin-top:4px;">CSV columns: Player 1, Player 2 (no header row)</div>
+        </form>
+        <form method="post" class="glass-form" style="margin-bottom: 0;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
+            <div class="glow-search">
+                <input type="text" name="player1_name" placeholder="Player 1 Name" required>
+            </div>
+            <div class="glow-search">
+                <input type="text" name="player2_name" placeholder="Player 2 Name" required>
+            </div>
+            <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Add Team</button>
+        </form>
+        {% endif %}
+        <div style="margin-top: 24px; color: #a020f0; font-weight: 500;">Total Teams: {{ teams|length }}</div>
+    </div>
+    <div style="flex: 2; min-width: 320px; display: flex; align-items: center; justify-content: center;">
+        <div class="team-list-card">
+            <div class="team-list-header">Team List</div>
+            <div class="team-list-count">Total Teams: {{ teams|length }}</div>
+            {% for team in teams %}
+            {% if team.team_name|lower != 'player 1 name & player 2 name' %}
+            <div class="team-row">
+                <div class="team-row-info">
+                    <span class="team-row-num">{{ forloop.counter }}</span>
+                    <div class="team-row-names">
+                        <span class="team-row-teamname">{{ team.team_name }}</span>
+                    </div>
+                </div>
+                {% if not is_locked %}
+                <div class="team-row-action">
+                    {% if edit_team and edit_team.team_id == team.team_id %}
+                    <form method="post" class="edit-form-row">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                        <div class="glow-search">
+                            <input type="text" name="player1_name" value="{{ team.player1_name }}" required>
+                        </div>
+                        <div class="glow-search">
+                            <input type="text" name="player2_name" value="{{ team.player2_name }}" required>
+                        </div>
+                        <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Save</button>
+                    </form>
+                    {% else %}
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                        <button type="submit" class="neon-btn" title="Edit">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"/></svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

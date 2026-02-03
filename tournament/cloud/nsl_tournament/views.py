@@ -1,0 +1,111 @@
+from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse
+from .models import Team, TeamsLock
+from django.utils import timezone
+from django.contrib import messages
+import csv
+from io import TextIOWrapper
+
+ADMIN_PASSWORD = "nsl2026"
+
+def teams_view(request: HttpRequest) -> HttpResponse:
+    # Replace with real data/model
+    teams = [
+        {'name': 'Team A', 'group': 'Group 1'},
+        {'name': 'Team B', 'group': 'Group 2'},
+    ]
+    return render(request, 'teams.html', {'teams': teams})
+
+def groups_view(request: HttpRequest) -> HttpResponse:
+    # Replace with real data/model
+    groups = [
+        {'name': 'Group 1', 'teams': ['Team A', 'Team C']},
+        {'name': 'Group 2', 'teams': ['Team B', 'Team D']},
+    ]
+    return render(request, 'groups.html', {'groups': groups})
+
+def schedule_view(request: HttpRequest) -> HttpResponse:
+    # Replace with real data/model
+    schedule = [
+        {'match': 'Team A vs Team B', 'time': '2026-02-10 18:00'},
+        {'match': 'Team C vs Team D', 'time': '2026-02-11 20:00'},
+    ]
+    return render(request, 'schedule.html', {'schedule': schedule})
+
+def live_game_view(request: HttpRequest) -> HttpResponse:
+    # Replace with real data/model
+    live_games = [
+        {'match': 'Team A vs Team B', 'score': '2-1', 'status': 'Live'},
+    ]
+    return render(request, 'live_game.html', {'live_games': live_games})
+
+def admin_teams_view(request: HttpRequest) -> HttpResponse:
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = lock_obj.is_locked
+    teams = Team.objects.all().order_by("created_at")
+    edit_team = None
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        password = request.POST.get("password")
+        # Only require password for lock, edit, delete
+        if action in ["lock", "edit", "delete"]:
+            if password != ADMIN_PASSWORD:
+                messages.error(request, "Incorrect admin password.")
+                return redirect("/tadmin/teams/")
+
+        if not is_locked:
+            if action == "upload_csv":
+                csv_file = request.FILES.get("csv_file")
+                if csv_file:
+                    try:
+                        reader = csv.reader(TextIOWrapper(csv_file, encoding="utf-8"))
+                        first = True
+                        for row in reader:
+                            if first and ("player" in row[0].lower() or "name" in row[0].lower()):
+                                first = False
+                                continue
+                            first = False
+                            if len(row) >= 2:
+                                player1 = row[0].strip()
+                                player2 = row[1].strip()
+                                team_name = f"{player1} & {player2}"
+                                Team.objects.create(
+                                    team_name=team_name,
+                                    player1_name=player1,
+                                    player2_name=player2,
+                                )
+                        messages.success(request, "CSV uploaded and teams added.")
+                    except Exception as e:
+                        messages.error(request, f"CSV upload failed: {e}")
+                return redirect("/tadmin/teams/")
+            if action == "add":
+                player1 = request.POST.get("player1_name")
+                player2 = request.POST.get("player2_name")
+                team_name = f"{player1} & {player2}"
+                Team.objects.create(
+                    team_name=team_name,
+                    player1_name=player1,
+                    player2_name=player2,
+                )
+                messages.success(request, "Team added.")
+                return redirect("/tadmin/teams/")
+            elif action == "edit":
+                # If edit form submitted (with new names)
+                if request.POST.get("player1_name") and request.POST.get("player2_name"):
+                    team = Team.objects.get(team_id=request.POST.get("team_id"))
+                    player1 = request.POST.get("player1_name")
+                    player2 = request.POST.get("player2_name")
+                    team.team_name = f"{player1} & {player2}"
+                    team.player1_name = player1
+                    team.player2_name = player2
+                    team.save()
+                    messages.success(request, "Team updated.")
+                    return redirect("/tadmin/teams/")
+                # Otherwise, show edit form for this team
+                edit_team = Team.objects.get(team_id=request.POST.get("team_id"))
+    return render(request, "admin_teams.html", {
+        "teams": teams,
+        "is_locked": is_locked,
+        "edit_team": edit_team,
+    })

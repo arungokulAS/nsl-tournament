@@ -1,0 +1,22 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="margin: 40px auto; max-width: 600px;">
+    <h2>Schedule</h2>
+    <table class="glass-table" style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding:8px;">Match</th>
+                <th style="text-align:left; padding:8px;">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in schedule %}
+            <tr>
+                <td style="padding:8px;">{{ match.match }}</td>
+                <td style="padding:8px;">{{ match.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

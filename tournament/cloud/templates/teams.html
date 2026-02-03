@@ -1,0 +1,22 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="margin: 40px auto; max-width: 600px;">
+    <h2>Teams</h2>
+    <table class="glass-table" style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding:8px;">Team Name</th>
+                <th style="text-align:left; padding:8px;">Group</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td style="padding:8px;">{{ team.name }}</td>
+                <td style="padding:8px;">{{ team.group }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

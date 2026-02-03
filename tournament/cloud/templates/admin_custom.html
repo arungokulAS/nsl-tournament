@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Sync Profiles</title>
+    <link rel="stylesheet" href="{% static 'style_v3_v2.css' %}">
+    <style>
+        body {
+            background: #18181b url('{% static "grid-bg.png" %}') repeat;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-modal {
+            background: rgba(40, 20, 60, 0.55);
+            box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
+            border-radius: 24px;
+            border: 1.5px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            padding: 40px 32px 32px 32px;
+            max-width: 400px;
+            width: 100%;
+            color: #fff;
+            position: relative;
+            text-align: left;
+        }
+        .glass-modal h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .glass-modal .profile-list {
+            margin-bottom: 24px;
+        }
+        .glass-modal .profile-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .glass-modal .profile-item .icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .glass-modal .profile-item .profile-link {
+            color: #b8b8ff;
+            font-size: 0.95rem;
+            margin-right: 12px;
+            text-decoration: none;
+        }
+        .glass-modal .profile-item .connect-btn {
+            background: rgba(255,255,255,0.13);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            padding: 6px 18px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .glass-modal .profile-item .connect-btn:hover {
+            background: #a020f0;
+        }
+        .glass-modal .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .glass-modal .save-btn {
+            background: #fff;
+            color: #18181b;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            padding: 10px 0;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 0 8px #a020f0;
+        }
+        .glass-modal .cancel-btn {
+            background: none;
+            color: #fff;
+            border: none;
+            font-size: 1rem;
+            padding: 8px 0;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-modal">
+        <h2>Sync Profiles</h2>
+        <div class="profile-list">
+            <div class="profile-item">
+                <span class="icon">&#120143;</span>
+                <a class="profile-link" href="https://x.com" target="_blank">X (Twitter)</a>
+                <button class="connect-btn">Connect</button>
+            </div>
+            <div class="profile-item">
+                <span class="icon">&#xf0e1;</span>
+                <a class="profile-link" href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <button class="connect-btn">Connect</button>
+            </div>
+            <div class="profile-item">
+                <span class="icon">&#xf09b;</span>
+                <a class="profile-link" href="https://github.com" target="_blank">Github</a>
+                <button class="connect-btn">Connect</button>
+            </div>
+            <div class="profile-item">
+                <span class="icon">&#xf16d;</span>
+                <a class="profile-link" href="https://instagram.com" target="_blank">Instagram</a>
+                <button class="connect-btn">Connect</button>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="save-btn">Save changes</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
