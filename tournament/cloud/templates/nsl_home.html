@@ -86,21 +86,17 @@
     <!-- Sponsors Section: Only on Home Page -->
     {% if request.path == '/' %}
     <footer class="sponsors-section">
-        <div class="sponsors-title" style="font-size:1.3em;font-weight:800;letter-spacing:0.04em;margin-bottom:18px;text-transform:uppercase;">Our Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.1em;font-weight:800;letter-spacing:0.04em;margin-bottom:18px;text-transform:uppercase;">Our Sponsors</div>
         <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Title Sponsors</div>
-        <div class="sponsors-logos title-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
-            {% if MEDIA_URL %}
-                {% if MEDIA_URL and 'title_sponsor.png' in MEDIA_URL %}
-                    <img src="{{ MEDIA_URL }}title_sponsor.png" alt="Title Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;">
-                {% endif %}
+        <div class="sponsors-logos title-sponsors" style="min-height:40px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
+            {% if title_logo_url %}
+                <img src="{{ title_logo_url }}" alt="Title Sponsor Logo" style="max-width:120px;max-height:40px;margin:8px auto;border-radius:10px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);">
             {% endif %}
         </div>
         <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Main Sponsors</div>
-        <div class="sponsors-logos main-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
-            {% if MEDIA_URL %}
-                {% if MEDIA_URL and 'main_sponsor.png' in MEDIA_URL %}
-                    <img src="{{ MEDIA_URL }}main_sponsor.png" alt="Main Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;">
-                {% endif %}
+        <div class="sponsors-logos main-sponsors" style="min-height:40px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
+            {% if main_logo_url %}
+                <img src="{{ main_logo_url }}" alt="Main Sponsor Logo" style="max-width:120px;max-height:40px;margin:8px auto;border-radius:10px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);">
             {% endif %}
         </div>
     </footer>
