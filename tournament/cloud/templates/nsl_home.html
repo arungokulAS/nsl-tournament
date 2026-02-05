@@ -86,14 +86,22 @@
     <!-- Sponsors Section: Only on Home Page -->
     {% if request.path == '/' %}
     <footer class="sponsors-section">
-        <div class="sponsors-title" style="font-size:2em;letter-spacing:0.04em;margin-bottom:18px;">OUR SPONSORS</div>
-        <div class="sponsors-title">Title Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.3em;font-weight:800;letter-spacing:0.04em;margin-bottom:18px;text-transform:uppercase;">Our Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Title Sponsors</div>
         <div class="sponsors-logos title-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
-            <!-- Title sponsor logos will be dynamically loaded here -->
+            {% if MEDIA_URL %}
+                {% if MEDIA_URL and 'title_sponsor.png' in MEDIA_URL %}
+                    <img src="{{ MEDIA_URL }}title_sponsor.png" alt="Title Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;">
+                {% endif %}
+            {% endif %}
         </div>
-        <div class="sponsors-title">Main Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Main Sponsors</div>
         <div class="sponsors-logos main-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
-            <!-- Main sponsor logos will be dynamically loaded here -->
+            {% if MEDIA_URL %}
+                {% if MEDIA_URL and 'main_sponsor.png' in MEDIA_URL %}
+                    <img src="{{ MEDIA_URL }}main_sponsor.png" alt="Main Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;">
+                {% endif %}
+            {% endif %}
         </div>
     </footer>
     {% endif %}

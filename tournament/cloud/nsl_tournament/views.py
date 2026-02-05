@@ -11,12 +11,12 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
-    # Replace with real data/model
-    teams = [
-        {'name': 'Team A', 'group': 'Group 1'},
-        {'name': 'Team B', 'group': 'Group 2'},
-    ]
+    teams = Team.objects.all().order_by('created_at')
     return render(request, 'teams.html', {'teams': teams})
+
+def team_list_view(request: HttpRequest) -> HttpResponse:
+    teams = Team.objects.all().order_by('created_at')
+    return render(request, 'team-list.html', {'teams': teams})
 
 def groups_view(request: HttpRequest) -> HttpResponse:
     # Replace with real data/model

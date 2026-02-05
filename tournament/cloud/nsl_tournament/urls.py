@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tadmin/teams/', views.admin_teams_view, name='admin_teams'),
     path('teams/', views.teams_view, name='teams'),
+    path('team-list/', views.team_list_view, name='team_list'),
     path('groups/', views.groups_view, name='groups'),
     path('schedule/', views.schedule_view, name='schedule'),
     path('live/', views.live_game_view, name='live'),
