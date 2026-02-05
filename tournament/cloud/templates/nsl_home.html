@@ -63,7 +63,11 @@
                 </a>
                 <div class="dropdown-content">
                     <a href="/admin/" style="color:#fff;">Admin Panel</a>
-                    <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
+                    <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;" target="_blank" rel="noopener">Add Team</a>
+                        <!-- Fallback direct link for Add Team in case dropdown fails -->
+                        <div style="text-align:center;margin:16px 0;">
+                            <a href="/tadmin/teams/" style="color:#a020f0;font-size:1.2em;font-weight:700;background:rgba(30,0,60,0.12);padding:8px 24px;border-radius:16px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.12);text-decoration:none;" target="_blank" rel="noopener">Go to Add Team (Admin)</a>
+                        </div>
                 </div>
             </div>
             <a href="#" class="nav-icon" title="Contact">
