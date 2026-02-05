@@ -204,52 +204,6 @@
             <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Add Team</button>
         </form>
         {% endif %}
-        <div style="margin-top: 24px; color: #a020f0; font-weight: 500;">Total Teams: {{ teams|length }}</div>
-    </div>
-    <div style="flex: 2; min-width: 320px; display: flex; align-items: center; justify-content: center;">
-        <div class="team-list-card">
-            <div class="team-list-header">Team List</div>
-            <div class="team-list-count">Total Teams: {{ teams|length }}</div>
-            {% for team in teams %}
-            {% if team.team_name|lower != 'player 1 name & player 2 name' %}
-            <div class="team-row">
-                <div class="team-row-info">
-                    <span class="team-row-num">{{ forloop.counter }}</span>
-                    <div class="team-row-names">
-                        <span class="team-row-teamname">{{ team.team_name }}</span>
-                    </div>
-                </div>
-                {% if not is_locked %}
-                <div class="team-row-action">
-                    {% if edit_team and edit_team.team_id == team.team_id %}
-                    <form method="post" class="edit-form-row">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="edit">
-                        <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                        <div class="glow-search">
-                            <input type="text" name="player1_name" value="{{ team.player1_name }}" required>
-                        </div>
-                        <div class="glow-search">
-                            <input type="text" name="player2_name" value="{{ team.player2_name }}" required>
-                        </div>
-                        <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Save</button>
-                    </form>
-                    {% else %}
-                    <form method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="edit">
-                        <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                        <button type="submit" class="neon-btn" title="Edit">
-                            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"/></svg>
-                        </button>
-                    </form>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
     </div>
 </div>
 {% endblock %}
