@@ -6,19 +6,33 @@
         {% csrf_token %}
         <div style="margin-bottom: 32px;">
             <div style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;letter-spacing:0.02em;">Title Sponsors</div>
-            <input type="file" name="title_logo" accept="image/*" style="margin-bottom:12px;">
-            {% if title_logo_url %}
-            <div><img src="{{ title_logo_url }}" alt="Title Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;border-radius:16px;box-shadow:0 2px 12px 0 rgba(160,32,240,0.12);"></div>
-            {% endif %}
+            <label class="neon-file-label" style="display:block;margin-bottom:12px;">
+                Choose File
+                <input type="file" name="title_logo" accept="image/*" class="neon-file-input" style="margin-top:6px;">
+            </label>
         </div>
         <div style="margin-bottom: 32px;">
             <div style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;letter-spacing:0.02em;">Main Sponsors</div>
-            <input type="file" name="main_logo" accept="image/*" style="margin-bottom:12px;">
-            {% if main_logo_url %}
-            <div><img src="{{ main_logo_url }}" alt="Main Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;border-radius:16px;box-shadow:0 2px 12px 0 rgba(160,32,240,0.12);"></div>
-            {% endif %}
+            <label class="neon-file-label" style="display:block;margin-bottom:12px;">
+                Choose File
+                <input type="file" name="main_logo" accept="image/*" class="neon-file-input" style="margin-top:6px;">
+            </label>
         </div>
         <button type="submit" class="neon-btn" style="width:100%;max-width:220px;">Upload Logos</button>
     </form>
+    <div style="margin-top: 36px;">
+        {% if title_logo_url %}
+        <div style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;letter-spacing:0.02em;">Title Sponsors</div>
+        <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:24px;">
+            <img src="{{ title_logo_url }}" alt="Title Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;border-radius:16px;box-shadow:0 2px 12px 0 rgba(160,32,240,0.12);">
+        </div>
+        {% endif %}
+        {% if main_logo_url %}
+        <div style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;letter-spacing:0.02em;">Main Sponsors</div>
+        <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+            <img src="{{ main_logo_url }}" alt="Main Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;border-radius:16px;box-shadow:0 2px 12px 0 rgba(160,32,240,0.12);">
+        </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
