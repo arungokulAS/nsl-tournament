@@ -4,51 +4,35 @@
     display: inline-block;
 }
 .nav-dropdown .dropdown-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1 0 auto;
-    min-height: 0;
-    margin: 0 auto;
-    width: 100vw;
-    position: relative;
-    z-index: 10;
-    flex-grow: 1;
-    z-index: 100;
-    margin-top: 10px;
-    padding: 8px 0;
+    display: none;
+    position: absolute;
+    background: rgba(30, 0, 60, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
+    margin-top: 12px;
+    min-width: 180px;
+    z-index: 1000;
     pointer-events: auto;
 }
-.nav-dropdown:hover .dropdown-content {
+.nav-dropdown:hover .dropdown-content,
+.nav-dropdown:focus-within .dropdown-content {
     display: block;
 }
-.dropdown-content a {
+.nav-dropdown .dropdown-content a {
     color: #fff;
-    padding: 10px 24px;
+    padding: 12px 18px;
     text-decoration: none;
     display: block;
-    font-size: 1rem;
-    border: none;
-    background: none;
-    transition: background 0.2s, color 0.2s;
-    border-radius: 8px;
-    text-align: left;
+    font-size: 1.08em;
+    border-radius: 12px;
+    transition: background 0.15s;
 }
-.dropdown-content a:hover {
-    color: #00eaff;
+.nav-dropdown .dropdown-content a:hover {
+    background: rgba(160,32,240,0.18);
+    color: #a020f0;
 }
-/* Force Admin dropdown to always show for debugging */
-.nav-dropdown:nth-child(5) .dropdown-content {
-  display: block !important;
-  position: absolute;
-  background: rgba(30, 0, 60, 0.95);
-  border-radius: 18px;
-  box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
-  margin-top: 12px;
-  min-width: 180px;
-  z-index: 1000;
-}
+
+/* Body and Glassmorphism Navigation Bar */
 body {
     background: #000;
     min-height: 100vh;
