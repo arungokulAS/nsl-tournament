@@ -5,16 +5,18 @@
     <div class="team-list-card">
         <div class="team-list-header">Team List</div>
         <div class="team-list-count">Total Teams: {{ teams|length }}</div>
-        {% for team in teams %}
-        <div class="team-row">
-            <div class="team-row-info">
-                <span class="team-row-num">{{ forloop.counter }}</span>
-                <div class="team-row-names">
-                    <span class="team-row-teamname">{{ team.team_name }}</span>
+        <table class="glass-table">
+            {% for team in teams %}
+            <div class="team-row">
+                <div class="team-row-info">
+                    <span class="team-row-num">{{ forloop.counter }}</span>
+                    <div class="team-row-names">
+                        <span class="team-row-teamname">{{ team.team_name }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
