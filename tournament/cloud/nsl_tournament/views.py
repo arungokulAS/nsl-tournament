@@ -11,8 +11,9 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
+    from django.contrib import messages as django_messages
     teams = Team.objects.all().order_by('created_at')
-    return render(request, 'teams.html', {'teams': teams})
+    return render(request, 'teams.html', {'teams': teams, 'messages': django_messages.get_messages(request)})
 
 def team_list_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all().order_by('created_at')
@@ -77,10 +78,10 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                                     player1_name=player1,
                                     player2_name=player2,
                                 )
-                        messages.success(request, "CSV uploaded and teams added.")
+                        messages.success(request, "File uploaded")
                     except Exception as e:
                         messages.error(request, f"CSV upload failed: {e}")
-                return redirect("/tadmin/teams/")
+                return redirect("/teams/")
             if action == "add":
                 player1 = request.POST.get("player1_name")
                 player2 = request.POST.get("player2_name")

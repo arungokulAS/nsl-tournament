@@ -2,19 +2,43 @@
 {% block content %}
 <div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
     <div class="center-title">Team List</div>
-    <div class="team-list-card">
-        <div class="team-list-header">Team List</div>
-        <div class="team-list-count">Total Teams: {{ teams|length }}</div>
-        {% for team in teams %}
-        <div class="team-row">
-            <div class="team-row-info">
-                <span class="team-row-num">{{ forloop.counter }}</span>
-                <div class="team-row-names">
-                    <span class="team-row-teamname">{{ team.team_name }}</span>
-                </div>
-            </div>
-        </div>
+    {% if messages %}
+    <div style="margin: 16px 0; text-align: center;">
+        {% for message in messages %}
+        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
         {% endfor %}
+    </div>
+    {% endif %}
+    <div class="team-list-card">
+        <table style="width:100%;border-radius:18px;overflow:hidden;background:rgba(30,0,60,0.18);">
+            <thead>
+                <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                    <th style="padding:10px 8px;">Sl No.</th>
+                    <th style="padding:10px 8px;">Team Name</th>
+                    <th style="padding:10px 8px;">Team 1</th>
+                    <th style="padding:10px 8px;">Team 2</th>
+                    <th style="padding:10px 8px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
+                    <td style="padding:8px 6px;text-align:center;">{{ forloop.counter }}</td>
+                    <td style="padding:8px 6px;">{{ team.team_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                        <form method="post" action="/tadmin/teams/" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
