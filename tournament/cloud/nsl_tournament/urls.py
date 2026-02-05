@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render
@@ -14,5 +13,6 @@ urlpatterns = [
     path('groups/', views.groups_view, name='groups'),
     path('schedule/', views.schedule_view, name='schedule'),
     path('live/', views.live_game_view, name='live'),
+    path('tadmin/sponsors/', views.sponsors_details_view, name='sponsors_details'),
     path('', home, name='home'),
 ]

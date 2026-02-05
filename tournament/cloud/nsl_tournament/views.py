@@ -5,6 +5,8 @@ from django.utils import timezone
 from django.contrib import messages
 import csv
 from io import TextIOWrapper
+import os
+from django.conf import settings
 
 ADMIN_PASSWORD = "nsl2026"
 
@@ -108,4 +110,31 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
         "teams": teams,
         "is_locked": is_locked,
         "edit_team": edit_team,
+    })
+
+def sponsors_details_view(request):
+    title_logo_url = None
+    main_logo_url = None
+    title_logo_path = os.path.join(settings.MEDIA_ROOT, 'title_sponsor.png')
+    main_logo_path = os.path.join(settings.MEDIA_ROOT, 'main_sponsor.png')
+    if os.path.exists(title_logo_path):
+        title_logo_url = settings.MEDIA_URL + 'title_sponsor.png'
+    if os.path.exists(main_logo_path):
+        main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
+    if request.method == 'POST':
+        if 'title_logo' in request.FILES:
+            title_logo = request.FILES['title_logo']
+            with open(title_logo_path, 'wb+') as f:
+                for chunk in title_logo.chunks():
+                    f.write(chunk)
+            title_logo_url = settings.MEDIA_URL + 'title_sponsor.png'
+        if 'main_logo' in request.FILES:
+            main_logo = request.FILES['main_logo']
+            with open(main_logo_path, 'wb+') as f:
+                for chunk in main_logo.chunks():
+                    f.write(chunk)
+            main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
+    return render(request, 'sponsors_details.html', {
+        'title_logo_url': title_logo_url,
+        'main_logo_url': main_logo_url,
     })

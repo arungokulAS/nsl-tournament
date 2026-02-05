@@ -1,0 +1,24 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="max-width: 600px; margin: 48px auto 0 auto; text-align: center;">
+    <div class="center-title">Sponsors Details</div>
+    <form method="post" enctype="multipart/form-data" class="glass-form" style="margin: 32px 0;">
+        {% csrf_token %}
+        <div style="margin-bottom: 24px;">
+            <div style="font-size:1.2em;font-weight:600;margin-bottom:8px;">Title Sponsors</div>
+            <input type="file" name="title_logo" accept="image/*" style="margin-bottom:12px;">
+            {% if title_logo_url %}
+            <div><img src="{{ title_logo_url }}" alt="Title Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;"></div>
+            {% endif %}
+        </div>
+        <div style="margin-bottom: 24px;">
+            <div style="font-size:1.2em;font-weight:600;margin-bottom:8px;">Main Sponsors</div>
+            <input type="file" name="main_logo" accept="image/*" style="margin-bottom:12px;">
+            {% if main_logo_url %}
+            <div><img src="{{ main_logo_url }}" alt="Main Sponsor Logo" style="max-width:220px;max-height:80px;margin:12px auto;"></div>
+            {% endif %}
+        </div>
+        <button type="submit" class="neon-btn" style="width:100%;max-width:220px;">Upload Logos</button>
+    </form>
+</div>
+{% endblock %}

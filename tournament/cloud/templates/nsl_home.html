@@ -63,7 +63,8 @@
                 </a>
                 <div class="dropdown-content">
                     <a href="/admin/" style="color:#fff;">Admin Panel</a>
-                        <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
+                    <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
+                    <a href="/tadmin/sponsors/" style="color:#a020f0;font-weight:600;display:block;">Sponsors Details</a>
                 </div>
             </div>
             <a href="#" class="nav-icon" title="Contact">
@@ -82,21 +83,21 @@
         </div>
         <div class="tagline-pop">Bring The Game Into Life</div>
     </div>
-    {% endblock %}
-
-    <!-- Sponsors Section -->
+    <!-- Sponsors Section: Only on Home Page -->
+    {% if request.path == '/' %}
     <footer class="sponsors-section">
-        <div class="sponsors-title">Main Sponsors</div>
-        <div class="sponsors-logos main-sponsors">
-            <!-- Main sponsor logos will be dynamically loaded here -->
-            <div class="sponsor-logo-placeholder">[Main Sponsor Logo]</div>
-        </div>
+        <div class="sponsors-title" style="font-size:2em;letter-spacing:0.04em;margin-bottom:18px;">OUR SPONSORS</div>
         <div class="sponsors-title">Title Sponsors</div>
-        <div class="sponsors-logos title-sponsors">
+        <div class="sponsors-logos title-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
             <!-- Title sponsor logos will be dynamically loaded here -->
-            <div class="sponsor-logo-placeholder">[Title Sponsor Logo]</div>
+        </div>
+        <div class="sponsors-title">Main Sponsors</div>
+        <div class="sponsors-logos main-sponsors" style="min-height:60px;display:flex;align-items:center;justify-content:center;">
+            <!-- Main sponsor logos will be dynamically loaded here -->
         </div>
     </footer>
+    {% endif %}
+    {% endblock %}
     </div>
 </body>
 </html>
