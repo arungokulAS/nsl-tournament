@@ -60,7 +60,7 @@ body {
         z-index: 100;
         margin-top: 16px;
         padding: 8px 0;
-        pointer-events: none;
+        pointer-events: auto;
     }
 
     .nav-dropdown:hover .dropdown-content,
@@ -222,3 +222,4 @@ h1 {
     align-items: center;
     justify-content: flex-end;
     flex-shrink: 0;
+}
