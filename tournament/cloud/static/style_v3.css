@@ -38,6 +38,16 @@
 .dropdown-content a:hover {
     color: #00eaff;
 }
+/* Force Admin dropdown to always show for debugging */
+.nav-dropdown:nth-child(5) .dropdown-content {
+  display: block !important;
+  position: absolute;
+  background: rgba(30, 0, 60, 0.95);
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
+  margin-top: 12px;
+  min-width: 180px;
+  z-index: 1000;
 }
 body {
     background: #000;
