@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto; color: #fff;">
-    <div class="center-title" style="text-align:center;margin-bottom:32px;margin-top:32px;">Teams Management</div>
+    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:40px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Teams Management</div>
     {% if messages %}
     <div style="margin: 16px 0; text-align: center;">
         {% for message in messages %}
@@ -11,21 +11,21 @@
     </div>
     {% endif %}
     <div class="team-list-card">
-        <form method="post" class="glass-form" style="margin-bottom: 24px;">
+        <form method="post" class="glass-form" style="margin-bottom: 18px; flex-direction: row; gap: 12px; align-items: center; justify-content: center;">
             {% csrf_token %}
             <input type="hidden" name="action" value="add">
-            <input type="text" name="player1_name" placeholder="Player 1 Name" required>
-            <input type="text" name="player2_name" placeholder="Player 2 Name" required>
-            <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Add Team</button>
+            <input type="text" name="player1_name" placeholder="Player 1 Name" required style="flex:1;min-width:160px;">
+            <input type="text" name="player2_name" placeholder="Player 2 Name" required style="flex:1;min-width:160px;">
+            <button type="submit" class="neon-btn" style="min-width:120px;">Add Team</button>
         </form>
-        <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 18px;">
+        <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 24px; flex-direction: row; gap: 12px; align-items: center; justify-content: center;">
             {% csrf_token %}
             <input type="hidden" name="action" value="upload_csv">
-            <label class="neon-btn" style="margin-bottom:8px;">
+            <label class="neon-btn" style="margin-bottom:0;min-width:180px;">
                 Choose CSV File
                 <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
             </label>
-            <div style="font-size:0.95em; color:#aaa; margin-top:4px;">CSV columns: Player 1, Player 2 (no header row)</div>
+            <span style="font-size:0.95em; color:#aaa; margin-left:8px;">CSV columns: Player 1, Player 2 (no header row)</span>
         </form>
         <table class="glass-table" style="margin-top:24px;">
             <thead>
@@ -34,7 +34,7 @@
                     <th style="padding:10px 8px;">Team Name</th>
                     <th style="padding:10px 8px;">Team 1</th>
                     <th style="padding:10px 8px;">Team 2</th>
-                    <!-- Action column removed -->
+                    <th style="padding:10px 8px;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,11 +53,19 @@
                             <td style="padding:8px 6px;">
                                 <input type="text" name="player2_name" value="{{ team.player2_name }}" style="width:120px;padding:6px 8px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
                             </td>
+                            <td style="padding:8px 6px;text-align:center;">
+                                <button type="submit" class="icon-btn" title="Save"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M5 10l4 4 6-6"/></svg></button>
+                                <button type="button" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
+                            </td>
                         </form>
                     {% else %}
                         <td style="padding:8px 6px;">{{ team.team_name }}</td>
                         <td style="padding:8px 6px;">{{ team.player1_name }}</td>
                         <td style="padding:8px 6px;">{{ team.player2_name }}</td>
+                        <td style="padding:8px 6px;text-align:center;">
+                            <button type="button" class="icon-btn" title="Edit"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
+                            <button type="button" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
+                        </td>
                     {% endif %}
                 </tr>
                 {% endfor %}
