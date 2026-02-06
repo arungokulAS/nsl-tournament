@@ -61,8 +61,10 @@
 <body>
     <div class="glass-modal">
         <h2>Sync Profiles</h2>
-        <form class="glass-form">
-            <input type="text" name="profile" placeholder="Profile Name">
+        <form method="post" class="glass-form">
+            {% csrf_token %}
+            <input type="text" name="profile" placeholder="Profile Name" required>
+            <input type="password" name="password" placeholder="Admin Password" required>
             <button type="submit" class="neon-btn">Connect</button>
         </form>
     </div>
