@@ -1,10 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from django.shortcuts import render
 from . import views
-
-def home(request):
-    return render(request, 'nsl_home.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,5 +12,5 @@ urlpatterns = [
     path('schedule/', views.schedule_view, name='schedule'),
     path('live/', views.live_game_view, name='live'),
     path('tadmin/sponsors/', views.sponsors_details_view, name='sponsors_details'),
-    path('', home, name='home'),
+    path('', views.nsl_home_view, name='home'),
 ]
