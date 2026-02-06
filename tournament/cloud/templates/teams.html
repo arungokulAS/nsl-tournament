@@ -26,7 +26,7 @@
                     <th style="padding:10px 8px;">Team Name</th>
                     <th style="padding:10px 8px;">Team 1</th>
                     <th style="padding:10px 8px;">Team 2</th>
-                    <th style="padding:10px 8px;">Action</th>
+                    <!-- Action column removed -->
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,8 @@
                                 <input type="text" name="player2_name" value="{{ team.player2_name }}" style="width:120px;padding:6px 8px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
                             </td>
                             <td style="padding:8px 6px;text-align:center;">
-                                <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Save</button>
+                                <button type="submit" class="icon-btn" title="Save"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M5 10l4 4 6-6"/></svg></button>
+                                <button type="button" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
                             </td>
                         </form>
                     {% else %}
@@ -54,12 +55,8 @@
                         <td style="padding:8px 6px;">{{ team.player1_name }}</td>
                         <td style="padding:8px 6px;">{{ team.player2_name }}</td>
                         <td style="padding:8px 6px;text-align:center;">
-                            <form method="post" action="/tadmin/teams/" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="edit">
-                                <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                                <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;">Edit</button>
-                            </form>
+                            <button type="button" class="icon-btn" title="Edit"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
+                            <button type="button" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
                         </td>
                     {% endif %}
                 </tr>
