@@ -4,7 +4,10 @@ from django.shortcuts import render
 from . import views
 
 def home(request):
-    return render(request, 'nsl_home.html')
+    from .models import TeamsLock
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = lock_obj.is_locked
+    return render(request, 'nsl_home.html', {'is_locked': is_locked})
 
 urlpatterns = [
     path('admin/', admin.site.urls),

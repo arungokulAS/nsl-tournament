@@ -2,21 +2,25 @@
 {% block content %}
 <div class="glass-modal" style="margin: 40px auto; max-width: 600px;">
     <h2>Groups</h2>
-    <table class="glass-table" style="width:100%; border-collapse:collapse;">
-        <thead>
-            <tr>
-                <th style="text-align:left; padding:8px;">Group Name</th>
-                <th style="text-align:left; padding:8px;">Teams</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for group in groups %}
-            <tr>
-                <td style="padding:8px;">{{ group.name }}</td>
-                <td style="padding:8px;">{{ group.teams|join:', ' }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% if is_locked %}
+        <table class="glass-table" style="width:100%; border-collapse:collapse;">
+            <thead>
+                <tr>
+                    <th style="text-align:left; padding:8px;">Group Name</th>
+                    <th style="text-align:left; padding:8px;">Teams</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                <tr>
+                    <td style="padding:8px;">{{ group.name }}</td>
+                    <td style="padding:8px;">{{ group.teams|join:', ' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="neon-btn" style="margin:24px 0;background:rgba(40,20,60,0.92);text-align:center;">Teams must be locked before assigning or viewing groups.</div>
+    {% endif %}
 </div>
 {% endblock %}

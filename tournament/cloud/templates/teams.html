@@ -11,6 +11,9 @@
     </div>
     {% endif %}
     <div class="team-list-card">
+        {% if is_locked %}
+            <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Teams are locked. No changes allowed.</div>
+        {% endif %}
         <table class="glass-table">
             <thead>
                 <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
@@ -18,14 +21,13 @@
                     <th style="padding:10px 8px;">Team Name</th>
                     <th style="padding:10px 8px;">Team 1</th>
                     <th style="padding:10px 8px;">Team 2</th>
-                    <!-- Action column removed -->
                 </tr>
             </thead>
             <tbody>
                 {% for team in teams %}
                 <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
                     <td style="padding:8px 6px;text-align:center;">{{ forloop.counter }}</td>
-                    {% if edit_team and edit_team.team_id == team.team_id %}
+                    {% if not is_locked and edit_team and edit_team.team_id == team.team_id %}
                         <form method="post" action="/tadmin/teams/" style="display:contents;">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="edit">
@@ -46,7 +48,6 @@
                         <td style="padding:8px 6px;">{{ team.team_name }}</td>
                         <td style="padding:8px 6px;">{{ team.player1_name }}</td>
                         <td style="padding:8px 6px;">{{ team.player2_name }}</td>
-                        <!-- No edit/delete buttons under tournament icon -->
                     {% endif %}
                 </tr>
                 {% endfor %}

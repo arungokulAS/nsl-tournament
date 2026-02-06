@@ -12,20 +12,25 @@ ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
     from django.contrib import messages as django_messages
+    from .models import TeamsLock
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = lock_obj.is_locked
     teams = Team.objects.all().order_by('created_at')
-    return render(request, 'teams.html', {'teams': teams, 'messages': django_messages.get_messages(request)})
+    return render(request, 'teams.html', {'teams': teams, 'messages': django_messages.get_messages(request), 'is_locked': is_locked})
 
 def team_list_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all().order_by('created_at')
     return render(request, 'team-list.html', {'teams': teams})
 
 def groups_view(request: HttpRequest) -> HttpResponse:
-    # Replace with real data/model
+    from .models import TeamsLock
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = lock_obj.is_locked
     groups = [
         {'name': 'Group 1', 'teams': ['Team A', 'Team C']},
         {'name': 'Group 2', 'teams': ['Team B', 'Team D']},
     ]
-    return render(request, 'groups.html', {'groups': groups})
+    return render(request, 'groups.html', {'groups': groups, 'is_locked': is_locked})
 
 def schedule_view(request: HttpRequest) -> HttpResponse:
     # Replace with real data/model

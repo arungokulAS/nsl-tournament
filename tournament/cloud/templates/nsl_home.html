@@ -63,7 +63,9 @@
                 </a>
                 <div class="dropdown-content">
                     <a href="/admin/" style="color:#fff;">Admin Panel</a>
-                    <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
+                    {% if not is_locked %}
+                        <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
+                    {% endif %}
                     <a href="/tadmin/sponsors/" style="color:#a020f0;font-weight:600;display:block;">Sponsors Details</a>
                 </div>
             </div>
