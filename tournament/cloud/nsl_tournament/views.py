@@ -1,3 +1,53 @@
+def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    groups_locked = getattr(lock_obj, 'groups_locked', False)
+    schedule_locked = getattr(lock_obj, 'group_stage_schedule_locked', False)
+    round_finished = getattr(lock_obj, 'group_stage_finished', False)
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
+    schedule = getattr(lock_obj, 'group_stage_schedule', [])
+    messages_list = []
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        password = request.POST.get('password')
+        if password != ADMIN_PASSWORD:
+            messages_list.append('Incorrect admin password.')
+        else:
+            if action == 'generate_schedule' and groups_locked and not schedule_locked:
+                court_count = int(request.POST.get('court_count', 4))
+                matches = []
+                for group in group_names:
+                    group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+                    for i in range(len(group_teams)):
+                        for j in range(i+1, len(group_teams)):
+                            matches.append({'match': f'{group_teams[i]} vs {group_teams[j]}', 'group': group})
+                for idx, match in enumerate(matches):
+                    match['court'] = f'Court {idx % court_count + 1}'
+                    match['status'] = 'Scheduled'
+                lock_obj.group_stage_schedule = matches
+                lock_obj.group_stage_schedule_locked = True
+                lock_obj.save()
+                schedule = matches
+                messages_list.append('Schedule generated and locked.')
+            elif action == 'delete_schedule' and not schedule_locked:
+                lock_obj.group_stage_schedule = []
+                lock_obj.save()
+                schedule = []
+                messages_list.append('Schedule deleted.')
+            elif action == 'finish_round' and schedule_locked and not round_finished:
+                for match in schedule:
+                    match['status'] = 'Completed'
+                lock_obj.group_stage_finished = True
+                lock_obj.save()
+                round_finished = True
+                messages_list.append('Group Stage finished and archived.')
+    return render(request, 'admin_schedule_group_stage.html', {
+        'schedule': schedule,
+        'schedule_locked': getattr(lock_obj, 'group_stage_schedule_locked', False),
+        'round_finished': getattr(lock_obj, 'group_stage_finished', False),
+        'messages': messages_list,
+    })
 def results_view(request: HttpRequest) -> HttpResponse:
     from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
