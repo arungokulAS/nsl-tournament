@@ -80,19 +80,37 @@ def groups_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'groups.html', {'groups': groups, 'is_locked': is_locked})
 
 def schedule_view(request: HttpRequest) -> HttpResponse:
-    # Replace with real data/model
-    schedule = [
-        {'match': 'Team A vs Team B', 'time': '2026-02-10 18:00'},
-        {'match': 'Team C vs Team D', 'time': '2026-02-11 20:00'},
-    ]
-    return render(request, 'schedule.html', {'schedule': schedule})
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    groups_locked = getattr(lock_obj, 'groups_locked', False)
+    if not groups_locked:
+        return render(request, 'schedule.html', {'schedule': [], 'groups_locked': False, 'message': 'Group Stage schedule generation is disabled until groups are locked.'})
+    # Use frozen group data for schedule
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
+    schedule = []
+    for group in group_names:
+        group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+        for i in range(len(group_teams)):
+            for j in range(i+1, len(group_teams)):
+                schedule.append({'match': f'{group_teams[i]} vs {group_teams[j]}', 'group': group, 'time': 'TBD'})
+    return render(request, 'schedule.html', {'schedule': schedule, 'groups_locked': True})
 
 def live_game_view(request: HttpRequest) -> HttpResponse:
-    # Replace with real data/model
-    live_games = [
-        {'match': 'Team A vs Team B', 'score': '2-1', 'status': 'Live'},
-    ]
-    return render(request, 'live_game.html', {'live_games': live_games})
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    groups_locked = getattr(lock_obj, 'groups_locked', False)
+    if not groups_locked:
+        return render(request, 'live_game.html', {'live_games': [], 'groups_locked': False, 'message': 'Live game page is disabled until groups are locked.'})
+    # Use frozen group data for live games
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
+    live_games = []
+    for group in group_names:
+        group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+        if group_teams:
+            live_games.append({'match': f'{group_teams[0]} vs {group_teams[-1]}', 'score': 'TBD', 'status': 'Upcoming', 'group': group})
+    return render(request, 'live_game.html', {'live_games': live_games, 'groups_locked': True})
 
 def admin_teams_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
