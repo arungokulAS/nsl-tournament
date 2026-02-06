@@ -1,3 +1,4 @@
+        path('admin/schedule/qualifier', views.admin_schedule_qualifier_view, name='admin_schedule_qualifier'),
     path('admin/schedule/group-stage', views.admin_schedule_group_stage_view, name='admin_schedule_group_stage'),
 from django.contrib import admin
 from django.urls import path

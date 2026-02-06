@@ -1,3 +1,64 @@
+def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    prev_round_finished = getattr(lock_obj, 'group_stage_finished', False)
+    schedule_locked = getattr(lock_obj, 'qualifier_schedule_locked', False)
+    round_finished = getattr(lock_obj, 'qualifier_finished', False)
+    schedule = getattr(lock_obj, 'qualifier_schedule', [])
+    messages_list = []
+    if not prev_round_finished:
+        messages_list.append('Cannot schedule Qualifier until Group Stage is finished.')
+        return render(request, 'admin_schedule_qualifier.html', {
+            'schedule': [],
+            'schedule_locked': False,
+            'round_finished': False,
+            'messages': messages_list,
+        })
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        password = request.POST.get('password')
+        if password != ADMIN_PASSWORD:
+            messages_list.append('Incorrect admin password.')
+        else:
+            if action == 'generate_schedule' and not schedule_locked:
+                court_count = int(request.POST.get('court_count', 4))
+                # For demo, use top 4 teams from each group
+                group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+                teams = Team.objects.all()
+                qualified = []
+                for group in group_names:
+                    group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group][:4]
+                    qualified.extend(group_teams)
+                matches = []
+                for i in range(0, len(qualified), 2):
+                    if i+1 < len(qualified):
+                        matches.append({'match': f'{qualified[i]} vs {qualified[i+1]}'})
+                for idx, match in enumerate(matches):
+                    match['court'] = f'Court {idx % court_count + 1}'
+                    match['status'] = 'Scheduled'
+                lock_obj.qualifier_schedule = matches
+                lock_obj.qualifier_schedule_locked = True
+                lock_obj.save()
+                schedule = matches
+                messages_list.append('Qualifier schedule generated and locked.')
+            elif action == 'delete_schedule' and not schedule_locked:
+                lock_obj.qualifier_schedule = []
+                lock_obj.save()
+                schedule = []
+                messages_list.append('Qualifier schedule deleted.')
+            elif action == 'finish_round' and schedule_locked and not round_finished:
+                for match in schedule:
+                    match['status'] = 'Completed'
+                lock_obj.qualifier_finished = True
+                lock_obj.save()
+                round_finished = True
+                messages_list.append('Qualifier finished and archived.')
+    return render(request, 'admin_schedule_qualifier.html', {
+        'schedule': schedule,
+        'schedule_locked': getattr(lock_obj, 'qualifier_schedule_locked', False),
+        'round_finished': getattr(lock_obj, 'qualifier_finished', False),
+        'messages': messages_list,
+    })
 def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
     from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
