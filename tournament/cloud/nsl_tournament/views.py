@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from .models import Team, TeamsLock
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 import csv
 from io import TextIOWrapper
 import os
@@ -139,3 +140,16 @@ def sponsors_details_view(request):
         'title_logo_url': title_logo_url,
         'main_logo_url': main_logo_url,
     })
+
+def admin_login_view(request):
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/tadmin/teams/')
+        else:
+            error = 'Invalid username or password.'
+    return render(request, 'admin_login.html', {'error': error})

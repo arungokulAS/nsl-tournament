@@ -9,6 +9,7 @@ def home(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tadmin/teams/', views.admin_teams_view, name='admin_teams'),
+    path('tadmin/login/', views.admin_login_view, name='admin_login'),
     path('teams/', views.teams_view, name='teams'),
     path('team-list/', views.team_list_view, name='team_list'),
     path('groups/', views.groups_view, name='groups'),

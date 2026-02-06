@@ -1,0 +1,17 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="max-width: 420px; margin: 48px auto 0 auto; text-align: center; padding: 32px 24px 40px 24px; border-radius: 32px; box-shadow: 0 8px 32px 0 rgba(31,38,135,0.25); background: rgba(30,0,60,0.18);">
+    <div class="center-title" style="font-size: 1.35em; font-weight: 700; margin-bottom: 32px; letter-spacing: 0.04em;">Admin Login</div>
+    <form method="post" class="glass-form" style="margin: 0 auto; max-width: 340px;">
+        {% csrf_token %}
+        <div style="margin-bottom: 24px;">
+            <input type="text" name="username" placeholder="Username" required class="glow-search" style="width:100%;margin-bottom:12px;">
+            <input type="password" name="password" placeholder="Password" required class="glow-search" style="width:100%;margin-bottom:12px;">
+        </div>
+        <button type="submit" class="neon-btn" style="width:100%;max-width:220px;">Login</button>
+    </form>
+    {% if error %}
+    <div style="margin-top:18px;color:#ff4a4a;font-weight:600;">{{ error }}</div>
+    {% endif %}
+</div>
+{% endblock %}
