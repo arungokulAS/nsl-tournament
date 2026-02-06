@@ -33,17 +33,35 @@
                 {% for team in teams %}
                 <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
                     <td style="padding:8px 6px;text-align:center;">{{ forloop.counter }}</td>
-                    <td style="padding:8px 6px;">{{ team.team_name }}</td>
-                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
-                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
-                    <td style="padding:8px 6px;text-align:center;">
-                        <form method="post" action="/tadmin/teams/" style="display:inline;">
+                    {% if edit_team and edit_team.team_id == team.team_id %}
+                        <form method="post" action="/tadmin/teams/" style="display:contents;">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="edit">
                             <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;">Edit</button>
+                            <td style="padding:8px 6px;">{{ team.team_name }}</td>
+                            <td style="padding:8px 6px;">
+                                <input type="text" name="player1_name" value="{{ team.player1_name }}" style="width:120px;padding:6px 8px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
+                            </td>
+                            <td style="padding:8px 6px;">
+                                <input type="text" name="player2_name" value="{{ team.player2_name }}" style="width:120px;padding:6px 8px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
+                            </td>
+                            <td style="padding:8px 6px;text-align:center;">
+                                <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Save</button>
+                            </td>
                         </form>
-                    </td>
+                    {% else %}
+                        <td style="padding:8px 6px;">{{ team.team_name }}</td>
+                        <td style="padding:8px 6px;">{{ team.player1_name }}</td>
+                        <td style="padding:8px 6px;">{{ team.player2_name }}</td>
+                        <td style="padding:8px 6px;text-align:center;">
+                            <form method="post" action="/tadmin/teams/" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                                <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;">Edit</button>
+                            </form>
+                        </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
