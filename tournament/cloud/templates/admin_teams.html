@@ -10,15 +10,6 @@
     </div>
     {% endif %}
     <div class="team-list-card">
-        <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 18px;">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="upload_csv">
-            <label class="neon-btn" style="margin-bottom:8px;">
-                Choose CSV File
-                <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
-            </label>
-            <div style="font-size:0.95em; color:#aaa; margin-top:4px;">CSV columns: Player 1, Player 2 (no header row)</div>
-        </form>
         <form method="post" class="glass-form" style="margin-bottom: 24px;">
             {% csrf_token %}
             <input type="hidden" name="action" value="add">
