@@ -1,5 +1,3 @@
-        path('admin/schedule/qualifier', views.admin_schedule_qualifier_view, name='admin_schedule_qualifier'),
-    path('admin/schedule/group-stage', views.admin_schedule_group_stage_view, name='admin_schedule_group_stage'),
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render
@@ -21,7 +19,9 @@ urlpatterns = [
     path('groups/', views.groups_view, name='groups'),
     path('schedule/', views.schedule_view, name='schedule'),
     path('live/', views.live_game_view, name='live'),
-        path('results/', views.results_view, name='results'),
+    path('results/', views.results_view, name='results'),
+    path('admin/schedule/group-stage', views.admin_schedule_group_stage_view, name='admin_schedule_group_stage'),
+    path('admin/schedule/qualifier', views.admin_schedule_qualifier_view, name='admin_schedule_qualifier'),
     path('tadmin/sponsors/', views.sponsors_details_view, name='sponsors_details'),
     path('', home, name='home'),
 ]
