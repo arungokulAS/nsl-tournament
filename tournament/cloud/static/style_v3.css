@@ -1,3 +1,31 @@
+/* Modern Dark Table Style */
+.modern-dark-table {
+  background: rgba(20,20,30,0.85);
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
+  overflow: hidden;
+}
+.modern-dark-table th, .modern-dark-table td {
+  color: #fff;
+  font-size: 1.08em;
+  font-weight: 400;
+  padding: 10px 8px;
+  border: none;
+}
+.modern-dark-table thead tr {
+  background: rgba(30,30,40,0.92);
+  font-weight: 700;
+}
+.modern-dark-table tbody tr {
+  background: rgba(20,20,30,0.85);
+  border-bottom: 1px solid rgba(160,32,240,0.08);
+}
+.modern-dark-table img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(160,32,240,0.18);
+}
 /* Neon Glowing Search Bar */
 .glow-search {
   width: 100%;
