@@ -36,6 +36,8 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
                 for idx, match in enumerate(matches):
                     match['court'] = f'Court {idx % court_count + 1}'
                     match['status'] = 'Scheduled'
+                from django.http import HttpRequest, HttpResponse
+
                 lock_obj.qualifier_schedule = matches
                 lock_obj.qualifier_schedule_locked = True
                 lock_obj.save()
