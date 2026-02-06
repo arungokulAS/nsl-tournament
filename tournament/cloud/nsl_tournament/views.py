@@ -1,3 +1,19 @@
+def results_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    groups_locked = getattr(lock_obj, 'groups_locked', False)
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
+    groups = []
+    if groups_locked:
+        for group in group_names:
+            group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+            qualified = group_teams[:4]  # Top 4 teams
+            groups.append({'name': group, 'teams': group_teams, 'qualified': qualified})
+    return render(request, 'results.html', {
+        'groups_locked': groups_locked,
+        'groups': groups,
+    })
 def admin_groups_view(request: HttpRequest) -> HttpResponse:
     from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
@@ -54,6 +70,7 @@ import csv
 from io import TextIOWrapper
 import os
 from django.conf import settings
+from .models import Team, TeamsLock
 
 ADMIN_PASSWORD = "nsl2026"
 
