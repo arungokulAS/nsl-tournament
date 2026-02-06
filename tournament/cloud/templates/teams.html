@@ -1,7 +1,16 @@
 {% extends 'nsl_home.html' %}
+{% load static %}
 {% block content %}
 <div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
-    <div class="center-title">Team List</div>
+    <div class="center-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Team List</span>
+        <form method="post" action="/tadmin/teams/" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="clear_all">
+            <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;margin-right:8px;background:rgba(20,20,30,0.85);color:#fff;">
+            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Clear All</button>
+        </form>
+    </div>
     {% if messages %}
     <div style="margin: 16px 0; text-align: center;">
         {% for message in messages %}

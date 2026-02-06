@@ -58,12 +58,20 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                 return redirect("/tadmin/teams/")
 
         if not is_locked:
+            if action == "clear_all":
+                if password != ADMIN_PASSWORD:
+                    messages.error(request, "Incorrect admin password.")
+                    return redirect("/teams/")
+                Team.objects.all().delete()
+                messages.success(request, "All teams cleared successfully.")
+                return redirect("/teams/")
             if action == "upload_csv":
                 csv_file = request.FILES.get("csv_file")
                 if csv_file:
                     try:
                         reader = csv.reader(TextIOWrapper(csv_file, encoding="utf-8"))
                         first = True
+                        added_count = 0
                         for row in reader:
                             if first and ("player" in row[0].lower() or "name" in row[0].lower()):
                                 first = False
@@ -73,12 +81,17 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                                 player1 = row[0].strip()
                                 player2 = row[1].strip()
                                 team_name = f"{player1} & {player2}"
-                                Team.objects.create(
-                                    team_name=team_name,
-                                    player1_name=player1,
-                                    player2_name=player2,
-                                )
-                        messages.success(request, "File uploaded")
+                                if not Team.objects.filter(team_name=team_name, player1_name=player1, player2_name=player2).exists():
+                                    Team.objects.create(
+                                        team_name=team_name,
+                                        player1_name=player1,
+                                        player2_name=player2,
+                                    )
+                                    added_count += 1
+                        if added_count > 0:
+                            messages.success(request, "File Uploaded Successfully")
+                        else:
+                            messages.warning(request, "No new teams added. All teams already exist.")
                     except Exception as e:
                         messages.error(request, f"CSV upload failed: {e}")
                 return redirect("/teams/")
@@ -86,12 +99,15 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                 player1 = request.POST.get("player1_name")
                 player2 = request.POST.get("player2_name")
                 team_name = f"{player1} & {player2}"
-                Team.objects.create(
-                    team_name=team_name,
-                    player1_name=player1,
-                    player2_name=player2,
-                )
-                messages.success(request, "Team added.")
+                if Team.objects.filter(team_name=team_name, player1_name=player1, player2_name=player2).exists():
+                    messages.error(request, "Duplicate team name. Team already exists.")
+                else:
+                    Team.objects.create(
+                        team_name=team_name,
+                        player1_name=player1,
+                        player2_name=player2,
+                    )
+                    messages.success(request, "Team added.")
                 return redirect("/tadmin/teams/")
             elif action == "edit":
                 # If edit form submitted (with new names)
