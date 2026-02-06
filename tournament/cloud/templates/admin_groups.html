@@ -1,0 +1,75 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
+    <div class="center-title" style="text-align:center;margin-bottom:32px;">Admin Group Assignment</div>
+    {% if messages %}
+    <div style="margin: 16px 0; text-align: center;">
+        {% for message in messages %}
+        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if not groups_locked %}
+    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="manual_assign">
+        <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
+        <div style="margin-bottom:18px;">Assign teams to groups manually:</div>
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Assign Group</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr>
+                    <td>{{ team.team_name }}</td>
+                    <td>
+                        <select name="group_{{ team.team_id }}">
+                            <option value="">-- Select --</option>
+                            {% for group in group_names %}
+                            <option value="{{ group }}" {% if team.group == group %}selected{% endif %}>{{ group }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="neon-btn" style="margin-top:18px;">Save Manual Assignment</button>
+    </form>
+    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="auto_assign">
+        <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
+        <button type="submit" class="neon-btn" style="background:#a020f0;">Auto-Random Assign Teams</button>
+    </form>
+    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="lock_groups">
+        <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
+        <button type="submit" class="neon-btn" style="background:#a020f0;">Lock Groups</button>
+    </form>
+    {% else %}
+    <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Groups are locked. No changes allowed.</div>
+    <table class="glass-table">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>Teams</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td>{{ group.teams|join:', ' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

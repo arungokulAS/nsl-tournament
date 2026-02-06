@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin-login/', views.admin_login_view, name='admin_login'),
     path('tadmin/teams/', views.admin_teams_view, name='admin_teams'),
+    path('tadmin/groups/', views.admin_groups_view, name='admin_groups'),
     path('teams/', views.teams_view, name='teams'),
     path('team-list/', views.team_list_view, name='team_list'),
     path('groups/', views.groups_view, name='groups'),

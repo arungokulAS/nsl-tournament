@@ -1,3 +1,50 @@
+def admin_groups_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    groups_locked = getattr(lock_obj, 'groups_locked', False)
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all().order_by('created_at')
+    groups = []
+    messages_list = []
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        password = request.POST.get('password')
+        if password != ADMIN_PASSWORD:
+            messages_list.append('Incorrect admin password.')
+        else:
+            if action == 'manual_assign':
+                # Manual assignment logic (store group for each team)
+                for team in teams:
+                    group = request.POST.get(f'group_{team.team_id}')
+                    if group in group_names:
+                        team.group = group
+                        team.save()
+                messages_list.append('Manual group assignment saved.')
+            elif action == 'auto_assign':
+                # Auto-random assignment logic
+                import random
+                team_list = list(teams)
+                random.shuffle(team_list)
+                for idx, team in enumerate(team_list):
+                    group = group_names[idx % len(group_names)]
+                    team.group = group
+                    team.save()
+                messages_list.append('Teams auto-assigned to groups.')
+            elif action == 'lock_groups':
+                lock_obj.groups_locked = True
+                lock_obj.save()
+                messages_list.append('Groups locked. No further changes allowed.')
+    # Prepare groups for display
+    for group in group_names:
+        group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+        groups.append({'name': group, 'teams': group_teams})
+    return render(request, 'admin_groups.html', {
+        'teams': teams,
+        'group_names': group_names,
+        'groups_locked': getattr(lock_obj, 'groups_locked', False),
+        'groups': groups,
+        'messages': messages_list,
+    })
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from .models import Team, TeamsLock
