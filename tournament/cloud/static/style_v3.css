@@ -264,7 +264,7 @@ h1 {
 }
 .glass-table tr:hover td {
   background: rgba(160,32,240,0.08);
-  color: #a020f0;
+  color: #a020f02a;
 }
 /* Neon glow for table border */
 .glass-table {
