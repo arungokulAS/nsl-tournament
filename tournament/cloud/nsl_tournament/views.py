@@ -174,8 +174,9 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
         'groups': groups,
         'messages': messages_list,
     })
-from django.shortcuts import render, redirect
+
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
 from .models import Team, TeamsLock
 from django.utils import timezone
 from django.contrib import messages
@@ -183,7 +184,6 @@ import csv
 from io import TextIOWrapper
 import os
 from django.conf import settings
-from .models import Team, TeamsLock
 
 ADMIN_PASSWORD = "nsl2026"
 
