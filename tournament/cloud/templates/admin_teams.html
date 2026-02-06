@@ -18,6 +18,12 @@
             <input type="text" name="player2_name" placeholder="Player 2 Name" required style="flex:1;min-width:160px;">
             <button type="submit" class="neon-btn" style="min-width:120px;">Add Team</button>
         </form>
+        <form method="post" class="glass-form" style="margin-bottom: 18px; flex-direction: row; gap: 12px; align-items: center; justify-content: center;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="clear_all">
+            <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
+            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Clear All</button>
+        </form>
         <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 24px; flex-direction: row; gap: 12px; align-items: center; justify-content: center;">
             {% csrf_token %}
             <input type="hidden" name="action" value="upload_csv">
