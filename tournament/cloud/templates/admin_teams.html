@@ -1,71 +1,67 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Teams Management</title>
-    <link rel="stylesheet" href="{% static 'style_v3.css' %}">
-    <style>
-        body {
-            background: #18181b url('{% static "grid-bg.png" %}') repeat;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .glass-modal {
-            background: rgba(40, 20, 60, 0.55);
-            box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
-            border-radius: 24px;
-            border: 1.5px solid rgba(255,255,255,0.18);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            padding: 40px 32px 32px 32px;
-            max-width: 400px;
-            width: 100%;
-            color: #fff;
-            position: relative;
-            text-align: left;
-        }
-        .glass-modal h2 {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 18px;
-            text-align: center;
-        }
-        .glass-form {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        .glass-form input {
-            padding: 12px 18px;
-            border-radius: 999px;
-            border: none;
-            background: rgba(20, 20, 30, 0.85);
-            color: #fff;
-            font-size: 1.1em;
-            font-weight: 500;
-            outline: none;
-            box-shadow: 0 0 8px 2px rgba(160,32,240,0.12);
-        }
-        .neon-btn {
-            width: 100%;
-            max-width: 340px;
-            margin: 0 auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="glass-modal">
-        <h2>Teams Management</h2>
-        <form class="glass-form">
+{% block content %}
+<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
+    <div class="center-title">Teams Management</div>
+    {% if messages %}
+    <div style="margin: 16px 0; text-align: center;">
+        {% for message in messages %}
+        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="team-list-card">
+        <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 18px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="upload_csv">
+            <label class="neon-btn" style="margin-bottom:8px;">
+                Choose CSV File
+                <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
+            </label>
+            <div style="font-size:0.95em; color:#aaa; margin-top:4px;">CSV columns: Player 1, Player 2 (no header row)</div>
+        </form>
+        <form method="post" class="glass-form" style="margin-bottom: 0;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
             <input type="text" name="player1_name" placeholder="Player 1 Name" required>
             <input type="text" name="player2_name" placeholder="Player 2 Name" required>
-            <button type="submit" class="neon-btn">Add Team</button>
+            <button type="submit" class="neon-btn" style="margin-top: 10px; width: 100%; max-width: 340px;">Add Team</button>
         </form>
+        <table class="glass-table" style="margin-top:24px;">
+            <thead>
+                <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                    <th style="padding:10px 8px;">Sl No.</th>
+                    <th style="padding:10px 8px;">Team Name</th>
+                    <th style="padding:10px 8px;">Team 1</th>
+                    <th style="padding:10px 8px;">Team 2</th>
+                    <th style="padding:10px 8px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
+                    <td style="padding:8px 6px;text-align:center;">{{ forloop.counter }}</td>
+                    <td style="padding:8px 6px;">{{ team.team_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                        <form method="post" action="/tadmin/teams/" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</body>
-</html>
+</div>
+<style>
+body {
+    background: #18181b url('{% static "grid-bg.png" %}') repeat;
+    min-height: 100vh;
+    margin: 0;
+}
+</style>
+{% endblock %}
