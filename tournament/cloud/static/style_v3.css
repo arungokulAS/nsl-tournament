@@ -1,3 +1,27 @@
+/* Neon Glowing Search Bar */
+.glow-search {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: rgba(10, 10, 20, 0.92);
+  color: #fff;
+  font-size: 1.08em;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 16px 4px rgba(160, 32, 240, 0.55), 0 0 0 2px rgba(255,255,255,0.12);
+  transition: box-shadow 0.2s, background 0.2s, color 0.2s;
+  margin-bottom: 16px;
+}
+.glow-search:focus {
+  background: rgba(30, 10, 40, 0.98);
+  color: #fff;
+  box-shadow: 0 0 24px 8px rgba(160, 32, 240, 0.65), 0 0 0 2px rgba(255,255,255,0.18);
+}
+.glow-search::placeholder {
+  color: #fff;
+  opacity: 0.85;
+}
 /* Navigation Dropdowns */
 .nav-dropdown {
     position: relative;

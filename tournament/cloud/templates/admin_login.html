@@ -5,10 +5,10 @@
     <form method="post" class="glass-form" style="margin: 0 auto; max-width: 340px;">
         {% csrf_token %}
         <div style="margin-bottom: 24px;">
-            <input type="text" name="username" placeholder="Username" required class="glow-search" style="width:100%;margin-bottom:12px;">
-            <input type="password" name="password" placeholder="Password" required class="glow-search" style="width:100%;margin-bottom:12px;">
+            <input type="text" name="username" placeholder="Username" required class="glow-search">
+            <input type="password" name="password" placeholder="Password" required class="glow-search">
         </div>
-        <button type="submit" class="neon-btn" style="width:100%;max-width:220px;">Login</button>
+        <button type="submit" class="neon-btn" style="width:100%;max-width:220px;padding:14px 0;font-size:1.12em;border-radius:999px;">Login</button>
     </form>
     {% if error %}
     <div style="margin-top:18px;color:#ff4a4a;font-weight:600;">{{ error }}</div>
