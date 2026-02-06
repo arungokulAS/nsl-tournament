@@ -62,9 +62,9 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg>
                 </a>
                 <div class="dropdown-content">
+                    <a href="/admin/" style="color:#fff;">Admin Panel</a>
                     <a href="/tadmin/teams/" style="color:#a020f0;font-weight:600;display:block;">Add Team</a>
                     <a href="/tadmin/sponsors/" style="color:#a020f0;font-weight:600;display:block;">Sponsors Details</a>
-                    <a href="/tadmin/login/" style="color:#a020f0;font-weight:600;display:block;">Admin Login</a>
                 </div>
             </div>
             <a href="#" class="nav-icon" title="Contact">
@@ -87,13 +87,13 @@
     {% if request.path == '/' %}
     <footer class="sponsors-section">
         <div class="sponsors-title" style="font-size:1.1em;font-weight:800;letter-spacing:0.04em;margin-bottom:18px;text-transform:uppercase;">Our Sponsors</div>
-        <div class="sponsors-title" style="font-size:0.98em;font-weight:700;margin-bottom:8px;text-transform:none;">Title Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Title Sponsors</div>
         <div class="sponsors-logos title-sponsors" style="min-height:40px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
             {% if title_logo_url %}
                 <img src="{{ title_logo_url }}" alt="Title Sponsor Logo" style="max-width:120px;max-height:40px;margin:8px auto;border-radius:10px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);">
             {% endif %}
         </div>
-        <div class="sponsors-title" style="font-size:0.98em;font-weight:700;margin-bottom:8px;text-transform:none;">Main Sponsors</div>
+        <div class="sponsors-title" style="font-size:1.08em;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Main Sponsors</div>
         <div class="sponsors-logos main-sponsors" style="min-height:40px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
             {% if main_logo_url %}
                 <img src="{{ main_logo_url }}" alt="Main Sponsor Logo" style="max-width:120px;max-height:40px;margin:8px auto;border-radius:10px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);">

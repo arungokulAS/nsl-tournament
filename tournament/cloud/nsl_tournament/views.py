@@ -3,7 +3,6 @@ from django.http import HttpRequest, HttpResponse
 from .models import Team, TeamsLock
 from django.utils import timezone
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 import csv
 from io import TextIOWrapper
 import os
@@ -15,21 +14,6 @@ def teams_view(request: HttpRequest) -> HttpResponse:
     from django.contrib import messages as django_messages
     teams = Team.objects.all().order_by('created_at')
     return render(request, 'teams.html', {'teams': teams, 'messages': django_messages.get_messages(request)})
-
-def nsl_home_view(request: HttpRequest) -> HttpResponse:
-    # Sponsor logo logic
-    title_logo_url = None
-    main_logo_url = None
-    title_logo_path = os.path.join(settings.MEDIA_ROOT, 'title_sponsor.png')
-    main_logo_path = os.path.join(settings.MEDIA_ROOT, 'main_sponsor.png')
-    if os.path.exists(title_logo_path):
-        title_logo_url = settings.MEDIA_URL + 'title_sponsor.png'
-    if os.path.exists(main_logo_path):
-        main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
-    return render(request, 'nsl_home.html', {
-        'title_logo_url': title_logo_url,
-        'main_logo_url': main_logo_url,
-    })
 
 def team_list_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all().order_by('created_at')
@@ -157,14 +141,10 @@ def sponsors_details_view(request):
     })
 
 def admin_login_view(request):
-    error = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/tadmin/teams/')
-        else:
-            error = 'Invalid username or password.'
-    return render(request, 'admin_login.html', {'error': error})
+        # Add authentication logic here
+        # For now, just redirect to admin panel
+        return redirect('/admin/')
+    return render(request, 'admin_login.html')

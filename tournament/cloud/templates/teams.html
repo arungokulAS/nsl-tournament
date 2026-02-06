@@ -10,37 +10,23 @@
     </div>
     {% endif %}
     <div class="team-list-card">
-        <table class="glass-table modern-dark-table">
+        <table class="glass-table">
             <thead>
-                <tr style="background:rgba(30,30,40,0.92);color:#fff;font-weight:700;">
-                    <th style="padding:10px 8px;text-align:left;">#</th>
-                    <th style="padding:10px 8px;text-align:left;">Team Name</th>
-                    <th style="padding:10px 8px;text-align:left;">Player 1</th>
-                    <th style="padding:10px 8px;text-align:left;">Player 2</th>
-                    <th style="padding:10px 8px;text-align:left;">Status</th>
-                    <th style="padding:10px 8px;text-align:center;">Action</th>
+                <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                    <th style="padding:10px 8px;">Sl No.</th>
+                    <th style="padding:10px 8px;">Team Name</th>
+                    <th style="padding:10px 8px;">Team 1</th>
+                    <th style="padding:10px 8px;">Team 2</th>
+                    <th style="padding:10px 8px;">Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for team in teams %}
-                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);background:rgba(20,20,30,0.85);">
-                    <td style="padding:8px 6px;text-align:left;">
-                        <span style="font-weight:600;color:#fff;">{{ forloop.counter }}</span>
-                    </td>
-                    <td style="padding:8px 6px;text-align:left;">
-                        <span style="display:flex;align-items:center;gap:8px;">
-                            <img src="{% static 'nsl_logo.png' %}" alt="Avatar" style="width:32px;height:32px;border-radius:50%;box-shadow:0 2px 8px rgba(160,32,240,0.18);">
-                            <span style="font-weight:500;color:#fff;">{{ team.team_name }}</span>
-                        </span>
-                    </td>
-                    <td style="padding:8px 6px;text-align:left;">{{ team.player1_name }}</td>
-                    <td style="padding:8px 6px;text-align:left;">{{ team.player2_name }}</td>
-                    <td style="padding:8px 6px;text-align:left;">
-                        <span style="display:flex;align-items:center;gap:6px;">
-                            <span style="font-size:1.1em;color:#4afc4a;">●</span>
-                            <span style="font-weight:500;color:#fff;">Active</span>
-                        </span>
-                    </td>
+                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
+                    <td style="padding:8px 6px;text-align:center;">{{ forloop.counter }}</td>
+                    <td style="padding:8px 6px;">{{ team.team_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
                     <td style="padding:8px 6px;text-align:center;">
                         <form method="post" action="/tadmin/teams/" style="display:inline;">
                             {% csrf_token %}
