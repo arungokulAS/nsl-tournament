@@ -1,0 +1,23 @@
+name: Render CLI Deploy
+run-name: Deploying via Render CLI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Deploy-Render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Render CLI
+        run: |
+          curl -L https://github.com/render-oss/cli/releases/download/v2.7.1/cli_2.7.1_linux_amd64.zip -o render.zip
+          unzip render.zip
+          sudo mv cli_v2.7.1 /usr/local/bin/render
+      - name: Trigger deploy with Render CLI
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          CI: true
+        run: |
+          render deploys create ${{ secrets.RENDER_SERVICE_ID }} --output json --confirm

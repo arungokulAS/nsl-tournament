@@ -349,18 +349,27 @@ def sponsors_details_view(request):
     if os.path.exists(main_logo_path):
         main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
     if request.method == 'POST':
-        if 'title_logo' in request.FILES:
-            title_logo = request.FILES['title_logo']
-            with open(title_logo_path, 'wb+') as f:
-                for chunk in title_logo.chunks():
-                    f.write(chunk)
-            title_logo_url = settings.MEDIA_URL + 'title_sponsor.png'
-        if 'main_logo' in request.FILES:
-            main_logo = request.FILES['main_logo']
-            with open(main_logo_path, 'wb+') as f:
-                for chunk in main_logo.chunks():
-                    f.write(chunk)
-            main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
+        if request.POST.get('delete_logo') == 'title':
+            if os.path.exists(title_logo_path):
+                os.remove(title_logo_path)
+            title_logo_url = None
+        elif request.POST.get('delete_logo') == 'main':
+            if os.path.exists(main_logo_path):
+                os.remove(main_logo_path)
+            main_logo_url = None
+        else:
+            if 'title_logo' in request.FILES:
+                title_logo = request.FILES['title_logo']
+                with open(title_logo_path, 'wb+') as f:
+                    for chunk in title_logo.chunks():
+                        f.write(chunk)
+                title_logo_url = settings.MEDIA_URL + 'title_sponsor.png'
+            if 'main_logo' in request.FILES:
+                main_logo = request.FILES['main_logo']
+                with open(main_logo_path, 'wb+') as f:
+                    for chunk in main_logo.chunks():
+                        f.write(chunk)
+                main_logo_url = settings.MEDIA_URL + 'main_sponsor.png'
     return render(request, 'sponsors_details.html', {
         'title_logo_url': title_logo_url,
         'main_logo_url': main_logo_url,
