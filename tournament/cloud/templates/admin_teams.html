@@ -1,103 +1,79 @@
 {% extends 'nsl_home.html' %}
-{% load static %}
 {% block content %}
-<div class="glass-modal" style="max-width: 950px; margin: 64px auto 32px auto; color: #fff; background: rgba(20,20,30,0.92); border-radius: 24px; box-shadow: 0 0 32px 8px #0ff, 0 8px 32px 0 rgba(31,38,135,0.25); padding: 32px 24px;">
-    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:20px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Teams Management</div>
+<div style="max-width: 900px; margin: 40px auto;">
+    <h2 style="text-align:center; margin-bottom:24px;">Teams Management</h2>
     {% if messages %}
     <div style="margin: 16px 0; text-align: center;">
         {% for message in messages %}
-        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
+        <div style="background:#eee; color:#333; padding:8px 0; margin-bottom:8px; border-radius:6px;">{{ message }}</div>
         {% endfor %}
     </div>
     {% endif %}
-    <div class="team-list-card">
-        {% if not is_locked %}
-            <form method="post" class="glass-form add-team-form" style="display:flex;gap:16px;align-items:center;margin-bottom:18px;">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="add">
-                <input type="text" name="player1_name" placeholder="Player 1 Name" required style="flex:1;min-width:120px;">
-                <input type="text" name="player2_name" placeholder="Player 2 Name" required style="flex:1;min-width:120px;">
-                <button type="submit" class="neon-btn" style="min-width:120px;">Add Team</button>
-            </form>
-            <form method="post" class="glass-form clear-all-form" style="display:flex;gap:12px;align-items:center;margin-bottom:18px;">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="clear_all">
-                <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
-                <button type="submit" title="Clear All Teams" class="neon-btn" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%);min-width:120px;">Clear All</button>
-            </form>
-            <form method="post" enctype="multipart/form-data" class="glass-form upload-csv-form" style="display:flex;gap:12px;align-items:center;margin-bottom:18px;">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="upload_csv">
-                <label class="neon-btn" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%);min-width:120px;">
-                    <span style="color:#fff;font-weight:600;">Choose CSV File</span>
-                    <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
-                </label>
-            </form>
-            <div style="font-size:0.95em; color:#aaa; margin-bottom:18px;">CSV columns: Player 1, Player 2 (no header row)</div>
-        {% else %}
-            <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Teams are locked. No changes allowed.</div>
-        {% endif %}
-        <div class="team-table-wrapper" style="background:rgba(30,30,40,0.85);border-radius:18px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);padding:18px 8px;">
-            <table class="glass-table team-table" style="width:100%;border-radius:16px;overflow:hidden;">
-                <thead>
-                    <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
-                        <th style="padding:10px 8px;">No</th>
-                        <th style="padding:10px 8px;">Team Name</th>
-                        <th style="padding:10px 8px;">Player 1</th>
-                        <th style="padding:10px 8px;">Player 2</th>
-                        <th style="padding:10px 8px;min-width:120px;">Status</th>
-                        <th style="padding:10px 8px;min-width:120px;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for team in teams %}
-                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
-                    <td style="padding:8px 6px;text-align:center;font-weight:600;">{{ forloop.counter|stringformat:'02d' }}</td>
-                    <td style="padding:8px 6px;font-weight:600;">{{ team.team_name }}</td>
-                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
-                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
-                    <td style="padding:8px 6px;text-align:center;">
-                        <span class="status-badge" style="display:inline-block;padding:4px 14px;border-radius:12px;font-size:0.98em;font-weight:600;{% if is_locked %}background:#a020f0;color:#fff;{% else %}background:#20f060;color:#18181b;{% endif %}">
-                            {% if is_locked %}Locked{% else %}Active{% endif %}
-                        </span>
-                    </td>
-                    <td style="padding:8px 6px;text-align:center;">
-                        {% if not is_locked %}
-                            <form method="post" action="/tadmin/teams/" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="edit">
-                                <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                                <button type="submit" class="icon-btn" title="Edit"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
-                            </form>
-                            <form method="post" action="/tadmin/teams/" style="display:inline;" onsubmit="return handleDeleteTeam(this);">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="team_id" value="{{ team.team_id }}">
-                                <input type="hidden" name="password" value="">
-                                <button type="submit" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
-                            </form>
-                        {% else %}
-                            <span style="color:#aaa;font-size:0.95em;">Locked</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <script>
-            function handleDeleteTeam(form) {
-                if (confirm('Delete this team?')) {
-                    var pwd = prompt('Enter admin password to delete:');
-                    if (pwd && pwd.trim().length > 0) {
-                        form.password.value = pwd.trim();
-                        return true;
-                    }
-                }
-                return false;
-            }
-            </script>
-        </div>
+    {% if not is_locked %}
+    <form method="post" style="margin-bottom:16px;" autocomplete="off">{% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="player1_name" placeholder="Player 1 Name" required style="margin-right:8px;">
+        <input type="text" name="player2_name" placeholder="Player 2 Name" required style="margin-right:8px;">
+        <button type="submit">Add Team</button>
+    </form>
+    <form method="post" style="margin-bottom:16px;" autocomplete="off">{% csrf_token %}
+        <input type="hidden" name="action" value="clear_all">
+        <input type="password" name="password" placeholder="Admin Password" required style="margin-right:8px;">
+        <button type="submit">Clear All</button>
+    </form>
+    <form method="post" enctype="multipart/form-data" style="margin-bottom:16px;" autocomplete="off">{% csrf_token %}
+        <input type="hidden" name="action" value="upload_csv">
+        <input type="file" name="csv_file" accept=".csv" required style="margin-right:8px;">
+        <button type="submit">Upload CSV</button>
+    </form>
+    <div style="font-size:0.95em; color:#888; margin-bottom:18px;">CSV columns: Player 1, Player 2 (no header row)</div>
+    {% else %}
+    <div style="background:#ffd2d2; color:#a00; text-align:center; padding:8px; border-radius:6px; margin-bottom:12px;">Teams are locked. No changes allowed.</div>
+    {% endif %}
+    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; background:#fff; color:#222;">
+        <thead style="background:#f0f0f0;">
+            <tr>
+                <th>No</th>
+                <th>Team Name</th>
+                <th>Player 1</th>
+                <th>Player 2</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td style="text-align:center;">{{ forloop.counter }}</td>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.player1_name }}</td>
+                <td>{{ team.player2_name }}</td>
+                <td style="text-align:center;">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
+                <td style="text-align:center;">
+                    {% if not is_locked %}
+                        <form method="post" action="/tadmin/teams/" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form method="post" action="/tadmin/teams/" style="display:inline;" onsubmit="return confirm('Delete this team? Enter admin password to confirm.');">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                            <input type="password" name="password" placeholder="Admin Password" required style="margin-right:4px;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    {% else %}
+                        <span style="color:#888;">Locked</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% endblock %}
 <style>
 .add-team-form {
     display: flex;
