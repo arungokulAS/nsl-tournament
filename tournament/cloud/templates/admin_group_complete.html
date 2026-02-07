@@ -1,0 +1,72 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="admin-action-wrapper">
+  <div class="admin-action-card">
+    <h2 class="admin-action-title">Complete Group Stage</h2>
+    <form method="post" class="admin-action-form">
+      {% csrf_token %}
+      <div class="form-row">
+        <label for="admin_password">Admin Password:</label>
+        <input type="password" id="admin_password" name="admin_password" required>
+      </div>
+      <button type="submit" class="neon-btn">Finish Group Stage</button>
+    </form>
+    {% if completed %}
+      <div class="admin-action-success">Group stage is now <b>completed</b>. Next round schedule will be generated.</div>
+    {% endif %}
+    {% if error %}
+      <div class="admin-action-error">{{ error }}</div>
+    {% endif %}
+  </div>
+</div>
+<style>
+.admin-action-wrapper {
+  max-width: 420px;
+  margin: 64px auto 32px auto;
+}
+.admin-action-card {
+  background: rgba(34, 34, 44, 0.92);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px 0 #a020f033, 0 1.5px 8px 0 #0008;
+  padding: 36px 32px 32px 32px;
+  color: #fff;
+  text-align: center;
+}
+.admin-action-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #fff;
+  text-shadow: 0 2px 16px #a020f0, 0 2px 12px #4e7fff;
+}
+.admin-action-form .form-row {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.admin-action-form label {
+  color: #b8b8ff;
+  margin-bottom: 6px;
+}
+.admin-action-form input[type="password"] {
+  background: #23233a;
+  color: #fff;
+  border: 1.5px solid #4e7fff;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 1em;
+  width: 100%;
+}
+.admin-action-success {
+  margin-top: 18px;
+  color: #20f060;
+  font-weight: 600;
+}
+.admin-action-error {
+  margin-top: 18px;
+  color: #ff4e7f;
+  font-weight: 600;
+}
+</style>
+{% endblock %}
