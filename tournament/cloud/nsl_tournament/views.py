@@ -1,9 +1,10 @@
-def results_view(request: HttpRequest) -> HttpResponse:
-    # Placeholder implementation for /results/ route
-    return render(request, 'results.html')
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+
+def results_view(request: HttpRequest) -> HttpResponse:
+    # Placeholder implementation for /results/ route
+    return render(request, 'results.html')
 
 def admin_groups_view(request: HttpRequest) -> HttpResponse:
     # TODO: Implement actual admin group management logic
