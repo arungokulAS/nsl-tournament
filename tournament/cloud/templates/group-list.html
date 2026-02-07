@@ -1,0 +1,16 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
+    <div class="center-title" style="text-align:center;margin-bottom:32px;">Group List</div>
+    {% for group in groups %}
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-size:1.2em;font-weight:600;margin-bottom:8px;">Group {{ group.name }}</div>
+        <ul style="padding-left:18px;">
+            {% for team in group.teams %}
+            <li>{{ team.team_name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

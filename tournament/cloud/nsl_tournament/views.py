@@ -1,3 +1,24 @@
+def group_list_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
+    teams = Team.objects.all()
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    groups = []
+    for group in group_names:
+        group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+        groups.append({'name': group, 'teams': group_teams})
+    return render(request, 'group-list.html', {'groups': groups})
+
+def winners_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
+    # For demo, assume teams with points > 0 are winners
+    teams = Team.objects.all()
+    winners = [team for team in teams if getattr(team, 'points', 0) > 0]
+    return render(request, 'winners.html', {'winners': winners})
+
+def points_table_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
+    teams = Team.objects.all().order_by('-points')
+    return render(request, 'points.html', {'teams': teams})
 from django.http import HttpRequest, HttpResponse
 def results_group_stage_view(request: HttpRequest) -> HttpResponse:
     from .models import TeamsLock, Team

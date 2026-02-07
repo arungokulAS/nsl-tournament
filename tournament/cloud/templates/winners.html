@@ -1,0 +1,11 @@
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
+    <div class="center-title" style="text-align:center;margin-bottom:32px;">Winners</div>
+    <ul style="font-size:1.1em;">
+        {% for team in winners %}
+        <li>{{ team.team_name }} ({{ team.points }} pts)</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

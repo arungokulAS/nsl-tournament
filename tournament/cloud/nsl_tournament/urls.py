@@ -10,6 +10,9 @@ def home(request):
     return render(request, 'nsl_home.html', {'is_locked': is_locked})
 
 urlpatterns = [
+            path('group-list/', views.group_list_view, name='group_list'),
+            path('winners/', views.winners_view, name='winners'),
+            path('points/', views.points_table_view, name='points'),
         path('results/group-stage', views.results_group_stage_view, name='results_group_stage'),
         path('results/qualifier', views.results_qualifier_view, name='results_qualifier'),
         path('results/pre-quarter', views.results_pre_quarter_view, name='results_pre_quarter'),
