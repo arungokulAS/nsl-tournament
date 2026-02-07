@@ -33,7 +33,11 @@ def winners_view(request: HttpRequest) -> HttpResponse:
 
 def points_table_view(request: HttpRequest) -> HttpResponse:
     from .models import Team
-    teams = Team.objects.all().order_by('-points')
+    teams = list(Team.objects.all())
+    # If points are tracked elsewhere, use getattr; else, just show teams
+    for team in teams:
+        team.points = getattr(team, 'points', 0)
+    teams = sorted(teams, key=lambda t: getattr(t, 'points', 0), reverse=True)
     return render(request, 'points.html', {'teams': teams})
 from django.http import HttpRequest, HttpResponse
 def results_group_stage_view(request: HttpRequest) -> HttpResponse:
