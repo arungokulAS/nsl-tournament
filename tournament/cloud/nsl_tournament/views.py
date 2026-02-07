@@ -1,3 +1,56 @@
+def results_group_stage_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock, Team
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    group_stage_finished = getattr(lock_obj, 'group_stage_finished', False)
+    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
+    groups = []
+    for group in group_names:
+        group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+        group_table = []
+        for idx, team in enumerate(group_teams):
+            group_table.append({
+                'rank': idx+1,
+                'name': team.team_name,
+                'points': getattr(team, 'points', 0),
+                'qualified': group_stage_finished and idx < 4,
+                'provisional': not group_stage_finished and idx < 4,
+            })
+        groups.append({'name': group, 'teams': group_table})
+    return render(request, 'results_group_stage.html', {
+        'groups': groups,
+        'group_stage_finished': group_stage_finished,
+    })
+
+def results_qualifier_view(request: HttpRequest) -> HttpResponse:
+    from .models import TeamsLock
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    qualifier_finished = getattr(lock_obj, 'qualifier_finished', False)
+    # Demo: blocks and teams
+    blocks = [
+        {'rank_range': '1-4', 'teams': [{'name': f'Team {i}', 'winner': i==1, 'eliminated': False} for i in range(1,5)]},
+        {'rank_range': '5-8', 'teams': [{'name': f'Team {i}', 'winner': False, 'eliminated': False} for i in range(5,9)]},
+        {'rank_range': '9-12', 'teams': [{'name': f'Team {i}', 'winner': False, 'eliminated': True} for i in range(9,13)]},
+        {'rank_range': '13-16', 'teams': [{'name': f'Team {i}', 'winner': False, 'eliminated': True} for i in range(13,17)]},
+    ]
+    return render(request, 'results_qualifier.html', {
+        'blocks': blocks,
+        'qualifier_finished': qualifier_finished,
+    })
+
+def results_pre_quarter_view(request: HttpRequest) -> HttpResponse:
+    matches = [
+        {'name': 'Match 1', 'winner': 'Team 1', 'eliminated': 'Team 2'},
+        {'name': 'Match 2', 'winner': 'Team 3', 'eliminated': 'Team 4'},
+    ]
+    return render(request, 'results_pre_quarter.html', {'matches': matches})
+
+def results_knockout_view(request: HttpRequest) -> HttpResponse:
+    matches = [
+        {'bracket': 'Quarterfinal 1', 'winner': 'Team 1', 'eliminated': 'Team 2'},
+        {'bracket': 'Quarterfinal 2', 'winner': 'Team 3', 'eliminated': 'Team 4'},
+    ]
+    return render(request, 'results_knockout.html', {'matches': matches})
 from django.views.decorators.csrf import csrf_exempt
 
 def referee_court_view(request: HttpRequest, court_id: int) -> HttpResponse:

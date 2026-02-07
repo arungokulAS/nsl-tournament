@@ -1,0 +1,27 @@
+{% extends 'nsl_home.html' %}
+{% load static %}
+{% block content %}
+<div class="glass-modal" style="max-width: 1100px; margin: 64px auto 32px auto; color: #fff;">
+    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:40px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Knockout Results</div>
+    <div class="glass-card" style="margin-bottom:32px;">
+        <table class="glass-table" style="margin-bottom:12px;">
+            <thead>
+                <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                    <th>Bracket</th>
+                    <th>Winner</th>
+                    <th>Eliminated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                <tr>
+                    <td>{{ match.bracket }}</td>
+                    <td>{% if match.winner %}<span style="color:#32a0f0;font-weight:600;">{{ match.winner }}</span>{% endif %}</td>
+                    <td>{% if match.eliminated %}<span style="color:#aaa;text-decoration:line-through;">{{ match.eliminated }}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
