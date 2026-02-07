@@ -178,15 +178,15 @@ def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all()
     schedule = getattr(lock_obj, 'group_stage_schedule', [])
     messages_list = []
-        # Dependency: groups must be locked before scheduling
-        if not groups_locked:
-            messages_list.append('Groups must be locked before group stage scheduling.')
-            return render(request, 'admin_schedule_group_stage.html', {
-                'schedule': [],
-                'schedule_locked': False,
-                'round_finished': False,
-                'messages': messages_list,
-            })
+    # Dependency: groups must be locked before scheduling
+    if not groups_locked:
+        messages_list.append('Groups must be locked before group stage scheduling.')
+        return render(request, 'admin_schedule_group_stage.html', {
+            'schedule': [],
+            'schedule_locked': False,
+            'round_finished': False,
+            'messages': messages_list,
+        })
     if request.method == 'POST':
         action = request.POST.get('action')
         password = request.POST.get('password')
