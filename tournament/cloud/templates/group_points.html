@@ -1,0 +1,159 @@
+{% comment %}
+Reusable group points table. Pass context:
+- group_name: string
+- teams: list of dicts with keys: number, name, icon, played, wins, draws, losses, dif, points, highlight (True/False)
+- rounds: list of completed round numbers
+- selected_round: int (current round to show)
+{% endcomment %}
+<div class="points-table-wrapper">
+  <div class="points-table-header">
+    <span class="points-group-title">{{ group_name }}</span>
+    <form method="get" class="points-round-selector">
+      <label for="round">Round:</label>
+      <select name="round" id="round" onchange="this.form.submit()">
+        {% for r in rounds %}
+          <option value="{{ r }}"{% if r == selected_round %} selected{% endif %}>{{ r }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+  <div class="points-table-glass">
+    <table class="points-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Team</th>
+          <th>P</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>Dif</th>
+          <th>PTS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team in teams %}
+        <tr class="{% if team.highlight %}highlight-row{% endif %}">
+          <td>
+            <span class="points-rank-box {% if forloop.counter <= 6 %}rank-top{% elif forloop.counter > 16 %}rank-bottom{% endif %}">{{ team.number }}</span>
+          </td>
+          <td class="points-team-cell">
+            {% if team.icon %}<img src="{{ team.icon }}" class="points-team-icon" alt="">{% endif %}
+            <span>{{ team.name }}</span>
+          </td>
+          <td>{{ team.played }}</td>
+          <td>{{ team.wins }}</td>
+          <td>{{ team.draws }}</td>
+          <td>{{ team.losses }}</td>
+          <td>{{ team.dif }}</td>
+          <td>{{ team.points }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<style>
+body {
+  background: linear-gradient(135deg, #2d0036 0%, #18181b 60%, #0a0a1a 100%) fixed;
+}
+.points-table-wrapper {
+  max-width: 600px;
+  margin: 48px auto 32px auto;
+  padding: 0 8px;
+}
+.points-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.points-group-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 16px #a020f0, 0 2px 12px #4e7fff;
+  text-transform: uppercase;
+}
+.points-round-selector label {
+  color: #b8b8ff;
+  font-size: 1em;
+  margin-right: 6px;
+}
+.points-round-selector select {
+  background: #23233a;
+  color: #fff;
+  border: 1.5px solid #4e7fff;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 1em;
+}
+.points-table-glass {
+  background: rgba(34, 34, 44, 0.82);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+  padding: 18px 0 8px 0;
+}
+.points-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.points-table th, .points-table td {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 1.08em;
+  color: #eaf0fa;
+}
+.points-table th {
+  background: linear-gradient(90deg, #4e7fff 0%, #a020f0 100%);
+  color: #fff;
+  font-weight: 700;
+  border-bottom: 2px solid #3a3a5a;
+  letter-spacing: 0.04em;
+}
+.points-table td {
+  border-bottom: 1px solid #2e2e44;
+}
+.points-team-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.points-team-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff2;
+}
+.points-rank-box {
+  display: inline-block;
+  min-width: 28px;
+  padding: 3px 0;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 1em;
+  color: #fff;
+  background: #23233a;
+}
+.rank-top {
+  background: linear-gradient(90deg, #20f060 0%, #4e7fff 100%);
+  color: #18181b;
+}
+.rank-bottom {
+  background: linear-gradient(90deg, #ff4e7f 0%, #a020f0 100%);
+  color: #fff;
+}
+.highlight-row {
+  background: rgba(255, 215, 0, 0.10);
+  font-weight: 700;
+  color: #ffd700;
+}
+@media (max-width: 600px) {
+  .points-table-wrapper { max-width: 99vw; }
+  .points-table th, .points-table td { padding: 7px 2px; font-size: 0.98em; }
+  .points-group-title { font-size: 1.1rem; }
+}
+</style>
