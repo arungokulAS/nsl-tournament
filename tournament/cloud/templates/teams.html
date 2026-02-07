@@ -1,20 +1,89 @@
 
 {% extends 'nsl_home.html' %}
 {% block content %}
-<div style="max-width: 900px; margin: 40px auto;">
-    <h2 style="text-align:center; margin-bottom:24px;">Team List</h2>
+<style>
+    .modern-table-container {
+        max-width: 900px;
+        margin: 48px auto 0 auto;
+        background: rgba(34, 34, 44, 0.98);
+        border-radius: 18px;
+        box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+        padding: 32px 28px 36px 28px;
+        color: #eaf0fa;
+    }
+    .modern-table-title {
+        text-align: center;
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 28px;
+        letter-spacing: 0.01em;
+        color: #fff;
+    }
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #23233a;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px 0 #0002;
+    }
+    .modern-table th, .modern-table td {
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 1.08em;
+    }
+    .modern-table th {
+        background: linear-gradient(90deg, #4e7fff 0%, #a020f0 100%);
+        color: #fff;
+        font-weight: 700;
+        border-bottom: 2px solid #3a3a5a;
+        letter-spacing: 0.04em;
+    }
+    .modern-table tr {
+        transition: background 0.2s;
+    }
+    .modern-table tbody tr:nth-child(even) {
+        background: rgba(160,32,240,0.07);
+    }
+    .modern-table tbody tr:nth-child(odd) {
+        background: rgba(78,127,255,0.06);
+    }
+    .modern-table tbody tr:hover {
+        background: #2a2a4a;
+    }
+    .modern-table td {
+        border-bottom: 1px solid #2e2e44;
+        color: #eaf0fa;
+    }
+    .modern-table td.status-active {
+        color: #20f060;
+        font-weight: 600;
+    }
+    .modern-table td.status-locked {
+        color: #ff4e7f;
+        font-weight: 600;
+    }
+    @media (max-width: 700px) {
+        .modern-table-container { padding: 10px 2vw; }
+        .modern-table-title { font-size: 1.3rem; }
+        .modern-table th, .modern-table td { padding: 8px 4px; font-size: 0.98em; }
+    }
+</style>
+<div class="modern-table-container">
+    <div class="modern-table-title">Team List</div>
     {% if messages %}
-    <div style="margin: 16px 0; text-align: center;">
-        {% for message in messages %}
-        <div style="background:#eee; color:#333; padding:8px 0; margin-bottom:8px; border-radius:6px;">{{ message }}</div>
-        {% endfor %}
-    </div>
+        <div style="margin: 16px 0; text-align: center;">
+            {% for message in messages %}
+                <div style="background:#ffd2d2; color:#a00; padding:8px 0; margin-bottom:8px; border-radius:6px;">{{ message }}</div>
+            {% endfor %}
+        </div>
     {% endif %}
     {% if is_locked %}
         <div style="background:#ffd2d2; color:#a00; text-align:center; padding:8px; border-radius:6px; margin-bottom:12px;">Teams are locked. No changes allowed.</div>
     {% endif %}
-    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; background:#fff; color:#222;">
-        <thead style="background:#f0f0f0;">
+    <table class="modern-table">
+        <thead>
             <tr>
                 <th>No</th>
                 <th>Team Name</th>
@@ -26,11 +95,11 @@
         <tbody>
             {% for team in teams %}
             <tr>
-                <td style="text-align:center;">{{ forloop.counter }}</td>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ team.team_name }}</td>
                 <td>{{ team.player1_name }}</td>
                 <td>{{ team.player2_name }}</td>
-                <td style="text-align:center;">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
+                <td class="{% if is_locked %}status-locked{% else %}status-active{% endif %}">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>
