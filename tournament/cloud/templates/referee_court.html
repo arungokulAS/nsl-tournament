@@ -1,0 +1,50 @@
+{% extends 'nsl_home.html' %}
+{% load static %}
+{% block content %}
+<div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto; color: #fff;">
+    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:40px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Court {{ court_id }} – Referee Live Game</div>
+    {% if round_completed %}
+        <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Round completed. No score updates allowed.</div>
+    {% endif %}
+    <table class="glass-table" style="margin-top:24px;">
+        <thead>
+            <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                <th style="padding:10px 8px;">Match</th>
+                <th style="padding:10px 8px;">Team 1</th>
+                <th style="padding:10px 8px;">Team 2</th>
+                <th style="padding:10px 8px;">Score</th>
+                <th style="padding:10px 8px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
+                <td style="padding:8px 6px;text-align:center;">{{ match.match_name }}</td>
+                <td style="padding:8px 6px;">{{ match.team1_name }}</td>
+                <td style="padding:8px 6px;">{{ match.team2_name }}</td>
+                <td style="padding:8px 6px;text-align:center;">
+                    {% if match.locked or round_completed %}
+                        <span>{{ match.score1 }} - {{ match.score2 }}</span>
+                    {% else %}
+                        <form method="post" action="/referee/court/{{ court_id }}/" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="match_id" value="{{ match.match_id }}">
+                            <input type="number" name="score1" value="{{ match.score1 }}" min="0" max="99" style="width:48px;">
+                            <input type="number" name="score2" value="{{ match.score2 }}" min="0" max="99" style="width:48px;">
+                            <button type="submit" class="neon-btn" style="min-width:80px;">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td style="padding:8px 6px;text-align:center;">
+                    {% if match.locked or round_completed %}
+                        <span class="neon-btn" style="background:rgba(160,32,240,0.18);color:#aaa;cursor:not-allowed;">Locked</span>
+                    {% else %}
+                        <span class="neon-btn" style="background:rgba(32,160,240,0.18);color:#fff;">Edit</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -12,6 +12,7 @@ def home(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin-login/', views.admin_login_view, name='admin_login'),
+    path('referee/court/<int:court_id>/', views.referee_court_view, name='referee_court'),
     path('tadmin/teams/', views.admin_teams_view, name='admin_teams'),
     path('tadmin/groups/', views.admin_groups_view, name='admin_groups'),
     path('teams/', views.teams_view, name='teams'),

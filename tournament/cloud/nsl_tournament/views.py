@@ -1,3 +1,46 @@
+from django.views.decorators.csrf import csrf_exempt
+
+def referee_court_view(request: HttpRequest, court_id: int) -> HttpResponse:
+    from .models import TeamsLock
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    round_completed = getattr(lock_obj, 'qualifier_finished', False)
+    # For demo, use qualifier_schedule
+    matches = getattr(lock_obj, 'qualifier_schedule', [])
+    # Filter matches for this court and only current/upcoming
+    court_matches = []
+    for match in matches:
+        if str(match.get('court', '').replace('Court ', '')) == str(court_id):
+            if match.get('status') in ['Scheduled', 'Active']:
+                court_matches.append(match)
+    # Score update logic
+    if request.method == 'POST' and not round_completed:
+        match_id = request.POST.get('match_id')
+        score1 = request.POST.get('score1')
+        score2 = request.POST.get('score2')
+        for match in matches:
+            if str(match.get('match_id', '')) == str(match_id):
+                match['score1'] = int(score1)
+                match['score2'] = int(score2)
+                match['status'] = 'Active'  # Mark as active after score update
+                # Lock row after match ends (simulate logic)
+                if 'completed' in request.POST:
+                    match['status'] = 'Completed'
+        lock_obj.qualifier_schedule = matches
+        lock_obj.save()
+        # Update results, points, qualification logic here (stub)
+        # ...
+        return redirect(f'/referee/court/{court_id}/')
+    # Add match_id for each row for demo
+    for idx, match in enumerate(court_matches):
+        match['match_id'] = idx
+    # Mark locked if status is Completed
+    for match in court_matches:
+        match['locked'] = match.get('status') == 'Completed'
+    return render(request, 'referee_court.html', {
+        'court_id': court_id,
+        'matches': court_matches,
+        'round_completed': round_completed,
+    })
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from .models import Team, TeamsLock
