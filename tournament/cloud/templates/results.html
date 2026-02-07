@@ -1,5 +1,8 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
+<script>
+    setTimeout(function(){ window.location.reload(); }, 15000);
+</script>
 <div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
     <div class="center-title" style="text-align:center;margin-bottom:32px;">Group Stage Results</div>
     {% if not groups_locked %}

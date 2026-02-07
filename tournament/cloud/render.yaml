@@ -1,0 +1,30 @@
+# Render deployment configuration for Django
+# Use PostgreSQL, persistent data, and production settings
+
+services:
+  - type: web
+    name: nsl-tournament
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn nsl_tournament.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        value: ${RENDER_POSTGRES_URL}
+      - key: DJANGO_SECRET_KEY
+        value: ${RENDER_SECRET_KEY}
+      - key: DJANGO_SETTINGS_MODULE
+        value: "nsl_tournament.settings"
+
+# PostgreSQL database
+  - type: postgres
+    name: nsl-tournament-db
+    # Render will auto-generate connection URL
+
+# Persistent storage
+# Render automatically persists database
+
+# Multi-referee support: Django handles concurrent users
+
+# Stable for tournament-day traffic: Gunicorn, production settings
+
+# Add this file as render.yaml in project root
