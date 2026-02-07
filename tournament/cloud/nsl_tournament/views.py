@@ -287,7 +287,10 @@ def winners_view(request: HttpRequest) -> HttpResponse:
 
 def points_table_view(request: HttpRequest) -> HttpResponse:
     from .models import Team
-    teams = Team.objects.all().order_by('-points')
+    teams = list(Team.objects.all())
+    for team in teams:
+        team.points = getattr(team, 'points', 0)
+    teams = sorted(teams, key=lambda t: getattr(t, 'points', 0), reverse=True)
     return render(request, 'points.html', {'teams': teams})
     teams = Team.objects.all().order_by('created_at')
     groups = []
