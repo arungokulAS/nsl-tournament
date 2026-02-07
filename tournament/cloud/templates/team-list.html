@@ -1,29 +1,32 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
-<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
-    <div class="center-title" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>Team List</span>
-        <form method="post" action="/tadmin/teams/" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="clear_all">
-            <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;margin-right:8px;background:rgba(20,20,30,0.85);color:#fff;">
-            <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Clear All</button>
-        </form>
-    </div>
-    <div class="team-list-card">
-        <div class="team-list-header">Team List</div>
-        <div class="team-list-count">Total Teams: {{ teams|length }}</div>
-        <table class="glass-table">
-            {% for team in teams %}
-            <div class="team-row">
-                <div class="team-row-info">
-                    <span class="team-row-num">{{ forloop.counter }}</span>
-                    <div class="team-row-names">
-                        <span class="team-row-teamname">{{ team.team_name }}</span>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+<div class="glass-modal" style="max-width: 950px; margin: 64px auto 32px auto; color: #fff; background: rgba(20,20,30,0.92); border-radius: 24px; box-shadow: 0 0 32px 8px #0ff, 0 8px 32px 0 rgba(31,38,135,0.25); padding: 32px 24px;">
+    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:20px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Team List</div>
+    <div class="team-list-card" style="background:rgba(30,30,40,0.85);border-radius:18px;box-shadow:0 2px 8px 0 rgba(160,32,240,0.10);padding:18px 8px;">
+        <div class="team-list-count" style="color:#aaa;font-size:1.1em;margin-bottom:12px;">Total Teams: {{ teams|length }}</div>
+        <table class="glass-table team-table" style="width:100%;border-radius:16px;overflow:hidden;">
+            <thead>
+                <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
+                    <th style="padding:10px 8px;">No</th>
+                    <th style="padding:10px 8px;">Team Name</th>
+                    <th style="padding:10px 8px;">Player 1</th>
+                    <th style="padding:10px 8px;">Player 2</th>
+                    <th style="padding:10px 8px;min-width:120px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr style="border-bottom:1px solid rgba(160,32,240,0.08);">
+                    <td style="padding:8px 6px;text-align:center;font-weight:600;">{{ forloop.counter|stringformat:'02d' }}</td>
+                    <td style="padding:8px 6px;font-weight:600;">{{ team.team_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player1_name }}</td>
+                    <td style="padding:8px 6px;">{{ team.player2_name }}</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                        <span class="status-badge" style="display:inline-block;padding:4px 14px;border-radius:12px;font-size:0.98em;font-weight:600;background:#20f060;color:#18181b;">Active</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </div>
