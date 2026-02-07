@@ -534,7 +534,13 @@ def admin_login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        # Add authentication logic here
-        # For now, just redirect to admin panel
-        return redirect('/admin/')
+        if username == 'net smashers' and password == 'nsl123':
+            request.session['is_admin'] = True
+            return redirect('/tadmin/teams/')
+        else:
+            from django.contrib import messages
+            messages.error(request, 'Invalid username or password.')
     return render(request, 'admin_login.html')
+    # Restrict access to logged-in admins
+    if not request.session.get('is_admin'):
+        return redirect('/admin-login/')

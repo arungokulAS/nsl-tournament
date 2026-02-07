@@ -7,6 +7,9 @@ on:
 jobs:
   Deploy-Render:
     runs-on: ubuntu-latest
+    env:
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      CI: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,8 +19,5 @@ jobs:
           unzip render.zip
           sudo mv cli_v2.7.1 /usr/local/bin/render
       - name: Trigger deploy with Render CLI
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-          CI: true
         run: |
           render deploys create ${{ secrets.RENDER_SERVICE_ID }} --output json --confirm
