@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponse
 def results_group_stage_view(request: HttpRequest) -> HttpResponse:
     from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
@@ -177,6 +178,15 @@ def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all()
     schedule = getattr(lock_obj, 'group_stage_schedule', [])
     messages_list = []
+        # Dependency: groups must be locked before scheduling
+        if not groups_locked:
+            messages_list.append('Groups must be locked before group stage scheduling.')
+            return render(request, 'admin_schedule_group_stage.html', {
+                'schedule': [],
+                'schedule_locked': False,
+                'round_finished': False,
+                'messages': messages_list,
+            })
     if request.method == 'POST':
         action = request.POST.get('action')
         password = request.POST.get('password')
@@ -294,6 +304,15 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
+    # Dependency: group stage must be finished before qualifier scheduling
+    if not prev_round_finished:
+        messages_list.append('Group stage must be finished before qualifier scheduling.')
+        return render(request, 'admin_schedule_qualifier.html', {
+            'schedule': [],
+            'schedule_locked': False,
+            'round_finished': False,
+            'messages': messages_list,
+        })
     from django.contrib import messages as django_messages
     from .models import TeamsLock
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
