@@ -13,20 +13,22 @@
     <div class="team-list-card">
         {% if not is_locked %}
             <!-- Top lock button removed -->
-            <form method="post" class="glass-form" style="margin-bottom: 18px; flex-direction: row; gap: 12px; align-items: center; justify-content: center;">
+            <form method="post" class="glass-form add-team-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="add">
-                <input type="text" name="player1_name" placeholder="Player 1 Name" required style="flex:1;min-width:160px;">
-                <input type="text" name="player2_name" placeholder="Player 2 Name" required style="flex:1;min-width:160px;">
-                <button type="submit" class="neon-btn" style="min-width:120px;">Add Team</button>
+                <div class="add-team-fields">
+                    <input type="text" name="player1_name" placeholder="Player 1 Name" required>
+                    <input type="text" name="player2_name" placeholder="Player 2 Name" required>
+                </div>
+                <button type="submit" class="neon-btn">Add Team</button>
             </form>
-            <form method="post" class="glass-form" style="margin-bottom: 12px; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start;">
+            <form method="post" class="glass-form clear-all-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="clear_all">
                 <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
                 <button type="submit" title="Clear All Teams" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 8px; box-shadow: 0 0 8px 2px #fff, 0 0 16px 4px #a020f0 inset; padding: 0 18px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative; color:#fff;font-weight:600;font-size:1em;min-width:120px;">Clear All</button>
             </form>
-            <form method="post" enctype="multipart/form-data" class="glass-form" style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; justify-content: flex-start;">
+            <form method="post" enctype="multipart/form-data" class="glass-form upload-csv-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="upload_csv">
                 <label class="neon-btn" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 8px; box-shadow: 0 0 8px 2px #fff, 0 0 16px 4px #a020f0 inset; padding: 0 18px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative; margin-bottom:0;min-width:120px;">
@@ -39,8 +41,8 @@
         {% else %}
             <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Teams are locked. No changes allowed.</div>
         {% endif %}
-        <div style="position: relative;">
-            <table class="glass-table" style="margin-top:24px;">
+        <div class="team-table-wrapper">
+            <table class="glass-table team-table">
                 <thead>
                     <tr style="background:rgba(160,32,240,0.12);color:#fff;font-weight:700;">
                         <th style="padding:10px 8px;">Sl No.</th>
@@ -143,6 +145,60 @@
     </div>
 </div>
 <style>
+.add-team-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+.add-team-fields {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+.add-team-fields input {
+    min-width: 160px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(20,20,30,0.85);
+    color: #fff;
+    font-size: 1em;
+}
+.neon-btn {
+    min-width: 120px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 1em;
+}
+.clear-all-form, .upload-csv-form {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.team-table-wrapper {
+    margin-top: 24px;
+}
+.team-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.team-table th, .team-table td {
+    padding: 10px 8px;
+    text-align: center;
+}
+.team-table th {
+    background: rgba(160,32,240,0.12);
+    color: #fff;
+    font-weight: 700;
+}
+.team-table tr {
+    border-bottom: 1px solid rgba(160,32,240,0.08);
+}
 body {
     background: #18181b url('{% static "envato-labs-image-edit-1.png" %}') repeat;
     min-height: 100vh;
