@@ -17,7 +17,7 @@ urlpatterns = [
         path('results/qualifier', views.results_qualifier_view, name='results_qualifier'),
         path('results/pre-quarter', views.results_pre_quarter_view, name='results_pre_quarter'),
         path('results/knockout', views.results_knockout_view, name='results_knockout'),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),  # Disabled default Django admin
     path('admin-login/', views.admin_login_view, name='admin_login'),
     path('referee/court/<int:court_id>/', views.referee_court_view, name='referee_court'),
     path('tadmin/teams/', views.admin_teams_view, name='admin_teams'),
