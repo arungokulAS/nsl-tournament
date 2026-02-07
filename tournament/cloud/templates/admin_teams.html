@@ -81,7 +81,7 @@
                             </td>
                             <td style="padding:8px 6px;text-align:center;">
                                 <button type="submit" class="icon-btn" title="Save"><i class="fa fa-floppy-o" style="color:#a020f0;font-size:18px;"></i></button>
-                                <button type="button" class="icon-btn" title="Delete"><i class="fa fa-trash" style="color:#a020f0;font-size:18px;"></i></button>
+                                <button type="button" class="icon-btn" title="Delete" onclick="if(confirm('Delete this team?')) location.href='/tadmin/teams/delete/{{ team.team_id }}/';"><i class="fa fa-trash" style="color:#a020f0;font-size:18px;"></i></button>
                             </td>
                         </form>
                     {% else %}
@@ -90,8 +90,8 @@
                         <td style="padding:8px 6px;">{{ team.player2_name }}</td>
                         <td style="padding:8px 6px;text-align:center;">
                             {% if not is_locked %}
-                                <button type="button" class="icon-btn" title="Edit"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
-                                <button type="button" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
+                                <button type="button" class="icon-btn" title="Edit" onclick="location.href='/tadmin/teams/edit/{{ team.team_id }}/';"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
+                                <button type="button" class="icon-btn" title="Delete" onclick="if(confirm('Delete this team?')) location.href='/tadmin/teams/delete/{{ team.team_id }}/';"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
                             {% endif %}
                         </td>
                     {% endif %}
