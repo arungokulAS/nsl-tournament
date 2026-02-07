@@ -1,3 +1,9 @@
+def contact_view(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        # You can add email sending or message handling logic here
+        from django.contrib import messages
+        messages.success(request, 'Thank you for contacting us!')
+    return render(request, 'contact.html')
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect

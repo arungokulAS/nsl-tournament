@@ -1,0 +1,183 @@
+{% extends 'nsl_home.html' %}
+{% load static %}
+{% block content %}
+<style>
+.contact-hero-bg {
+    background: linear-gradient(135deg, #0a0a0f 60%, #1a1a22 100%);
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 64px auto 0 auto;
+    background: rgba(20, 20, 30, 0.55);
+    border-radius: 32px;
+    box-shadow: 0 0 32px 8px #0ff, 0 8px 32px 0 rgba(31,38,135,0.25);
+    padding: 48px 32px;
+    color: #fff;
+}
+.contact-left {
+    flex: 1 1 320px;
+    min-width: 320px;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.contact-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+}
+.contact-desc {
+    font-size: 1.1rem;
+    color: #b0b0b8;
+    margin-bottom: 24px;
+}
+.contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.contact-info-item {
+    background: rgba(30, 30, 40, 0.85);
+    border-radius: 16px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 1.08em;
+    box-shadow: 0 2px 8px 0 rgba(160,32,240,0.10);
+    transition: background 0.2s;
+}
+.contact-info-item:hover {
+    background: rgba(160,32,240,0.18);
+}
+.contact-info-icon {
+    font-size: 1.5em;
+    color: #a020f0;
+    background: #18181b;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.contact-info-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.contact-info-link svg {
+    margin-left: 6px;
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: middle;
+}
+.contact-form-section {
+    flex: 1 1 380px;
+    min-width: 340px;
+    max-width: 500px;
+    background: rgba(20, 20, 30, 0.65);
+    border-radius: 24px;
+    padding: 32px 24px 24px 24px;
+    box-shadow: 0 0 16px 2px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.contact-form input, .contact-form textarea {
+    background: rgba(30, 30, 40, 0.85);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: 500;
+    outline: none;
+    resize: none;
+}
+.contact-form textarea {
+    min-height: 120px;
+    max-height: 220px;
+}
+.contact-form button {
+    background: #fff;
+    color: #18181b;
+    font-weight: 700;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 0;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 8px;
+}
+.contact-form button:hover {
+    background: #a020f0;
+    color: #fff;
+}
+@media (max-width: 900px) {
+    .contact-container {
+        flex-direction: column;
+        padding: 32px 8px;
+        gap: 32px;
+    }
+    .contact-left, .contact-form-section {
+        max-width: 100%;
+    }
+}
+</style>
+<div class="contact-hero-bg">
+    <div class="contact-container">
+        <div class="contact-left">
+            <div>
+                <button class="neon-btn" style="margin-bottom:18px;">Contact</button>
+                <div class="contact-title">Get in touch</div>
+                <div class="contact-desc">Have questions or ready to transform your business with AI automation?</div>
+            </div>
+            <div class="contact-info-list">
+                <div class="contact-info-item">
+                    <span class="contact-info-icon">&#9993;</span>
+                    <a href="mailto:johnnkyjorov@gmail.com" class="contact-info-link">Email us: johnnkyjorov@gmail.com <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 7l-10 10M21 7h-4v4"/></svg></a>
+                </div>
+                <div class="contact-info-item">
+                    <span class="contact-info-icon">&#128222;</span>
+                    <a href="tel:5011234567" class="contact-info-link">Call us: (501) 123-4567 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 7l-10 10M21 7h-4v4"/></svg></a>
+                </div>
+                <div class="contact-info-item">
+                    <span class="contact-info-icon">&#127968;</span>
+                    <span class="contact-info-link">Our location: Crosby Street, NY, US <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 7l-10 10M21 7h-4v4"/></svg></span>
+                </div>
+            </div>
+        </div>
+        <div class="contact-form-section">
+            <form class="contact-form" method="post">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
