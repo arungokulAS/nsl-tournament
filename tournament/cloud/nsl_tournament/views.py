@@ -248,27 +248,27 @@ def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
         'round_finished': getattr(lock_obj, 'group_stage_finished', False),
         'messages': messages_list,
     })
-def results_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    groups_locked = getattr(lock_obj, 'groups_locked', False)
-    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+def group_list_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
     teams = Team.objects.all()
-    groups = []
-    if groups_locked:
-        for group in group_names:
-            group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
-            qualified = group_teams[:4]  # Top 4 teams
-            groups.append({'name': group, 'teams': group_teams, 'qualified': qualified})
-    return render(request, 'results.html', {
-        'groups_locked': groups_locked,
-        'groups': groups,
-    })
-def admin_groups_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    groups_locked = getattr(lock_obj, 'groups_locked', False)
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    groups = []
+    for group in group_names:
+        group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+        groups.append({'name': group, 'teams': group_teams})
+    return render(request, 'group-list.html', {'groups': groups})
+
+def winners_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
+    # For demo, assume teams with points > 0 are winners
+    teams = Team.objects.all()
+    winners = [team for team in teams if getattr(team, 'points', 0) > 0]
+    return render(request, 'winners.html', {'winners': winners})
+
+def points_table_view(request: HttpRequest) -> HttpResponse:
+    from .models import Team
+    teams = Team.objects.all().order_by('-points')
+    return render(request, 'points.html', {'teams': teams})
     teams = Team.objects.all().order_by('created_at')
     groups = []
     messages_list = []
