@@ -1,44 +1,81 @@
-def contact_view(request: HttpRequest) -> HttpResponse:
-    if request.method == 'POST':
-        # You can add email sending or message handling logic here
-        from django.contrib import messages
-        messages.success(request, 'Thank you for contacting us!')
-    return render(request, 'contact.html')
-
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from .models import Team, TeamsLock
+from django.utils import timezone
+import csv
+from io import TextIOWrapper
+import os
 
-def results_view(request: HttpRequest) -> HttpResponse:
-    # Placeholder implementation for /results/ route
-    return render(request, 'results.html')
+# Constants
+ADMIN_PASSWORD = "nsl2026"
 
+# Add missing admin_groups_view
 def admin_groups_view(request: HttpRequest) -> HttpResponse:
-    # TODO: Implement actual admin group management logic
-    # For now, just render a placeholder template or return a simple response
-    try:
-        return render(request, 'admin_groups.html')
-    except Exception:
-        return HttpResponse("Admin Groups page placeholder. Implementation pending.")
-
-def group_list_view(request: HttpRequest) -> HttpResponse:
-    from .models import Team
     teams = Team.objects.all()
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
     groups = []
+    messages_list = []
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        password = request.POST.get('password')
+        if password != ADMIN_PASSWORD:
+            messages_list.append('Incorrect admin password.')
+        else:
+            if action == 'manual_assign':
+                for team in teams:
+                    group = request.POST.get(f'group_{team.team_id}')
+                    if group in group_names:
+                        team.group = group
+                        team.save()
+                messages_list.append('Manual group assignment saved.')
+            elif action == 'auto_assign':
+                import random
+                team_list = list(teams)
+                random.shuffle(team_list)
+                for idx, team in enumerate(team_list):
+                    group = group_names[idx % len(group_names)]
+                    team.group = group
+                    team.save()
+                messages_list.append('Teams auto-assigned to groups.')
+            elif action == 'lock_groups':
+                lock_obj.groups_locked = True
+                lock_obj.save()
+                messages_list.append('Groups locked. No further changes allowed.')
     for group in group_names:
-        group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+        group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
         groups.append({'name': group, 'teams': group_teams})
-    return render(request, 'group-list.html', {'groups': groups})
+    return render(request, 'admin_groups.html', {
+        'teams': teams,
+        'group_names': group_names,
+        'groups_locked': getattr(lock_obj, 'groups_locked', False),
+        'groups': groups,
+        'messages': messages_list,
+    })
 
-def winners_view(request: HttpRequest) -> HttpResponse:
-    from .models import Team
-    # For demo, assume teams with points > 0 are winners
-    teams = Team.objects.all()
-    winners = [team for team in teams if getattr(team, 'points', 0) > 0]
-    return render(request, 'winners.html', {'winners': winners})
+# All imports at the top
 
+
+# Constants
+ADMIN_PASSWORD = "nsl2026"
+
+def contact_view(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        subject = f"Contact Form Submission from {name}"
+        body = f"Name: {name}\nEmail: {email}\nMessage:\n{message}"
+        try:
+            send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, ['netsmashersliverpool@gmail.com'])
+            messages.success(request, 'Thank you for contacting us! We will get back to you soon.')
+        except Exception as e:
+            messages.error(request, 'Sorry, there was an error sending your message. Please try again later.')
+    return render(request, 'contact.html')
 def points_table_view(request: HttpRequest) -> HttpResponse:
-    from .models import Team
     teams = list(Team.objects.all())
     # If points are tracked elsewhere, use getattr; else, just show teams
     for team in teams:
@@ -47,7 +84,6 @@ def points_table_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'points.html', {'teams': teams})
 from django.http import HttpRequest, HttpResponse
 def results_group_stage_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     group_stage_finished = getattr(lock_obj, 'group_stage_finished', False)
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
@@ -71,7 +107,6 @@ def results_group_stage_view(request: HttpRequest) -> HttpResponse:
     })
 
 def results_qualifier_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     qualifier_finished = getattr(lock_obj, 'qualifier_finished', False)
     # Demo: blocks and teams
@@ -102,7 +137,6 @@ def results_knockout_view(request: HttpRequest) -> HttpResponse:
 from django.views.decorators.csrf import csrf_exempt
 
 def referee_court_view(request: HttpRequest, court_id: int) -> HttpResponse:
-    from .models import TeamsLock
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     round_completed = getattr(lock_obj, 'qualifier_finished', False)
     # For demo, use qualifier_schedule
@@ -153,7 +187,6 @@ import os
 from django.conf import settings
 
 def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     prev_round_finished = getattr(lock_obj, 'group_stage_finished', False)
     schedule_locked = getattr(lock_obj, 'qualifier_schedule_locked', False)
@@ -216,7 +249,6 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
         'messages': messages_list,
     })
 def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     groups_locked = getattr(lock_obj, 'groups_locked', False)
     schedule_locked = getattr(lock_obj, 'group_stage_schedule_locked', False)
@@ -275,7 +307,6 @@ def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
         'messages': messages_list,
     })
 def group_list_view(request: HttpRequest) -> HttpResponse:
-    from .models import Team
     teams = Team.objects.all()
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
     groups = []
@@ -285,7 +316,6 @@ def group_list_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'group-list.html', {'groups': groups})
 
 def winners_view(request: HttpRequest) -> HttpResponse:
-    from .models import Team
     # For demo, assume teams with points > 0 are winners
     teams = Team.objects.all()
     winners = [team for team in teams if getattr(team, 'points', 0) > 0]
@@ -354,8 +384,7 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
-    from django.contrib import messages as django_messages
-    from .models import TeamsLock
+    django_messages = messages
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     is_locked = lock_obj.is_locked
     teams = Team.objects.all().order_by('created_at')
@@ -365,35 +394,9 @@ def team_list_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all().order_by('created_at')
     return render(request, 'team-list.html', {'teams': teams})
 
-def groups_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    is_locked = lock_obj.is_locked
-    groups = [
-        {'name': 'Group 1', 'teams': ['Team A', 'Team C']},
-        {'name': 'Group 2', 'teams': ['Team B', 'Team D']},
-    ]
-    return render(request, 'groups.html', {'groups': groups, 'is_locked': is_locked})
-
-def schedule_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    groups_locked = getattr(lock_obj, 'groups_locked', False)
-    if not groups_locked:
-        return render(request, 'schedule.html', {'schedule': [], 'groups_locked': False, 'message': 'Group Stage schedule generation is disabled until groups are locked.'})
-    # Use frozen group data for schedule
-    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
-    teams = Team.objects.all()
-    schedule = []
-    for group in group_names:
-        group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
-        for i in range(len(group_teams)):
-            for j in range(i+1, len(group_teams)):
-                schedule.append({'match': f'{group_teams[i]} vs {group_teams[j]}', 'group': group, 'time': 'TBD'})
-    return render(request, 'schedule.html', {'schedule': schedule, 'groups_locked': True})
+    # ...existing code...
 
 def live_game_view(request: HttpRequest) -> HttpResponse:
-    from .models import TeamsLock, Team
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     groups_locked = getattr(lock_obj, 'groups_locked', False)
     if not groups_locked:
