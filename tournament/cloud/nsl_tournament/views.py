@@ -267,6 +267,13 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                 messages.error(request, "Incorrect admin password.")
                 return redirect("/tadmin/teams/")
 
+        if action == "lock":
+            lock_obj.is_locked = True
+            lock_obj.locked_at = timezone.now()
+            lock_obj.save()
+            messages.success(request, "Teams locked.")
+            return redirect("/tadmin/teams/")
+
         if not is_locked:
             if action == "clear_all":
                 if password != ADMIN_PASSWORD:
@@ -333,6 +340,11 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                     return redirect("/tadmin/teams/")
                 # Otherwise, show edit form for this team
                 edit_team = Team.objects.get(team_id=request.POST.get("team_id"))
+            elif action == "delete":
+                team_id = request.POST.get("team_id")
+                Team.objects.filter(team_id=team_id).delete()
+                messages.success(request, "Team deleted.")
+                return redirect("/tadmin/teams/")
     return render(request, "admin_teams.html", {
         "teams": teams,
         "is_locked": is_locked,

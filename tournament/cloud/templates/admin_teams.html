@@ -93,7 +93,13 @@
                             </td>
                             <td style="padding:8px 6px;text-align:center;">
                                 <button type="submit" class="icon-btn" title="Save"><i class="fa fa-floppy-o" style="color:#a020f0;font-size:18px;"></i></button>
-                                <button type="button" class="icon-btn" title="Delete" onclick="if(confirm('Delete this team?')) location.href='/tadmin/teams/delete/{{ team.team_id }}/';"><i class="fa fa-trash" style="color:#a020f0;font-size:18px;"></i></button>
+                                <form method="post" action="/tadmin/teams/" style="display:inline;" onsubmit="return confirm('Delete this team?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                                    <input type="password" name="password" placeholder="Admin Password" required style="padding:2px 8px;border-radius:6px;border:none;background:rgba(20,20,30,0.85);color:#fff;width:90px;font-size:0.95em;">
+                                    <button type="submit" class="icon-btn" title="Delete"><i class="fa fa-trash" style="color:#a020f0;font-size:18px;"></i></button>
+                                </form>
                             </td>
                         </form>
                     {% else %}
@@ -112,6 +118,7 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                                    <input type="password" name="password" placeholder="Admin Password" required style="padding:2px 8px;border-radius:6px;border:none;background:rgba(20,20,30,0.85);color:#fff;width:90px;font-size:0.95em;">
                                     <button type="submit" class="icon-btn" title="Delete"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M6 6l8 8M6 14l8-8"/></svg></button>
                                 </form>
                             {% endif %}
