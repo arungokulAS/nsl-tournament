@@ -13,21 +13,12 @@
     <div class="team-list-card">
         {% if not is_locked %}
             <div style="display: flex; align-items: center; margin-bottom: 24px; gap: 12px;">
-                <form method="post" enctype="multipart/form-data" class="glass-form" style="flex:1; display: flex; align-items: center; gap: 12px;">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="upload_csv">
-                    <label class="neon-btn" style="margin-bottom:0;min-width:180px;height:40px;display:flex;align-items:center;">
-                        Choose CSV File
-                        <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
-                    </label>
-                    <span style="font-size:0.95em; color:#aaa; margin-left:8px;">CSV columns: Player 1, Player 2 (no header row)</span>
-                </form>
                 <form method="post" class="glass-form" style="margin:0;">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="lock">
                     <input type="password" name="password" placeholder="Admin Password" required style="display:none;">
-                    <button type="submit" title="Lock Teams" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 24px; box-shadow: 0 0 8px 2px #fff, 0 0 16px 4px #a020f0 inset; padding: 0; width: 48px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 6px #fff);">
+                    <button type="submit" title="Lock Teams" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 18px; box-shadow: 0 0 16px 4px #a020f0 inset; padding: 0; width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="6" y="10" width="12" height="8" rx="3" fill="#222" stroke="#fff" stroke-width="2.2"/>
                             <path d="M9 10V7a3 3 0 0 1 6 0v3" stroke="#fff" stroke-width="2.2"/>
                             <circle cx="12" cy="14" r="1.5" fill="#fff"/>
@@ -46,8 +37,17 @@
                 {% csrf_token %}
                 <input type="hidden" name="action" value="clear_all">
                 <input type="password" name="password" placeholder="Admin Password" required style="padding:4px 12px;border-radius:8px;border:none;background:rgba(20,20,30,0.85);color:#fff;">
-                <button type="submit" class="neon-btn" style="padding:4px 16px;font-size:0.98em;background:#a020f0;">Clear All</button>
+                <button type="submit" title="Clear All Teams" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 24px; box-shadow: 0 0 8px 2px #fff, 0 0 16px 4px #a020f0 inset; padding: 0; width: 120px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative; color:#fff;font-weight:600;font-size:1em;">Clear All</button>
             </form>
+            <form method="post" enctype="multipart/form-data" class="glass-form" style="flex:1; display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="upload_csv">
+                <label class="neon-btn" style="background: linear-gradient(90deg,#a020f0 0%,#6a00ff 100%); border: none; border-radius: 24px; box-shadow: 0 0 16px 4px #a020f0 inset; padding: 0; width: 120px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; position: relative; margin-bottom:0;">
+                    <span style="color:#fff;font-weight:600;">Choose CSV File</span>
+                    <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
+                </label>
+            </form>
+            <div style="font-size:0.95em; color:#aaa; margin-bottom:18px;">CSV columns: Player 1, Player 2 (no header row)</div>
             <!-- Duplicate CSV section removed -->
         {% else %}
             <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Teams are locked. No changes allowed.</div>
