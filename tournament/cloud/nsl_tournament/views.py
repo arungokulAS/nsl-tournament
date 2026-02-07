@@ -1,3 +1,7 @@
+
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+
 def admin_groups_view(request: HttpRequest) -> HttpResponse:
     # TODO: Implement actual admin group management logic
     # For now, just render a placeholder template or return a simple response
@@ -5,8 +9,6 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
         return render(request, 'admin_groups.html')
     except Exception:
         return HttpResponse("Admin Groups page placeholder. Implementation pending.")
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
 
 def group_list_view(request: HttpRequest) -> HttpResponse:
     from .models import Team
