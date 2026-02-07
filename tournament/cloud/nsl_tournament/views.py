@@ -304,15 +304,6 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
-    # Dependency: group stage must be finished before qualifier scheduling
-    if not prev_round_finished:
-        messages_list.append('Group stage must be finished before qualifier scheduling.')
-        return render(request, 'admin_schedule_qualifier.html', {
-            'schedule': [],
-            'schedule_locked': False,
-            'round_finished': False,
-            'messages': messages_list,
-        })
     from django.contrib import messages as django_messages
     from .models import TeamsLock
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
