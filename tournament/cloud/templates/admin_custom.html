@@ -24,32 +24,40 @@
             -webkit-backdrop-filter: blur(24px) saturate(180%);
             padding: 40px 32px 32px 32px;
             max-width: 400px;
-            width: 100%;
-            color: #fff;
-            position: relative;
-            text-align: left;
-        }
-        .glass-modal h2 {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 18px;
-            text-align: center;
-        }
-        .glass-form {
-            display: flex;
-            flex-direction: column;
+                .glass-modal {
+                    background: rgba(40, 20, 60, 0.55);
+                    box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
+                    border-radius: 24px;
+                    border: 1.5px solid rgba(255,255,255,0.18);
+                    backdrop-filter: blur(24px) saturate(180%);
+                    -webkit-backdrop-filter: blur(24px) saturate(180%);
+                    padding: 40px 32px 32px 32px;
+                    color: #fff;
+                    position: relative;
+                    text-align: left;
+                }
             gap: 18px;
         }
         .glass-form input {
-            padding: 12px 18px;
-            border-radius: 999px;
-            border: none;
-            background: rgba(20, 20, 30, 0.85);
-            color: #fff;
-            font-size: 1.1em;
-            font-weight: 500;
-            outline: none;
-            box-shadow: 0 0 8px 2px rgba(160,32,240,0.12);
+            <div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto;">
+                <div class="center-title" style="text-align:center;margin-bottom:32px;margin-top:32px;">Custom Admin Page</div>
+                <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;text-align:center;">Custom admin content goes here.</div>
+            </div>
+            <style>
+            .glass-modal {
+                background: rgba(40, 20, 60, 0.55);
+                box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
+                border-radius: 24px;
+                border: 1.5px solid rgba(255,255,255,0.18);
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+                padding: 40px 32px 32px 32px;
+                color: #fff;
+                position: relative;
+                text-align: left;
+            }
+            </style>
+            {% endblock %}
         }
         .neon-btn {
             width: 100%;

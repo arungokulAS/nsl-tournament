@@ -17,20 +17,18 @@
         }
         .glass-modal {
             background: rgba(40, 20, 60, 0.55);
+        .glass-modal {
+            background: rgba(40, 20, 60, 0.55);
             box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
             border-radius: 24px;
             border: 1.5px solid rgba(255,255,255,0.18);
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
             padding: 40px 32px 32px 32px;
-            max-width: 400px;
-            width: 100%;
             color: #fff;
             position: relative;
             text-align: left;
         }
-        .glass-modal h2 {
-            font-size: 1.3rem;
             font-weight: 400;
             margin-bottom: 18px;
             text-align: center;
@@ -39,15 +37,37 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-        }
-        .glass-form input {
-            padding: 12px 18px;
-            border-radius: 999px;
-            border: none;
-            background: rgba(20, 20, 30, 0.85);
-            color: #fff;
-            font-size: 1.1em;
-            font-weight: 500;
+    <div class="glass-modal" style="max-width: 400px; margin: 80px auto;">
+        <div class="center-title" style="text-align:center;margin-bottom:32px;margin-top:16px;">Admin Login</div>
+        {% if error %}
+        <div class="neon-btn" style="background:#ffd2d2;color:#a00;text-align:center;">{{ error }}</div>
+        {% endif %}
+        <form method="post" class="glass-form" autocomplete="off">
+            {% csrf_token %}
+            <input type="password" name="password" placeholder="Admin Password" required>
+            <button type="submit" class="neon-btn" style="width:100%;margin-top:18px;">Login</button>
+        </form>
+    </div>
+    <style>
+    .glass-modal {
+        background: rgba(40, 20, 60, 0.55);
+        box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
+        border-radius: 24px;
+        border: 1.5px solid rgba(255,255,255,0.18);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        padding: 40px 32px 32px 32px;
+        color: #fff;
+        position: relative;
+        text-align: left;
+    }
+    .glass-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        align-items: flex-start;
+    }
+    </style>
             outline: none;
             box-shadow: 0 0 8px 2px rgba(160,32,240,0.12);
         }
