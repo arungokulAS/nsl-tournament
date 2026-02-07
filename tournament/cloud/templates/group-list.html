@@ -1,5 +1,112 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
+<div class="group-stage-wrapper">
+    <div class="group-stage-grid">
+        {% for group in groups %}
+        <div class="group-card glass-card">
+            <div class="group-title neon-title">{{ group.name }}</div>
+            <ul class="group-team-list">
+                {% for team in group.teams %}
+                <li class="group-team{% if team.is_winner %} group-winner{% endif %}">
+                    {% if team.icon %}<img src="{{ team.icon }}" class="team-icon" alt="">{% endif %}
+                    <span>{{ team.name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<style>
+.group-stage-wrapper {
+    max-width: 1100px;
+    margin: 48px auto 32px auto;
+    padding: 0 12px;
+}
+.group-stage-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 36px 40px;
+}
+.glass-card {
+    background: rgba(34, 34, 44, 0.55);
+    border-radius: 22px;
+    border: 2.5px solid;
+    border-image: linear-gradient(120deg, #4e7fff 0%, #a020f0 100%) 1;
+    box-shadow: 0 0 32px 0 #4e7fff44, 0 0 24px 0 #a020f044;
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    padding: 28px 32px 20px 32px;
+    color: #fff;
+    min-width: 220px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.group-title {
+    font-size: 1.32rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #fff;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 16px #4e7fff, 0 2px 12px #a020f0;
+    text-transform: uppercase;
+    border-bottom: 2px solid #4e7fff;
+    padding-bottom: 6px;
+    width: 100%;
+}
+.neon-title {
+    color: #fff;
+    text-shadow: 0 0 8px #a020f0, 0 0 16px #4e7fff;
+}
+.group-team-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.group-team {
+    display: flex;
+    align-items: center;
+    font-size: 1.08em;
+    padding: 8px 0 8px 0;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    color: #eaf0fa;
+    font-weight: 500;
+    transition: background 0.18s;
+}
+.group-team:last-child { margin-bottom: 0; }
+.group-team .team-icon {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 50%;
+    background: #fff2;
+}
+.group-winner {
+    color: #ffd700;
+    font-weight: 800;
+    background: rgba(160,32,240,0.10);
+    position: relative;
+}
+.group-winner:before {
+    content: '\2605';
+    color: #ffd700;
+    font-size: 1.1em;
+    margin-right: 7px;
+    vertical-align: middle;
+}
+@media (max-width: 900px) {
+    .group-stage-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+}
+</style>
+{% endblock %}
+{% extends 'nsl_home.html' %}
+{% block content %}
 <div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
     <div class="center-title" style="text-align:center;margin-bottom:32px;">Group List</div>
     {% for group in groups %}

@@ -1,21 +1,21 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
-<div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto; color: #fff;">
-    <div class="center-title" style="text-align:center;margin-bottom:40px;margin-top:40px;font-size:2.2rem;font-weight:700;letter-spacing:0.02em;">Admin Group Assignment</div>
+<div class="modern-table-container">
+    <div class="modern-table-title">Admin Group Assignment</div>
     {% if messages %}
-    <div style="margin: 16px 0; text-align: center;">
-        {% for message in messages %}
-        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
-        {% endfor %}
-    </div>
+        <div style="margin: 16px 0; text-align: center;">
+            {% for message in messages %}
+                <div style="background:#ffd2d2; color:#a00; padding:8px 0; margin-bottom:8px; border-radius:6px;">{{ message }}</div>
+            {% endfor %}
+        </div>
     {% endif %}
     {% if not groups_locked %}
-    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+    <form method="post" class="add-team-form" style="margin-bottom: 18px;">
         {% csrf_token %}
         <input type="hidden" name="action" value="manual_assign">
         <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
         <div style="margin-bottom:18px;">Assign teams to groups manually:</div>
-        <table class="glass-table">
+        <table class="modern-table">
             <thead>
                 <tr>
                     <th>Team</th>
@@ -40,36 +40,105 @@
         </table>
         <button type="submit" class="neon-btn" style="margin-top:18px;">Save Manual Assignment</button>
     </form>
-    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+    <form method="post" class="clear-all-form" style="margin-bottom: 18px;">
         {% csrf_token %}
         <input type="hidden" name="action" value="auto_assign">
-        <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
+        <input type="password" name="password" placeholder="Admin Password" required>
         <button type="submit" class="neon-btn" style="background:#a020f0;">Auto-Random Assign Teams</button>
     </form>
-    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+    <form method="post" class="clear-all-form" style="margin-bottom: 18px;">
         {% csrf_token %}
         <input type="hidden" name="action" value="lock_groups">
-        <input type="password" name="password" placeholder="Admin Password" required style="margin-bottom:12px;">
+        <input type="password" name="password" placeholder="Admin Password" required>
         <button type="submit" class="neon-btn" style="background:#a020f0;">Lock Groups</button>
     </form>
     {% else %}
-    <div class="neon-btn" style="margin-bottom:18px;background:rgba(40,20,60,0.92);text-align:center;">Groups are locked. No changes allowed.</div>
-    <table class="glass-table">
-        <thead>
-            <tr>
-                <th>Group</th>
-                <th>Teams</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for group in groups %}
-            <tr>
-                <td>{{ group.name }}</td>
-                <td>{{ group.teams|join:', ' }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <div style="background:#ffd2d2; color:#a00; text-align:center; padding:8px; border-radius:6px; margin-bottom:12px;">Groups are locked. No changes allowed.</div>
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>Teams</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.teams|join:', ' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 </div>
+<style>
+    .modern-table-container {
+        max-width: 900px;
+        margin: 48px auto 0 auto;
+        background: rgba(34, 34, 44, 0.98);
+        border-radius: 18px;
+        box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+        padding: 32px 28px 36px 28px;
+        color: #eaf0fa;
+    }
+    .modern-table-title {
+        text-align: center;
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 28px;
+        letter-spacing: 0.01em;
+        color: #fff;
+    }
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #23233a;
+        border-radius: 12px;
+        overflow: hidden;
+        /* box-shadow removed for no outer glow */
+    }
+    .modern-table th, .modern-table td {
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 1.08em;
+    }
+    .modern-table th {
+        background: linear-gradient(90deg, #4e7fff 0%, #a020f0 100%);
+        color: #fff;
+        font-weight: 700;
+        border-bottom: 2px solid #3a3a5a;
+        letter-spacing: 0.04em;
+    }
+    .modern-table tr {
+        transition: background 0.2s;
+    }
+    .modern-table tbody tr:nth-child(even) {
+        background: rgba(160,32,240,0.07);
+    }
+    .modern-table tbody tr:nth-child(odd) {
+        background: rgba(78,127,255,0.06);
+    }
+    .modern-table tbody tr:hover {
+        background: #2a2a4a;
+    }
+    .modern-table td {
+        border-bottom: 1px solid #2e2e44;
+        color: #eaf0fa;
+    }
+    .modern-table td.status-active {
+        color: #20f060;
+        font-weight: 600;
+    }
+    .modern-table td.status-locked {
+        color: #ff4e7f;
+        font-weight: 600;
+    }
+    @media (max-width: 700px) {
+        .modern-table-container { padding: 10px 2vw; }
+        .modern-table-title { font-size: 1.3rem; }
+        .modern-table th, .modern-table td { padding: 8px 4px; font-size: 0.98em; }
+    }
+</style>
 {% endblock %}

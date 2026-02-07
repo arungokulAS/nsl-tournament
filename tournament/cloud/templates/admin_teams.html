@@ -1,42 +1,44 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
-<div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto;">
-    <div class="center-title" style="text-align:center;margin-bottom:32px;margin-top:32px;">Teams Management</div>
+<div class="modern-table-container">
+    <div class="modern-table-title">Teams Management</div>
     {% if messages %}
-    <div style="margin: 16px 0; text-align: center;">
-        {% for message in messages %}
-        <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;">{{ message }}</div>
-        {% endfor %}
-    </div>
+        <div style="margin: 16px 0; text-align: center;">
+            {% for message in messages %}
+                <div style="background:#ffd2d2; color:#a00; padding:8px 0; margin-bottom:8px; border-radius:6px;">{{ message }}</div>
+            {% endfor %}
+        </div>
     {% endif %}
     {% if not is_locked %}
-    <form method="post" class="glass-form" style="margin-bottom: 24px;">
+    <form method="post" class="add-team-form">
         {% csrf_token %}
         <input type="hidden" name="action" value="add">
-        <input type="text" name="player1_name" placeholder="Player 1 Name" required>
-        <input type="text" name="player2_name" placeholder="Player 2 Name" required>
-        <button type="submit" class="neon-btn">Add Team</button>
+        <div class="add-team-fields">
+            <input type="text" name="player1_name" placeholder="Player 1 Name" required>
+            <input type="text" name="player2_name" placeholder="Player 2 Name" required>
+            <button type="submit" class="neon-btn">Add Team</button>
+        </div>
     </form>
-    <form method="post" enctype="multipart/form-data" class="glass-form" style="margin-bottom: 18px;">
+    <form method="post" enctype="multipart/form-data" class="upload-csv-form">
         {% csrf_token %}
         <input type="hidden" name="action" value="upload_csv">
         <label class="neon-btn" style="margin-bottom:8px;">
             Choose CSV File
             <input type="file" name="csv_file" accept=".csv" style="display:none;" required onchange="this.form.submit()">
         </label>
-        <div style="font-size:0.95em; color:#aaa; margin-top:4px;">CSV columns: Player 1, Player 2 (no header row)</div>
+        <span style="font-size:0.95em; color:#aaa; margin-left:12px;">CSV columns: Player 1, Player 2 (no header row)</span>
     </form>
-    <form method="post" class="glass-form" style="margin-bottom: 18px;">
+    <form method="post" class="clear-all-form">
         {% csrf_token %}
         <input type="hidden" name="action" value="clear_all">
-        <input type="password" name="password" placeholder="Admin Password" required style="margin-right:8px;">
+        <input type="password" name="password" placeholder="Admin Password" required>
         <button type="submit" class="neon-btn" style="background:#a020f0;">Clear All</button>
     </form>
     {% else %}
-    <div class="neon-btn" style="background:#ffd2d2;color:#a00;text-align:center;">Teams are locked. No changes allowed.</div>
+        <div style="background:#ffd2d2; color:#a00; text-align:center; padding:8px; border-radius:6px; margin-bottom:12px;">Teams are locked. No changes allowed.</div>
     {% endif %}
     <div class="team-table-wrapper">
-        <table class="glass-table neon-glow-table">
+        <table class="modern-table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -50,12 +52,12 @@
             <tbody>
                 {% for team in teams %}
                 <tr>
-                    <td style="text-align:center;">{{ forloop.counter }}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ team.team_name }}</td>
                     <td>{{ team.player1_name }}</td>
                     <td>{{ team.player2_name }}</td>
-                    <td style="text-align:center;">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
-                    <td style="text-align:center;">
+                    <td class="{% if is_locked %}status-locked{% else %}status-active{% endif %}">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
+                    <td>
                         {% if not is_locked %}
                             <form method="post" action="/tadmin/teams/" style="display:inline;">
                                 {% csrf_token %}
@@ -81,55 +83,73 @@
     </div>
 </div>
 <style>
-.glass-modal {
-    background: rgba(40, 20, 60, 0.55);
-    box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
-    border-radius: 24px;
-    border: 1.5px solid rgba(255,255,255,0.18);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    padding: 40px 32px 32px 32px;
-    color: #fff;
-    position: relative;
-    text-align: left;
-}
-.glass-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    align-items: flex-start;
-}
-.glass-table.neon-glow-table {
-    width: 100%;
-    border-radius: 18px;
-    background: rgba(40, 20, 60, 0.55);
-    box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.18);
-    border: 1.5px solid rgba(255,255,255,0.18);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    color: #fff;
-    overflow: hidden;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-.glass-table.neon-glow-table th {
-    background: rgba(160,32,240,0.18);
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 8px;
-    border-bottom: 2px solid #a020f0;
-    text-shadow: 0 2px 8px #a020f0;
-}
-.glass-table.neon-glow-table td {
-    background: rgba(40,20,60,0.32);
-    color: #fff;
-    padding: 10px 8px;
-    border-bottom: 1px solid rgba(160,32,240,0.10);
-    text-align: center;
-}
-.glass-table.neon-glow-table tr:last-child td {
-    border-bottom: none;
-}
+    .modern-table-container {
+        max-width: 900px;
+        margin: 48px auto 0 auto;
+        background: rgba(34, 34, 44, 0.98);
+        border-radius: 18px;
+        box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+        padding: 32px 28px 36px 28px;
+        color: #eaf0fa;
+    }
+    .modern-table-title {
+        text-align: center;
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 28px;
+        letter-spacing: 0.01em;
+        color: #fff;
+    }
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #23233a;
+        border-radius: 12px;
+        overflow: hidden;
+        /* box-shadow removed for no outer glow */
+    }
+    .modern-table th, .modern-table td {
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 1.08em;
+    }
+    .modern-table th {
+        background: linear-gradient(90deg, #4e7fff 0%, #a020f0 100%);
+        color: #fff;
+        font-weight: 700;
+        border-bottom: 2px solid #3a3a5a;
+        letter-spacing: 0.04em;
+    }
+    .modern-table tr {
+        transition: background 0.2s;
+    }
+    .modern-table tbody tr:nth-child(even) {
+        background: rgba(160,32,240,0.07);
+    }
+    .modern-table tbody tr:nth-child(odd) {
+        background: rgba(78,127,255,0.06);
+    }
+    .modern-table tbody tr:hover {
+        background: #2a2a4a;
+    }
+    .modern-table td {
+        border-bottom: 1px solid #2e2e44;
+        color: #eaf0fa;
+    }
+    .modern-table td.status-active {
+        color: #20f060;
+        font-weight: 600;
+    }
+    .modern-table td.status-locked {
+        color: #ff4e7f;
+        font-weight: 600;
+    }
+    @media (max-width: 700px) {
+        .modern-table-container { padding: 10px 2vw; }
+        .modern-table-title { font-size: 1.3rem; }
+        .modern-table th, .modern-table td { padding: 8px 4px; font-size: 0.98em; }
+    }
 </style>
 {% endblock %}
 <style>

@@ -1,63 +1,46 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Sync Profiles</title>
-    <link rel="stylesheet" href="{% static 'style_v3.css' %}">
-    <style>
-        body {
-            background: #18181b url('{% static "grid-bg.png" %}') repeat;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .glass-modal {
-            background: rgba(40, 20, 60, 0.55);
-            box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
-            border-radius: 24px;
-            border: 1.5px solid rgba(255,255,255,0.18);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            padding: 40px 32px 32px 32px;
-            max-width: 400px;
-                .glass-modal {
-                    background: rgba(40, 20, 60, 0.55);
-                    box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
-                    border-radius: 24px;
-                    border: 1.5px solid rgba(255,255,255,0.18);
-                    backdrop-filter: blur(24px) saturate(180%);
-                    -webkit-backdrop-filter: blur(24px) saturate(180%);
-                    padding: 40px 32px 32px 32px;
-                    color: #fff;
-                    position: relative;
-                    text-align: left;
-                }
-            gap: 18px;
-        }
-        .glass-form input {
-            <div class="glass-modal" style="max-width: 900px; margin: 64px auto 32px auto;">
-                <div class="center-title" style="text-align:center;margin-bottom:32px;margin-top:32px;">Custom Admin Page</div>
-                <div class="neon-btn" style="background:rgba(40,20,60,0.92);margin-bottom:8px;text-align:center;">Custom admin content goes here.</div>
-            </div>
-            <style>
-            .glass-modal {
-                background: rgba(40, 20, 60, 0.55);
-                box-shadow: 0 0 32px 8px #a020f0, 0 8px 32px 0 rgba(31,38,135,0.25);
-                border-radius: 24px;
-                border: 1.5px solid rgba(255,255,255,0.18);
-                backdrop-filter: blur(24px) saturate(180%);
-                -webkit-backdrop-filter: blur(24px) saturate(180%);
-                padding: 40px 32px 32px 32px;
-                color: #fff;
-                position: relative;
-                text-align: left;
-            }
-            </style>
-            {% endblock %}
+{% extends 'nsl_home.html' %}
+{% block content %}
+<div class="modern-table-container">
+    <div class="modern-table-title">Custom Admin Page</div>
+    <div style="margin: 24px 0; text-align: center;">
+        <div style="background:#ffd2d2; color:#a00; padding:12px 0; margin-bottom:8px; border-radius:8px;">Custom admin content goes here.</div>
+    </div>
+</div>
+<style>
+    .modern-table-container {
+        max-width: 900px;
+        margin: 48px auto 0 auto;
+        background: rgba(34, 34, 44, 0.98);
+        border-radius: 18px;
+        box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+        padding: 32px 28px 36px 28px;
+        color: #eaf0fa;
+    }
+    .modern-table-title {
+        text-align: center;
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 28px;
+        letter-spacing: 0.01em;
+        color: #fff;
+    }
+    @media (max-width: 700px) {
+        .modern-table-container { padding: 10px 2vw; }
+        .modern-table-title { font-size: 1.3rem; }
+    }
+</style>
+<style>
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #23233a;
+        border-radius: 12px;
+        overflow: hidden;
+        /* box-shadow removed for no outer glow */
+    }
+</style>
+{% endblock %}
         }
         .neon-btn {
             width: 100%;
