@@ -74,8 +74,56 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
         else:
             if action == 'manual_assign':
                 for team in teams:
+    # --- Admin Team Lock View ---
+def admin_team_lock_view(request: HttpRequest) -> HttpResponse:
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    locked = getattr(lock_obj, 'is_locked', False)
+    error = None
+    if request.method == 'POST':
+        password = request.POST.get('admin_password')
+        if password != ADMIN_PASSWORD:
+            error = 'Incorrect admin password.'
+        else:
+            lock_obj.is_locked = True
+            lock_obj.save()
+            locked = True
+    return render(request, 'admin_team_lock.html', {'locked': locked, 'error': error})
                     group = request.POST.get(f'group_{team.team_id}')
+    # --- Admin Group Stage Complete View ---
+def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    completed = getattr(lock_obj, 'group_stage_finished', False)
+    error = None
+    if request.method == 'POST':
+        password = request.POST.get('admin_password')
+        if password != ADMIN_PASSWORD:
+            error = 'Incorrect admin password.'
+        else:
+            lock_obj.group_stage_finished = True
+            lock_obj.save()
+            completed = True
+    return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
                     if group in group_names:
+    # --- Admin Override Court/Slot View ---
+def admin_override_match_view(request: HttpRequest, match_id: int) -> HttpResponse:
+    from .models import Match
+    match = Match.objects.get(id=match_id)
+    error = None
+    success = None
+    if request.method == 'POST':
+        password = request.POST.get('admin_password')
+        court = request.POST.get('court')
+        slot = request.POST.get('slot')
+        if password != ADMIN_PASSWORD:
+            error = 'Incorrect admin password.'
+        else:
+            if court:
+                match.court = int(court)
+            if slot:
+                match.slot = int(slot)
+            match.save()
+            success = 'Court/slot overridden successfully.'
+    return render(request, 'admin_override_match.html', {'match': match, 'error': error, 'success': success})
                         team.group = group
                         team.save()
                 messages_list.append('Manual group assignment saved.')
