@@ -124,9 +124,6 @@ def admin_override_match_view(request: HttpRequest, match_id: int) -> HttpRespon
             match.save()
             success = 'Court/slot overridden successfully.'
     return render(request, 'admin_override_match.html', {'match': match, 'error': error, 'success': success})
-                        team.group = group
-                        team.save()
-                messages_list.append('Manual group assignment saved.')
             elif action == 'auto_assign':
                 import random
                 team_list = list(teams)
