@@ -104,7 +104,6 @@ def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
             lock_obj.save()
             completed = True
     return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
-                    if group in group_names:
     # --- Admin Override Court/Slot View ---
 def admin_override_match_view(request: HttpRequest, match_id: int) -> HttpResponse:
     from .models import Match
