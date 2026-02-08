@@ -9,22 +9,27 @@ def tournament_live_view(request: HttpRequest) -> HttpResponse:
 # --- Tournament Schedule View (placeholder, to be replaced with real logic) ---
 def tournament_schedule_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_schedule_view placeholder')
+    return render(request, 'tournament_results.html')
 # --- Tournament Groups View (placeholder, to be replaced with real logic) ---
 def tournament_groups_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_groups_view placeholder')
 # --- Tournament Teams View (placeholder, to be replaced with real logic) ---
+    return render(request, 'tournament_live.html')
 def tournament_teams_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_teams_view placeholder')
 # --- Admin Schedule Pre-Quarter View (placeholder, to be replaced with real logic) ---
 def admin_schedule_pre_quarter_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'tournament_schedule.html')
     return HttpResponse('admin_schedule_pre_quarter_view placeholder')
 # --- Admin Schedule Group Stage View (placeholder, to be replaced with real logic) ---
 def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('admin_schedule_group_stage_view placeholder')
+    return render(request, 'tournament_groups.html')
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
+    return render(request, 'tournament_teams.html')
 from .models import Team, TeamsLock
 from django.utils import timezone
 import csv
@@ -218,14 +223,14 @@ from django.views.decorators.csrf import csrf_exempt
 def referee_court_view(request: HttpRequest, court_id: int) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     round_completed = getattr(lock_obj, 'qualifier_finished', False)
-    # For demo, use qualifier_schedule
     matches = getattr(lock_obj, 'qualifier_schedule', [])
-    # Filter matches for this court and only current/upcoming
     court_matches = []
     for match in matches:
         if str(match.get('court', '').replace('Court ', '')) == str(court_id):
             if match.get('status') in ['Scheduled', 'Active']:
                 court_matches.append(match)
+    if request.method == 'GET':
+        return render(request, 'referee_court.html', {'court_id': court_id, 'court_matches': court_matches, 'round_completed': round_completed})
     # Score update logic
     if request.method == 'POST' and not round_completed:
         match_id = request.POST.get('match_id')
