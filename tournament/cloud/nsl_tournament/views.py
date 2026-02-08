@@ -1,7 +1,10 @@
+# --- Tournament Live View (placeholder, to be replaced with real logic) ---
+def tournament_live_view(request: HttpRequest) -> HttpResponse:
+    return HttpResponse('tournament_live_view placeholder')
+from django.http import HttpRequest, HttpResponse
 # --- Tournament Schedule View (placeholder, to be replaced with real logic) ---
 def tournament_schedule_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_schedule_view placeholder')
-from django.http import HttpRequest, HttpResponse
 # --- Tournament Groups View (placeholder, to be replaced with real logic) ---
 def tournament_groups_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_groups_view placeholder')
