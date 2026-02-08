@@ -552,26 +552,36 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                         reader = csv.reader(TextIOWrapper(csv_file, encoding="utf-8"))
                         first = True
                         added_count = 0
+                        duplicate_count = 0
+                        invalid_count = 0
                         for row in reader:
                             if first and ("player" in row[0].lower() or "name" in row[0].lower()):
                                 first = False
                                 continue
                             first = False
-                            if len(row) >= 2:
-                                player1 = row[0].strip()
-                                player2 = row[1].strip()
-                                team_name = f"{player1} & {player2}"
-                                if not Team.objects.filter(team_name=team_name, player1_name=player1, player2_name=player2).exists():
-                                    Team.objects.create(
-                                        team_name=team_name,
-                                        player1_name=player1,
-                                        player2_name=player2,
-                                    )
-                                    added_count += 1
+                            if len(row) < 2 or not row[0].strip() or not row[1].strip():
+                                invalid_count += 1
+                                continue
+                            player1 = row[0].strip()
+                            player2 = row[1].strip()
+                            team_name = f"{player1} & {player2}"
+                            if Team.objects.filter(team_name=team_name, player1_name=player1, player2_name=player2).exists():
+                                duplicate_count += 1
+                                continue
+                            Team.objects.create(
+                                team_name=team_name,
+                                player1_name=player1,
+                                player2_name=player2,
+                            )
+                            added_count += 1
                         if added_count > 0:
-                            messages.success(request, "File Uploaded Successfully")
-                        else:
-                            messages.warning(request, "No new teams added. All teams already exist.")
+                            messages.success(request, f"{added_count} new teams added.")
+                        if duplicate_count > 0:
+                            messages.warning(request, f"{duplicate_count} duplicate teams skipped.")
+                        if invalid_count > 0:
+                            messages.error(request, f"{invalid_count} invalid rows skipped.")
+                        if added_count == 0 and duplicate_count == 0 and invalid_count == 0:
+                            messages.warning(request, "No valid teams found in file.")
                     except Exception as e:
                         messages.error(request, f"CSV upload failed: {e}")
                 return redirect("/teams/")
