@@ -353,6 +353,23 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
         'messages': messages_list,
     })
 def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
+                elif action == 'generate_best_loser_rematch' and schedule_locked:
+                    # Best loser/rematch logic
+                    all_matches = lock_obj.group_stage_schedule if hasattr(lock_obj, 'group_stage_schedule') else []
+                    loss_count = {}
+                    for match in all_matches:
+                        if 'result' in match:
+                            loser = match['result'].get('loser')
+                            if loser:
+                                loss_count[loser] = loss_count.get(loser, 0) + 1
+                    sorted_losers = sorted(loss_count.items(), key=lambda x: x[1], reverse=True)
+                    best_losers = [team for team, losses in sorted_losers[:2]]  # Top 2 best losers
+                    if len(best_losers) == 2:
+                        rematch = {'match': f'{best_losers[0]} vs {best_losers[1]}', 'group': 'Rematch', 'court': 'Court 1', 'slot': len(all_matches)+1, 'status': 'Scheduled'}
+                        lock_obj.group_stage_schedule.append(rematch)
+                        lock_obj.save()
+                        schedule = lock_obj.group_stage_schedule
+                        messages_list.append('Best loser rematch scheduled.')
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     groups_locked = getattr(lock_obj, 'groups_locked', False)
     schedule_locked = getattr(lock_obj, 'group_stage_schedule_locked', False)
