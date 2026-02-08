@@ -74,6 +74,8 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
         else:
             if action == 'manual_assign':
                 for team in teams:
+                    # TODO: Add manual assignment logic here
+                    pass
     # --- Admin Team Lock View ---
 def admin_team_lock_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
