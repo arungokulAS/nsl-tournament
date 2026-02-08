@@ -1,3 +1,15 @@
+# --- New Admin Management Pages ---
+def admin_groups_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_groups_manage.html')
+
+def admin_schedule_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_schedule_manage.html')
+
+def admin_live_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_live_manage.html')
+
+def admin_finish_rounds_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_finish_rounds_manage.html')
 # --- Django Imports ---
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect

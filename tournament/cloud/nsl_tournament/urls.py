@@ -1,3 +1,7 @@
+    path('tadmin/groups-manage/', views.admin_groups_manage_view, name='admin_groups_manage'),
+    path('tadmin/schedule/', views.admin_schedule_manage_view, name='admin_schedule_manage'),
+    path('tadmin/live/', views.admin_live_manage_view, name='admin_live_manage'),
+    path('tadmin/finish-rounds/', views.admin_finish_rounds_manage_view, name='admin_finish_rounds_manage'),
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render

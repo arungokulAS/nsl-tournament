@@ -2,6 +2,13 @@
 {% block content %}
 <div class="modern-table-container">
     <div class="modern-table-title">Teams Management</div>
+    <nav class="admin-nav" style="margin-bottom:24px; text-align:center;">
+        <a href="/tadmin/teams/" class="neon-btn" style="margin:0 8px 8px 0;">Teams</a>
+        <a href="/tadmin/groups/" class="neon-btn" style="margin:0 8px 8px 0;">Groups</a>
+        <a href="/tadmin/schedule/" class="neon-btn" style="margin:0 8px 8px 0;">Schedule</a>
+        <a href="/tadmin/live/" class="neon-btn" style="margin:0 8px 8px 0;">Live Match</a>
+        <a href="/tadmin/finish-rounds/" class="neon-btn" style="margin:0 8px 8px 0;">Finish Rounds</a>
+    </nav>
     {% if messages %}
         <div style="margin: 16px 0; text-align: center;">
             {% for message in messages %}
@@ -19,6 +26,7 @@
             <button type="submit" class="neon-btn">Add Team</button>
         </div>
     </form>
+    {% endif %}
     <form method="post" enctype="multipart/form-data" class="upload-csv-form">
         {% csrf_token %}
         <input type="hidden" name="action" value="upload_csv">
