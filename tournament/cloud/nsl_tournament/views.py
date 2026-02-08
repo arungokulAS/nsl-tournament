@@ -1,3 +1,6 @@
+# --- Admin Schedule Pre-Quarter View (placeholder, to be replaced with real logic) ---
+def admin_schedule_pre_quarter_view(request: HttpRequest) -> HttpResponse:
+    return HttpResponse('admin_schedule_pre_quarter_view placeholder')
 # Ensure these imports are at the very top
 from django.http import HttpRequest, HttpResponse
 # --- Admin Schedule Group Stage View (placeholder, to be replaced with real logic) ---
