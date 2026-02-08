@@ -1,7 +1,8 @@
+# Move import to very top
+from django.http import HttpRequest, HttpResponse
 # --- Tournament Results View (placeholder, to be replaced with real logic) ---
 def tournament_results_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_results_view placeholder')
-from django.http import HttpRequest, HttpResponse
 # --- Tournament Live View (placeholder, to be replaced with real logic) ---
 def tournament_live_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('tournament_live_view placeholder')
