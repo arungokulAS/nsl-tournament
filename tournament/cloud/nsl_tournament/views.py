@@ -109,11 +109,20 @@ def contact_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'contact.html')
 def points_table_view(request: HttpRequest) -> HttpResponse:
     teams = list(Team.objects.all())
-    # If points are tracked elsewhere, use getattr; else, just show teams
+    # Add all required fields for the new point table, using default values if not present
+    team_rows = []
     for team in teams:
-        team.points = getattr(team, 'points', 0)
-    teams = sorted(teams, key=lambda t: getattr(t, 'points', 0), reverse=True)
-    return render(request, 'points.html', {'teams': teams})
+        team_rows.append({
+            'team_name': getattr(team, 'team_name', ''),
+            'played': getattr(team, 'played', 0),
+            'wins': getattr(team, 'wins', 0),
+            'draws': getattr(team, 'draws', 0),
+            'losses': getattr(team, 'losses', 0),
+            'dif': getattr(team, 'dif', 0),
+            'points': getattr(team, 'points', 0),
+        })
+    team_rows = sorted(team_rows, key=lambda t: t['points'], reverse=True)
+    return render(request, 'points.html', {'teams': team_rows})
 from django.http import HttpRequest, HttpResponse
 def results_group_stage_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)

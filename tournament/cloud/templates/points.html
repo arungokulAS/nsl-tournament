@@ -1,24 +1,124 @@
 {% extends 'nsl_home.html' %}
 {% block content %}
-<div class="glass-modal" style="max-width: 900px; margin: 48px auto 0 auto;">
-    <div class="center-title" style="text-align:center;margin-bottom:32px;">Points Table</div>
-    <table class="glass-table" style="width:100%;">
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Team Name</th>
-                <th>Points</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for team in teams %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ team.team_name }}</td>
-                <td>{{ team.points }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="points-table-wrapper">
+    <div class="points-table-header">
+        <span class="points-group-title">Points Table</span>
+    </div>
+    <div class="points-table-glass">
+        <table class="points-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>P</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>Dif</th>
+                    <th>PTS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr class="{% if forloop.counter <= 4 %}highlight-row{% endif %}">
+                    <td>
+                        <span class="points-rank-box {% if forloop.counter <= 4 %}rank-top{% elif forloop.counter > 16 %}rank-bottom{% endif %}">{{ forloop.counter }}</span>
+                    </td>
+                    <td class="points-team-cell">
+                        <span>{{ team.team_name }}</span>
+                    </td>
+                    <td>{{ team.played|default:0 }}</td>
+                    <td>{{ team.wins|default:0 }}</td>
+                    <td>{{ team.draws|default:0 }}</td>
+                    <td>{{ team.losses|default:0 }}</td>
+                    <td>{{ team.dif|default:0 }}</td>
+                    <td>{{ team.points|default:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+<style>
+.points-table-wrapper {
+    max-width: 900px;
+    margin: 48px auto 32px auto;
+    padding: 0 8px;
+}
+.points-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.points-group-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 16px #a020f0, 0 2px 12px #4e7fff;
+    text-transform: uppercase;
+}
+.points-table-glass {
+    background: rgba(34, 34, 44, 0.82);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+    padding: 18px 0 8px 0;
+}
+.points-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.points-table th, .points-table td {
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 1.08em;
+    color: #eaf0fa;
+}
+.points-table th {
+    background: linear-gradient(90deg, #4e7fff 0%, #a020f0 100%);
+    color: #fff;
+    font-weight: 700;
+    border-bottom: 2px solid #3a3a5a;
+    letter-spacing: 0.04em;
+}
+.points-table td {
+    border-bottom: 1px solid #2e2e44;
+}
+.points-team-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+}
+.points-rank-box {
+    display: inline-block;
+    min-width: 28px;
+    padding: 3px 0;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 1em;
+    color: #fff;
+    background: #23233a;
+}
+.rank-top {
+    background: linear-gradient(90deg, #20f060 0%, #4e7fff 100%);
+    color: #18181b;
+}
+.rank-bottom {
+    background: linear-gradient(90deg, #ff4e7f 0%, #a020f0 100%);
+    color: #fff;
+}
+.highlight-row {
+    background: rgba(255, 215, 0, 0.10);
+    font-weight: 700;
+    color: #ffd700;
+}
+@media (max-width: 600px) {
+    .points-table-wrapper { max-width: 99vw; }
+    .points-table th, .points-table td { padding: 7px 2px; font-size: 0.98em; }
+    .points-group-title { font-size: 1.1rem; }
+}
+</style>
 {% endblock %}
