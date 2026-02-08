@@ -1,3 +1,6 @@
+# --- Tournament Teams View (placeholder, to be replaced with real logic) ---
+def tournament_teams_view(request: HttpRequest) -> HttpResponse:
+    return HttpResponse('tournament_teams_view placeholder')
 from django.http import HttpRequest, HttpResponse
 # --- Admin Schedule Pre-Quarter View (placeholder, to be replaced with real logic) ---
 def admin_schedule_pre_quarter_view(request: HttpRequest) -> HttpResponse:
