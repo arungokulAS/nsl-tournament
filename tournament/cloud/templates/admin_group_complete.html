@@ -25,19 +25,24 @@
   margin: 64px auto 32px auto;
 }
 .admin-action-card {
-  background: rgba(34, 34, 44, 0.92);
+  background: rgba(34, 34, 44, 0.72);
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 #a020f033, 0 1.5px 8px 0 #0008;
+  box-shadow: 0 4px 32px 0 #a020f0cc, 0 1.5px 8px 0 #0008, 0 0 32px 8px #4e7fff44;
   padding: 36px 32px 32px 32px;
   color: #fff;
   text-align: center;
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 2.5px solid #a020f0;
+  box-shadow: 0 0 24px 6px #a020f0aa inset, 0 0 32px 8px #4e7fff44;
 }
 .admin-action-title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 24px;
   color: #fff;
-  text-shadow: 0 2px 16px #a020f0, 0 2px 12px #4e7fff;
+  text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff;
+  letter-spacing: 0.5px;
+  animation: neonGlowTitle 1.8s ease-in-out infinite alternate;
 }
 .admin-action-form .form-row {
   margin-bottom: 18px;
@@ -50,23 +55,60 @@
   margin-bottom: 6px;
 }
 .admin-action-form input[type="password"] {
-  background: #23233a;
+  background: rgba(35, 35, 58, 0.85);
   color: #fff;
   border: 1.5px solid #4e7fff;
   border-radius: 6px;
   padding: 7px 12px;
   font-size: 1em;
   width: 100%;
+  box-shadow: 0 0 8px 2px #4e7fff33;
+  backdrop-filter: blur(4px);
 }
 .admin-action-success {
   margin-top: 18px;
   color: #20f060;
   font-weight: 600;
+  text-shadow: 0 0 12px #20f060, 0 0 8px #fff;
+  animation: neonGlowSuccess 1.2s ease-in-out infinite alternate;
 }
 .admin-action-error {
   margin-top: 18px;
   color: #ff4e7f;
   font-weight: 600;
+  text-shadow: 0 0 12px #ff4e7f, 0 0 8px #fff;
+  animation: neonGlowError 1.2s ease-in-out infinite alternate;
+}
+/* Neon-glow button styles */
+.neon-btn {
+  background: linear-gradient(90deg, #a020f0 0%, #4e7fff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 1.1em;
+  font-weight: 700;
+  box-shadow: 0 0 16px 4px #a020f0, 0 0 8px 2px #4e7fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s, background 0.2s;
+  text-shadow: 0 0 8px #fff, 0 0 16px #a020f0;
+  animation: neonGlowBtn 1.5s ease-in-out infinite alternate;
+}
+@keyframes neonGlowBtn {
+  0% { box-shadow: 0 0 16px 4px #a020f0, 0 0 8px 2px #4e7fff; }
+  100% { box-shadow: 0 0 32px 8px #a020f0, 0 0 16px 4px #4e7fff; }
+}
+@keyframes neonGlowTitle {
+  0% { text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff; }
+  100% { text-shadow: 0 2px 32px #a020f0, 0 2px 24px #4e7fff, 0 0 16px #fff; }
+}
+@keyframes neonGlowSuccess {
+  0% { text-shadow: 0 0 12px #20f060, 0 0 8px #fff; }
+  100% { text-shadow: 0 0 24px #20f060, 0 0 16px #fff; }
+}
+@keyframes neonGlowError {
+  0% { text-shadow: 0 0 12px #ff4e7f, 0 0 8px #fff; }
+  100% { text-shadow: 0 0 24px #ff4e7f, 0 0 16px #fff; }
 }
 </style>
 {% endblock %}

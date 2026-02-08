@@ -1,0 +1,26 @@
+.modern-table-container {
+    max-width: 900px;
+    margin: 48px auto 0 auto;
+    background: rgba(34, 34, 44, 0.72);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px 0 #a020f0cc, 0 1.5px 8px 0 #0008, 0 0 32px 8px #4e7fff44;
+    padding: 32px 28px 36px 28px;
+    color: #eaf0fa;
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 2.5px solid #a020f0;
+    box-shadow: 0 0 24px 6px #a020f0aa inset, 0 0 32px 8px #4e7fff44;
+}
+.modern-table-title {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: 0.01em;
+    color: #fff;
+    text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff;
+    animation: neonGlowTitle 1.8s ease-in-out infinite alternate;
+}
+@keyframes neonGlowTitle {
+  0% { text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff; }
+  100% { text-shadow: 0 2px 32px #a020f0, 0 2px 24px #4e7fff, 0 0 16px #fff; }
+}

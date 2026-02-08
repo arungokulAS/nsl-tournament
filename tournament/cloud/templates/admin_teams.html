@@ -94,11 +94,14 @@
     .modern-table-container {
         max-width: 900px;
         margin: 48px auto 0 auto;
-        background: rgba(34, 34, 44, 0.98);
+        background: rgba(34, 34, 44, 0.72);
         border-radius: 18px;
-        box-shadow: 0 4px 32px 0 #4e7fff33, 0 1.5px 8px 0 #0008;
+        box-shadow: 0 4px 32px 0 #a020f0cc, 0 1.5px 8px 0 #0008, 0 0 32px 8px #4e7fff44;
         padding: 32px 28px 36px 28px;
         color: #eaf0fa;
+        backdrop-filter: blur(16px) saturate(180%);
+        border: 2.5px solid #a020f0;
+        box-shadow: 0 0 24px 6px #a020f0aa inset, 0 0 32px 8px #4e7fff44;
     }
     .modern-table-title {
         text-align: center;
@@ -107,6 +110,8 @@
         margin-bottom: 28px;
         letter-spacing: 0.01em;
         color: #fff;
+        text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff;
+        animation: neonGlowTitle 1.8s ease-in-out infinite alternate;
     }
     .modern-table {
         width: 100%;
@@ -128,6 +133,7 @@
         font-weight: 700;
         border-bottom: 2px solid #3a3a5a;
         letter-spacing: 0.04em;
+        text-shadow: 0 0 12px #a020f0, 0 0 8px #4e7fff;
     }
     .modern-table tr {
         transition: background 0.2s;
@@ -148,10 +154,14 @@
     .modern-table td.status-active {
         color: #20f060;
         font-weight: 600;
+        text-shadow: 0 0 12px #20f060, 0 0 8px #fff;
+        animation: neonGlowSuccess 1.2s ease-in-out infinite alternate;
     }
     .modern-table td.status-locked {
         color: #ff4e7f;
         font-weight: 600;
+        text-shadow: 0 0 12px #ff4e7f, 0 0 8px #fff;
+        animation: neonGlowError 1.2s ease-in-out infinite alternate;
     }
     @media (max-width: 700px) {
         .modern-table-container { padding: 10px 2vw; }
@@ -178,16 +188,43 @@
     min-width: 160px;
     padding: 8px 12px;
     border-radius: 8px;
-    border: none;
+    border: 1.5px solid #4e7fff;
     background: rgba(20,20,30,0.85);
     color: #fff;
     font-size: 1em;
+    box-shadow: 0 0 8px 2px #4e7fff33;
+    backdrop-filter: blur(4px);
 }
 .neon-btn {
     min-width: 120px;
     padding: 8px 18px;
     font-weight: 600;
     font-size: 1em;
+    background: linear-gradient(90deg, #a020f0 0%, #4e7fff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 0 16px 4px #a020f0, 0 0 8px 2px #4e7fff;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+    text-shadow: 0 0 8px #fff, 0 0 16px #a020f0;
+    animation: neonGlowBtn 1.5s ease-in-out infinite alternate;
+}
+@keyframes neonGlowBtn {
+    0% { box-shadow: 0 0 16px 4px #a020f0, 0 0 8px 2px #4e7fff; }
+    100% { box-shadow: 0 0 32px 8px #a020f0, 0 0 16px 4px #4e7fff; }
+}
+@keyframes neonGlowTitle {
+    0% { text-shadow: 0 2px 24px #a020f0, 0 2px 16px #4e7fff, 0 0 8px #fff; }
+    100% { text-shadow: 0 2px 32px #a020f0, 0 2px 24px #4e7fff, 0 0 16px #fff; }
+}
+@keyframes neonGlowSuccess {
+    0% { text-shadow: 0 0 12px #20f060, 0 0 8px #fff; }
+    100% { text-shadow: 0 0 24px #20f060, 0 0 16px #fff; }
+}
+@keyframes neonGlowError {
+    0% { text-shadow: 0 0 12px #ff4e7f, 0 0 8px #fff; }
+    100% { text-shadow: 0 0 24px #ff4e7f, 0 0 16px #fff; }
 }
 .clear-all-form, .upload-csv-form {
     display: flex;
