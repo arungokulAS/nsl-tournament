@@ -5,6 +5,9 @@
 <div style="max-width: 950px; margin: 60px auto 40px auto;">
     <h2 style="text-align:center; margin-bottom:28px; color:#fff; text-shadow:0 2px 16px #a020f0;">Team List</h2>
     <div style="color:#b8b8ff; font-size:1.1em; margin-bottom:18px; text-align:center;">Total Teams: {{ teams|length }}</div>
+    {% if is_locked %}
+        <div class="neon-btn" style="margin:24px 0;background:rgba(40,20,60,0.92);text-align:center;">Teams are locked. No changes allowed.</div>
+    {% endif %}
     <div class="glass-table-container">
         <table class="glass-table neon-glow-table">
             <thead>

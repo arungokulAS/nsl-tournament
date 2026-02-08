@@ -1,3 +1,8 @@
+# Ensure these imports are at the very top
+from django.http import HttpRequest, HttpResponse
+# --- Admin Schedule Group Stage View (placeholder, to be replaced with real logic) ---
+def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
+    return HttpResponse('admin_schedule_group_stage_view placeholder')
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -22,7 +27,7 @@ def admin_group_lock_view(request: HttpRequest) -> HttpResponse:
     locked = getattr(lock_obj, 'groups_locked', False)
     error = None
     if request.method == 'POST':
-        password = request.POST.get('admin_password')
+        password = request.POST.get('password')
         if password != ADMIN_PASSWORD:
             error = 'Incorrect admin password.'
         else:
@@ -36,8 +41,12 @@ def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     completed = getattr(lock_obj, 'group_stage_finished', False)
     error = None
+    # Enforce group stage can only be completed if groups are locked
+    if not getattr(lock_obj, 'groups_locked', False):
+        error = 'Cannot complete group stage before groups are locked.'
+        return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
     if request.method == 'POST':
-        password = request.POST.get('admin_password')
+        password = request.POST.get('password')
         if password != ADMIN_PASSWORD:
             error = 'Incorrect admin password.'
         else:
@@ -76,54 +85,6 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
                 for team in teams:
                     # TODO: Add manual assignment logic here
                     pass
-    # --- Admin Team Lock View ---
-def admin_team_lock_view(request: HttpRequest) -> HttpResponse:
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    locked = getattr(lock_obj, 'is_locked', False)
-    error = None
-    if request.method == 'POST':
-        password = request.POST.get('admin_password')
-        if password != ADMIN_PASSWORD:
-            error = 'Incorrect admin password.'
-        else:
-            lock_obj.is_locked = True
-            lock_obj.save()
-            locked = True
-    return render(request, 'admin_team_lock.html', {'locked': locked, 'error': error})
-    # --- Admin Group Stage Complete View ---
-def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    completed = getattr(lock_obj, 'group_stage_finished', False)
-    error = None
-    if request.method == 'POST':
-        password = request.POST.get('admin_password')
-        if password != ADMIN_PASSWORD:
-            error = 'Incorrect admin password.'
-        else:
-            lock_obj.group_stage_finished = True
-            lock_obj.save()
-            completed = True
-    return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
-    # --- Admin Override Court/Slot View ---
-def admin_override_match_view(request: HttpRequest, match_id: int) -> HttpResponse:
-    from .models import Match
-    match = Match.objects.get(id=match_id)
-    error = None
-    success = None
-    if request.method == 'POST':
-        password = request.POST.get('admin_password')
-        court = request.POST.get('court')
-        slot = request.POST.get('slot')
-        if password != ADMIN_PASSWORD:
-            error = 'Incorrect admin password.'
-        else:
-            if court:
-                match.court = int(court)
-            if slot:
-                match.slot = int(slot)
-            match.save()
-            success = 'Court/slot overridden successfully.'
-    return render(request, 'admin_override_match.html', {'match': match, 'error': error, 'success': success})
             elif action == 'auto_assign':
                 import random
                 team_list = list(teams)
@@ -310,13 +271,13 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
         else:
             if action == 'generate_schedule' and not schedule_locked:
                 court_count = int(request.POST.get('court_count', 4))
-                # For demo, use top 4 teams from each group
                 group_names = ['A', 'B', 'C', 'D', 'E', 'F']
                 teams = Team.objects.all()
                 qualified = []
                 for group in group_names:
-                    group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group][:4]
-                    qualified.extend(group_teams)
+                    group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+                    group_teams = sorted(group_teams, key=lambda t: getattr(t, 'points', 0), reverse=True)
+                    qualified.extend([t.team_name for t in group_teams[:4]])
                 matches = []
                 for i in range(0, len(qualified), 2):
                     if i+1 < len(qualified):
@@ -324,8 +285,6 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
                 for idx, match in enumerate(matches):
                     match['court'] = f'Court {idx % court_count + 1}'
                     match['status'] = 'Scheduled'
-                from django.http import HttpRequest, HttpResponse
-
                 lock_obj.qualifier_schedule = matches
                 lock_obj.qualifier_schedule_locked = True
                 lock_obj.save()
@@ -340,101 +299,41 @@ def admin_schedule_qualifier_view(request: HttpRequest) -> HttpResponse:
                 for match in schedule:
                     match['status'] = 'Completed'
                 lock_obj.qualifier_finished = True
+                # Best loser logic: select 4 teams with highest points among non-qualifiers
+                group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+                teams = Team.objects.all()
+                qualified = set()
+                for group in group_names:
+                    group_teams = [team for team in teams if getattr(team, 'group', None) == group]
+                    group_teams = sorted(group_teams, key=lambda t: getattr(t, 'points', 0), reverse=True)
+                    qualified.update([t.team_name for t in group_teams[:4]])
+                non_qualified = [t for t in teams if t.team_name not in qualified]
+                best_losers = sorted(non_qualified, key=lambda t: getattr(t, 'points', 0), reverse=True)[:4]
+                lock_obj.best_losers = [t.team_name for t in best_losers]
                 lock_obj.save()
                 round_finished = True
-                messages_list.append('Qualifier finished and archived.')
+                messages_list.append('Qualifier finished, best losers selected, and archived.')
     return render(request, 'admin_schedule_qualifier.html', {
         'schedule': schedule,
         'schedule_locked': getattr(lock_obj, 'qualifier_schedule_locked', False),
         'round_finished': getattr(lock_obj, 'qualifier_finished', False),
         'messages': messages_list,
     })
-def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
-                elif action == 'generate_best_loser_rematch' and schedule_locked:
-                    # Best loser/rematch logic
-                    all_matches = lock_obj.group_stage_schedule if hasattr(lock_obj, 'group_stage_schedule') else []
-                    loss_count = {}
-                    for match in all_matches:
-                        if 'result' in match:
-                            loser = match['result'].get('loser')
-                            if loser:
-                                loss_count[loser] = loss_count.get(loser, 0) + 1
-                    sorted_losers = sorted(loss_count.items(), key=lambda x: x[1], reverse=True)
-                    best_losers = [team for team, losses in sorted_losers[:2]]  # Top 2 best losers
-                    if len(best_losers) == 2:
-                        rematch = {'match': f'{best_losers[0]} vs {best_losers[1]}', 'group': 'Rematch', 'court': 'Court 1', 'slot': len(all_matches)+1, 'status': 'Scheduled'}
-                        lock_obj.group_stage_schedule.append(rematch)
-                        lock_obj.save()
-                        schedule = lock_obj.group_stage_schedule
-                        messages_list.append('Best loser rematch scheduled.')
-    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
-    groups_locked = getattr(lock_obj, 'groups_locked', False)
-    schedule_locked = getattr(lock_obj, 'group_stage_schedule_locked', False)
-    round_finished = getattr(lock_obj, 'group_stage_finished', False)
-    group_names = ['A', 'B', 'C', 'D', 'E', 'F']
-    teams = Team.objects.all()
-    schedule = getattr(lock_obj, 'group_stage_schedule', [])
-    messages_list = []
-    # Dependency: groups must be locked before scheduling
-    if not groups_locked:
-        messages_list.append('Groups must be locked before group stage scheduling.')
-        return render(request, 'admin_schedule_group_stage.html', {
-            'schedule': [],
-            'schedule_locked': False,
-            'round_finished': False,
-            'messages': messages_list,
-        })
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        password = request.POST.get('password')
-        if password != ADMIN_PASSWORD:
-            messages_list.append('Incorrect admin password.')
-        else:
-            if action == 'generate_schedule' and groups_locked and not schedule_locked:
-                court_count = int(request.POST.get('court_count', 4))
-                matches = []
-                for group in group_names:
-                    group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
-                    # Round-robin scheduling
-                    for i in range(len(group_teams)):
-                        for j in range(i+1, len(group_teams)):
-                            matches.append({'match': f'{group_teams[i]} vs {group_teams[j]}', 'group': group})
-                # Assign courts and slots
-                for idx, match in enumerate(matches):
-                    match['court'] = f'Court {idx % court_count + 1}'
-                    match['slot'] = idx + 1
-                    match['status'] = 'Scheduled'
-                lock_obj.group_stage_schedule = matches
-                lock_obj.group_stage_schedule_locked = True
-                lock_obj.save()
-                schedule = matches
-                messages_list.append('Schedule generated and locked.')
-            elif action == 'delete_schedule' and not schedule_locked:
-                lock_obj.group_stage_schedule = []
-                lock_obj.save()
-                schedule = []
-                messages_list.append('Schedule deleted.')
-            elif action == 'finish_round' and schedule_locked and not round_finished:
-                for match in schedule:
-                    match['status'] = 'Completed'
-                lock_obj.group_stage_finished = True
-                lock_obj.save()
-                round_finished = True
-                messages_list.append('Group Stage finished and archived.')
-    return render(request, 'admin_schedule_group_stage.html', {
-        'schedule': schedule,
-        'schedule_locked': getattr(lock_obj, 'group_stage_schedule_locked', False),
-        'round_finished': getattr(lock_obj, 'group_stage_finished', False),
-        'messages': messages_list,
-    })
+
+# --- Admin Schedule Group Stage View ---
 def group_list_view(request: HttpRequest) -> HttpResponse:
-    teams = Team.objects.all()
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = getattr(lock_obj, 'is_locked', False)
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
+    teams = Team.objects.all()
     groups = []
     for group in group_names:
         group_teams = [team for team in teams if getattr(team, 'group', None) == group]
-        groups.append({'name': group, 'teams': group_teams})
-    return render(request, 'group-list.html', {'groups': groups})
+        groups.append({'name': group, 'teams': [t.team_name for t in group_teams]})
+    return render(request, 'groups.html', {
+        'groups': groups,
+        'is_locked': is_locked,
+    })
 
 def winners_view(request: HttpRequest) -> HttpResponse:
     # For demo, assume teams with points > 0 are winners
@@ -505,11 +404,10 @@ from django.conf import settings
 ADMIN_PASSWORD = "nsl2026"
 
 def teams_view(request: HttpRequest) -> HttpResponse:
-    django_messages = messages
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     is_locked = lock_obj.is_locked
     teams = Team.objects.all().order_by('created_at')
-    return render(request, 'teams.html', {'teams': teams, 'messages': django_messages.get_messages(request), 'is_locked': is_locked})
+    return render(request, 'teams.html', {'teams': teams, 'is_locked': is_locked})
 
 def team_list_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all().order_by('created_at')

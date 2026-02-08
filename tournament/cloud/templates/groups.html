@@ -13,7 +13,7 @@
             <tbody>
                 {% for group in groups %}
                 <tr>
-                    <td style="padding:8px;">{{ group.name }}</td>
+                    <td style="padding:8px;">Group {{ forloop.counter }}</td>
                     <td style="padding:8px;">{{ group.teams|join:', ' }}</td>
                 </tr>
                 {% endfor %}

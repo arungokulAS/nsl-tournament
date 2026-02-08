@@ -4,51 +4,35 @@
     display: inline-block;
 }
 .nav-dropdown .dropdown-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1 0 auto;
-    min-height: 0;
-    margin: 0 auto;
-    width: 100vw;
-    position: relative;
-    z-index: 10;
-    flex-grow: 1;
-    z-index: 100;
-    margin-top: 10px;
-    padding: 8px 0;
+    display: none;
+    position: absolute;
+    background: rgba(30, 0, 60, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
+    margin-top: 12px;
+    min-width: 180px;
+    z-index: 1000;
     pointer-events: auto;
 }
-.nav-dropdown:hover .dropdown-content {
+.nav-dropdown:hover .dropdown-content,
+.nav-dropdown:focus-within .dropdown-content {
     display: block;
 }
-.dropdown-content a {
+.nav-dropdown .dropdown-content a {
     color: #fff;
-    padding: 10px 24px;
+    padding: 12px 18px;
     text-decoration: none;
     display: block;
-    font-size: 1rem;
-    border: none;
-    background: none;
-    transition: background 0.2s, color 0.2s;
-    border-radius: 8px;
-    text-align: left;
+    font-size: 1.08em;
+    border-radius: 12px;
+    transition: background 0.15s;
 }
-.dropdown-content a:hover {
-    color: #00eaff;
+.nav-dropdown .dropdown-content a:hover {
+    background: rgba(160,32,240,0.18);
+    color: #a020f0;
 }
-/* Force Admin dropdown to always show for debugging */
-.nav-dropdown:nth-child(5) .dropdown-content {
-  display: block !important;
-  position: absolute;
-  background: rgba(30, 0, 60, 0.95);
-  border-radius: 18px;
-  box-shadow: 0 2px 16px 0 rgba(80,0,180,0.18);
-  margin-top: 12px;
-  min-width: 180px;
-  z-index: 1000;
-}
+
+/* Body and Glassmorphism Navigation Bar */
 body {
     background: #000;
     min-height: 100vh;
@@ -214,7 +198,7 @@ h1 {
   padding: 12px 32px;
   border: none;
   border-radius: 999px;
-  background: rgba(20, 20, 30, 0.85);
+  background: rgba(10, 10, 20, 0.92);
   color: #fff;
   font-size: 1.1em;
   font-weight: 600;
@@ -233,15 +217,56 @@ h1 {
   border-radius: 999px;
   border: 2px solid rgba(255,255,255,0.85); /* thin white border */
   box-shadow:
-    0 0 4px 1px rgba(160, 32, 240, 0.35); /* very light purple glow, 1px spread */
+    0 0 16px 4px rgba(160, 32, 240, 0.55); /* soft purple outer glow */
   pointer-events: none;
   z-index: 2;
 }
 .neon-btn:hover, .neon-btn:focus {
-  background: rgba(40, 20, 60, 0.92);
+  background: rgba(30, 10, 40, 0.98);
   color: #fff;
+  box-shadow:
+    0 0 24px 8px rgba(160, 32, 240, 0.65);
 }
 .neon-btn:active {
-  background: rgba(60, 20, 80, 0.98);
+  background: rgba(60, 20, 80, 1);
   color: #fff;
+  box-shadow:
+    0 0 8px 2px rgba(160, 32, 240, 0.35);
+}
+
+/* Glassmorphism Table Style */
+.glass-table {
+  width: 100%;
+  border-radius: 18px;
+  background: rgba(30,0,60,0.18);
+  box-shadow: 0 0 24px 6px rgba(160,32,240,0.18), 0 2px 16px 0 rgba(80,0,180,0.10);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  overflow: hidden;
+  margin: 0 auto 32px auto;
+}
+.glass-table th, .glass-table td {
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 1.08em;
+  text-align: left;
+  border-bottom: 1px solid rgba(160,32,240,0.08);
+}
+.glass-table th {
+  background: rgba(160,32,240,0.12);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.glass-table tr:last-child td {
+  border-bottom: none;
+}
+.glass-table tr:hover td {
+  background: rgba(160,32,240,0.08);
+  color: #a020f02a;
+}
+/* Neon glow for table border */
+.glass-table {
+  box-shadow: 0 0 24px 6px rgba(160,32,240,0.18), 0 0 0 2px rgba(160,32,240,0.22);
 }
