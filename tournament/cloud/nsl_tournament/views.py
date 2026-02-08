@@ -1,5 +1,17 @@
-# --- Admin Group Lock View ---
+# --- Django Imports ---
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from .models import Team, TeamsLock
+from django.utils import timezone
+import csv
+from io import TextIOWrapper
+import os
 from django.views.decorators.csrf import csrf_exempt
+
+# --- Admin Group Lock View ---
 def admin_group_lock_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     locked = getattr(lock_obj, 'groups_locked', False)
@@ -28,16 +40,6 @@ def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
             lock_obj.save()
             completed = True
     return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from .models import Team, TeamsLock
-from django.utils import timezone
-import csv
-from io import TextIOWrapper
-import os
 
 # Constants
 ADMIN_PASSWORD = "nsl2026"
