@@ -32,5 +32,7 @@ urlpatterns = [
     path('admin/schedule/group-stage', views.admin_schedule_group_stage_view, name='admin_schedule_group_stage'),
     path('admin/schedule/qualifier', views.admin_schedule_qualifier_view, name='admin_schedule_qualifier'),
     path('tadmin/sponsors/', views.sponsors_details_view, name='sponsors_details'),
+    path('tadmin/group-lock/', views.admin_group_lock_view, name='admin_group_lock'),
+    path('tadmin/group-complete/', views.admin_group_complete_view, name='admin_group_complete'),
     path('', home, name='home'),
 ]
