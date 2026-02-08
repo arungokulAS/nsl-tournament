@@ -381,11 +381,14 @@ def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
                 matches = []
                 for group in group_names:
                     group_teams = [team.team_name for team in teams if getattr(team, 'group', None) == group]
+                    # Round-robin scheduling
                     for i in range(len(group_teams)):
                         for j in range(i+1, len(group_teams)):
                             matches.append({'match': f'{group_teams[i]} vs {group_teams[j]}', 'group': group})
+                # Assign courts and slots
                 for idx, match in enumerate(matches):
                     match['court'] = f'Court {idx % court_count + 1}'
+                    match['slot'] = idx + 1
                     match['status'] = 'Scheduled'
                 lock_obj.group_stage_schedule = matches
                 lock_obj.group_stage_schedule_locked = True
