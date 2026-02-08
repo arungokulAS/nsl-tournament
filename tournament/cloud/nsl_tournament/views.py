@@ -90,7 +90,6 @@ def admin_team_lock_view(request: HttpRequest) -> HttpResponse:
             lock_obj.save()
             locked = True
     return render(request, 'admin_team_lock.html', {'locked': locked, 'error': error})
-                    group = request.POST.get(f'group_{team.team_id}')
     # --- Admin Group Stage Complete View ---
 def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
