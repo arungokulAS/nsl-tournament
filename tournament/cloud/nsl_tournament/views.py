@@ -1,16 +1,3 @@
-# --- New Admin Management Pages ---
-def admin_groups_manage_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'admin_groups_manage.html')
-
-def admin_schedule_manage_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'admin_schedule_manage.html')
-
-def admin_live_manage_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'admin_live_manage.html')
-
-def admin_finish_rounds_manage_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'admin_finish_rounds_manage.html')
-# --- Django Imports ---
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -22,6 +9,12 @@ import csv
 from io import TextIOWrapper
 import os
 from django.views.decorators.csrf import csrf_exempt
+
+# --- Home View ---
+def home(request: HttpRequest) -> HttpResponse:
+    lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
+    is_locked = lock_obj.is_locked
+    return render(request, 'nsl_home.html', {'is_locked': is_locked})
 
 # --- Admin Group Lock View ---
 def admin_group_lock_view(request: HttpRequest) -> HttpResponse:
@@ -38,7 +31,7 @@ def admin_group_lock_view(request: HttpRequest) -> HttpResponse:
             locked = True
     return render(request, 'admin_group_lock.html', {'locked': locked, 'error': error})
 
-# --- Admin Group Stage Complete View ---
+# --- Admin Group Complete View ---
 def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
     lock_obj, _ = TeamsLock.objects.get_or_create(pk=1)
     completed = getattr(lock_obj, 'group_stage_finished', False)
@@ -53,10 +46,20 @@ def admin_group_complete_view(request: HttpRequest) -> HttpResponse:
             completed = True
     return render(request, 'admin_group_complete.html', {'completed': completed, 'error': error})
 
-# Constants
-ADMIN_PASSWORD = "nsl2026"
+# --- New Admin Management Pages ---
+def admin_groups_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_groups_manage.html')
 
-# Add missing admin_groups_view
+def admin_schedule_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_schedule_manage.html')
+
+def admin_live_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_live_manage.html')
+
+def admin_finish_rounds_manage_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'admin_finish_rounds_manage.html')
+
+# --- Admin Groups View ---
 def admin_groups_view(request: HttpRequest) -> HttpResponse:
     teams = Team.objects.all()
     group_names = ['A', 'B', 'C', 'D', 'E', 'F']
