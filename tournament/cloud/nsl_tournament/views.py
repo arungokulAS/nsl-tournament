@@ -19,16 +19,13 @@ def tournament_teams_view(request: HttpRequest) -> HttpResponse:
 # --- Admin Schedule Pre-Quarter View (placeholder, to be replaced with real logic) ---
 def admin_schedule_pre_quarter_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'tournament_schedule.html')
-    return HttpResponse('admin_schedule_pre_quarter_view placeholder')
 # --- Admin Schedule Group Stage View (placeholder, to be replaced with real logic) ---
 def admin_schedule_group_stage_view(request: HttpRequest) -> HttpResponse:
     return HttpResponse('admin_schedule_group_stage_view placeholder')
-    return render(request, 'tournament_groups.html')
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-    return render(request, 'tournament_teams.html')
 from .models import Team, TeamsLock
 from django.utils import timezone
 import csv
