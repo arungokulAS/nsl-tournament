@@ -33,4 +33,5 @@ urlpatterns = [
     path('tournament/schedule/', views.tournament_schedule_view, name='tournament_schedule'),
     path('tournament/live/', views.tournament_live_view, name='tournament_live'),
     path('tournament/results/', views.tournament_results_view, name='tournament_results'),
-    ]
+    path('admin/sponsors/', views.sponsors_details_view, name='sponsors_details'),
+]

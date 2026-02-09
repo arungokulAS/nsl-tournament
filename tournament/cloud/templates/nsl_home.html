@@ -64,9 +64,9 @@
                 <div class="dropdown-content">
                     <a href="{% url 'admin_teams' %}">Admin Panel</a>
                     {% if not is_locked %}
-                        <a href="{% url 'admin_teams' %}">Add Team</a>
+                        <a href="{% url 'admin_teams' %}?add=1">Add Team</a>
                     {% endif %}
-                    <a href="/admin/sponsors/">Sponsors Details</a>
+                    <a href="{% url 'sponsors_details' %}">Sponsors Details</a>
                 </div>
             </div>
             <a href="/contact/" class="nav-icon" title="Contact">

@@ -7,6 +7,12 @@
 			"command": "python3 manage.py test",
 			"problemMatcher": [],
 			"group": "test"
+		},
+		{
+			"label": "Run Django tests for lock enforcement",
+			"type": "shell",
+			"command": "python3 manage.py test",
+			"group": "test"
 		}
 	]
 }
