@@ -62,11 +62,11 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg>
                 </a>
                 <div class="dropdown-content">
-                    <a href="/tadmin/teams/">Admin Panel</a>
+                    <a href="{% url 'admin_teams' %}">Admin Panel</a>
                     {% if not is_locked %}
-                        <a href="/tadmin/teams/">Add Team</a>
+                        <a href="{% url 'admin_teams' %}">Add Team</a>
                     {% endif %}
-                    <a href="/tadmin/sponsors/">Sponsors Details</a>
+                    <a href="/admin/sponsors/">Sponsors Details</a>
                 </div>
             </div>
             <a href="/contact/" class="nav-icon" title="Contact">
