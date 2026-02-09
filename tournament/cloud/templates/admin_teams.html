@@ -4,11 +4,11 @@
 <div class="modern-table-container">
     <div class="modern-table-title">Teams Management</div>
     <nav class="admin-nav" style="margin-bottom:24px; text-align:center;">
-        <a href="/tadmin/teams/" class="neon-btn" style="margin:0 8px 8px 0;">Teams</a>
-        <a href="/tadmin/groups/" class="neon-btn" style="margin:0 8px 8px 0;">Groups</a>
-        <a href="/tadmin/schedule/" class="neon-btn" style="margin:0 8px 8px 0;">Schedule</a>
-        <a href="/tadmin/live/" class="neon-btn" style="margin:0 8px 8px 0;">Live Match</a>
-        <a href="/tadmin/finish-rounds/" class="neon-btn" style="margin:0 8px 8px 0;">Finish Rounds</a>
+        <a href="/admin/teams/" class="neon-btn" style="margin:0 8px 8px 0;">Teams</a>
+        <a href="/admin/groups/" class="neon-btn" style="margin:0 8px 8px 0;">Groups</a>
+        <a href="/admin/schedule/group-stage" class="neon-btn" style="margin:0 8px 8px 0;">Schedule</a>
+        <a href="/admin/live-manage" class="neon-btn" style="margin:0 8px 8px 0;">Live Match</a>
+        <a href="/admin/finish-round" class="neon-btn" style="margin:0 8px 8px 0;">Finish Rounds</a>
     </nav>
     {% if messages %}
         <div style="margin: 16px 0; text-align: center;">
@@ -68,13 +68,13 @@
                     <td class="{% if is_locked %}status-locked{% else %}status-active{% endif %}">{% if is_locked %}Locked{% else %}Active{% endif %}</td>
                     <td>
                         {% if not is_locked %}
-                            <form method="post" action="/tadmin/teams/" style="display:inline;">
+                            <form method="post" action="/admin/teams/" style="display:inline;">
                                 {% csrf_token %}
                                 <input type="hidden" name="action" value="edit">
                                 <input type="hidden" name="team_id" value="{{ team.team_id }}">
                                 <button type="submit" class="icon-btn" title="Edit"><svg width="20" height="20" fill="none" stroke="#a020f0" stroke-width="2"><path d="M4 16l6-6 6 6"/></svg></button>
                             </form>
-                            <form method="post" action="/tadmin/teams/" style="display:inline;" onsubmit="return confirm('Delete this team? Enter admin password to confirm.');">
+                            <form method="post" action="/admin/teams/" style="display:inline;" onsubmit="return confirm('Delete this team? Enter admin password to confirm.');">
                                 {% csrf_token %}
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="team_id" value="{{ team.team_id }}">
