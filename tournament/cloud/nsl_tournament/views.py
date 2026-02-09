@@ -2,21 +2,20 @@
 from django.http import HttpRequest, HttpResponse
 # --- Tournament Results View (placeholder, to be replaced with real logic) ---
 def tournament_results_view(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('tournament_results_view placeholder')
+    return render(request, 'tournament_results.html')
 # --- Tournament Live View (placeholder, to be replaced with real logic) ---
 def tournament_live_view(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('tournament_live_view placeholder')
+    return render(request, 'tournament_live.html')
 # --- Tournament Schedule View (placeholder, to be replaced with real logic) ---
 def tournament_schedule_view(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('tournament_schedule_view placeholder')
-    return render(request, 'tournament_results.html')
+    return render(request, 'tournament_schedule.html')
 # --- Tournament Groups View (placeholder, to be replaced with real logic) ---
 def tournament_groups_view(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('tournament_groups_view placeholder')
+    return render(request, 'tournament_groups.html')
 # --- Tournament Teams View (placeholder, to be replaced with real logic) ---
     return render(request, 'tournament_live.html')
 def tournament_teams_view(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('tournament_teams_view placeholder')
+    return render(request, 'tournament_teams.html')
 # --- Admin Schedule Pre-Quarter View (placeholder, to be replaced with real logic) ---
 def admin_schedule_pre_quarter_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'tournament_schedule.html')
