@@ -101,8 +101,11 @@ def admin_groups_view(request: HttpRequest) -> HttpResponse:
         else:
             if action == 'manual_assign':
                 for team in teams:
-                    # TODO: Add manual assignment logic here
-                    pass
+                    group_val = request.POST.get(f'group_{team.team_id}')
+                    if group_val in group_names:
+                        team.group = group_val
+                        team.save()
+                messages_list.append('Manual group assignment saved.')
             elif action == 'auto_assign':
                 import random
                 team_list = list(teams)
