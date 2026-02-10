@@ -461,20 +461,20 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
         if action in ["lock", "edit", "delete"]:
             if password != ADMIN_PASSWORD:
                 messages.error(request, "Incorrect admin password.")
-                return redirect("/tadmin/teams/")
+                    return redirect("/admin/teams/")
 
         if action == "lock":
             lock_obj.is_locked = True
             lock_obj.locked_at = timezone.now()
             lock_obj.save()
             messages.success(request, "Teams locked.")
-            return redirect("/tadmin/teams/")
+                return redirect("/admin/teams/")
 
         if not is_locked:
             if action == "clear_all":
                 if password != ADMIN_PASSWORD:
                     messages.error(request, "Incorrect admin password.")
-                    return redirect("/teams/")
+                        return redirect("/admin/teams/")
                 Team.objects.all().delete()
                 messages.success(request, "All teams cleared successfully.")
                 return redirect("/teams/")
@@ -531,7 +531,7 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                         player2_name=player2,
                     )
                     messages.success(request, "Team added.")
-                return redirect("/tadmin/teams/")
+                    return redirect("/admin/teams/")
             elif action == "edit":
                 # If edit form submitted (with new names)
                 if request.POST.get("player1_name") and request.POST.get("player2_name"):
@@ -543,14 +543,14 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                     team.player2_name = player2
                     team.save()
                     messages.success(request, "Team updated.")
-                    return redirect("/tadmin/teams/")
+                        return redirect("/admin/teams/")
                 # Otherwise, show edit form for this team
                 edit_team = Team.objects.get(team_id=request.POST.get("team_id"))
             elif action == "delete":
                 team_id = request.POST.get("team_id")
                 Team.objects.filter(team_id=team_id).delete()
                 messages.success(request, "Team deleted.")
-                return redirect("/tadmin/teams/")
+                    return redirect("/admin/teams/")
     return render(request, "admin_teams.html", {
         "teams": teams,
         "is_locked": is_locked,
