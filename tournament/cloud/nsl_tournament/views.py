@@ -461,14 +461,14 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
         if action in ["lock", "edit", "delete"]:
             if password != ADMIN_PASSWORD:
                 messages.error(request, "Incorrect admin password.")
-                    return redirect("/admin/teams/")
+                return redirect("/admin/teams/")
 
         if action == "lock":
             lock_obj.is_locked = True
             lock_obj.locked_at = timezone.now()
             lock_obj.save()
             messages.success(request, "Teams locked.")
-                return redirect("/admin/teams/")
+            return redirect("/admin/teams/")
 
         if not is_locked:
             if action == "clear_all":
