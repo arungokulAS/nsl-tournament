@@ -474,10 +474,10 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
             if action == "clear_all":
                 if password != ADMIN_PASSWORD:
                     messages.error(request, "Incorrect admin password.")
-                        return redirect("/admin/teams/")
+                    return redirect("/admin/teams/")
                 Team.objects.all().delete()
                 messages.success(request, "All teams cleared successfully.")
-                return redirect("/teams/")
+                return redirect("/admin/teams/")
             if action == "upload_csv":
                 csv_file = request.FILES.get("csv_file")
                 if csv_file:
@@ -543,14 +543,14 @@ def admin_teams_view(request: HttpRequest) -> HttpResponse:
                     team.player2_name = player2
                     team.save()
                     messages.success(request, "Team updated.")
-                        return redirect("/admin/teams/")
+                    return redirect("/admin/teams/")
                 # Otherwise, show edit form for this team
                 edit_team = Team.objects.get(team_id=request.POST.get("team_id"))
             elif action == "delete":
                 team_id = request.POST.get("team_id")
                 Team.objects.filter(team_id=team_id).delete()
                 messages.success(request, "Team deleted.")
-                    return redirect("/admin/teams/")
+                return redirect("/admin/teams/")
     return render(request, "admin_teams.html", {
         "teams": teams,
         "is_locked": is_locked,
