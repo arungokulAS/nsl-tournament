@@ -1,3 +1,7 @@
+    <!-- DEBUG: Show session variable for admin login -->
+    <div style="color:#ff0;background:#222;padding:8px;margin-bottom:8px;text-align:center;font-size:1.1em;">
+        Admin session: {{ request.session.is_admin }}
+    </div>
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
