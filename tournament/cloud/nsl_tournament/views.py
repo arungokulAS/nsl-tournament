@@ -602,7 +602,7 @@ def admin_login_view(request):
         password = request.POST.get('password')
         if username == 'net smashers' and password == 'nsl123':
             request.session['is_admin'] = True
-            return redirect('/tadmin/teams/')
+            return redirect('/')
         else:
             from django.contrib import messages
             messages.error(request, 'Invalid username or password.')
